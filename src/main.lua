@@ -13,6 +13,7 @@ function love.load()
     keyCommands = require('keyCommands')
     cursor = require('cursor')
     board = require('board')
+    ball = require('ball')
     
     -- Setup GLobal variables
     timeStart = love.timer.getTime()
@@ -64,11 +65,13 @@ end
 -- Draw Function callback
 -----------------------------------------------------
 function love.draw()
+    drawBalls()
     -- love.graphics.setColor(1,0,0)
     love.graphics.draw(board, 0, 0)
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)
     love.graphics.print("Click the dot ...", 40, 400)
     --love.graphics.draw(king, 0,0)
+    
 
     love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
     love.graphics.print("Mouse clicked ..." .. tostring(clickX), 40, 350)
