@@ -22,6 +22,7 @@ end
 function initBoardState(xStartPos, yStartPos, spaceSize, boardSize)
     -- Initiate the boardstate as a blank table
     boardState = {}
+    pegLocations = {}
     x = 0 + xStartPos
     heightSpaces = 10
     widthSpaces = 10
@@ -29,6 +30,7 @@ function initBoardState(xStartPos, yStartPos, spaceSize, boardSize)
     -- iterate through each space based on the size of the board
     for i = 1, widthSpaces + 1 do
         boardState[i] = {}
+        pegLocations[i] = {}
         -- y position has to be reinitallized for each index of the x position so we start from top
         y = 0 + yStartPos
         for j = 1, heightSpaces + 1 do
@@ -45,9 +47,15 @@ function initBoardState(xStartPos, yStartPos, spaceSize, boardSize)
             ["RgtMoveAmt"] = 0,
             ["LftMoveAmt"] = 0
             }
+            pegLocations[i][j] = {
+            ["xpos"] = 0,
+            ["ypos"] = 0
+            }
             -- set each x and y position of the currently indexed space
             boardState[i][j]["xpos"] = x
             boardState[i][j]["ypos"] = y
+            pegLocations[i][j]["xpos"] = x
+            pegLocations[i][j]["ypos"] = y
 
             -- Increment the y pos after setting each paramater
             y = y + (boardSize - spaceSize)/heightSpaces
@@ -77,15 +85,20 @@ function drawBoard(boardStartPos, boardSize, spaceSize)
     for i = 1, #boardState do
         for j = 1, #boardState[i] do
             love.graphics.setColor(0,0,1)
-            -- if colorIndex%2 == 0 then
-            --     love.graphics.setColor(0,0,1)
-            -- else
-            --     love.graphics.setColor(0,1,0)
-            -- end
             colorIndex = colorIndex + 1
             love.graphics.rectangle( "fill", boardState[i][j]["xpos"], boardState[i][j]["ypos"], spaceSize, spaceSize)
         end
         colorIndex = colorIndex + 1
+    end
+end
+
+function drawPegLocations(boardStartPos, boardSize, pegLocSize)
+    -- Draw all of the possible peg locations on the board
+    for i = 1, #pegLocations do
+        for j = 1, #pegLocations[i] do
+            love.graphics.setColor(0,1,0)
+            love.graphics.rectangle("fill", pegLocations[i][j]["xpos"], pegLocations[i][j]["ypos"], pegLocSize, pegLocSize)
+        end
     end
 end
 

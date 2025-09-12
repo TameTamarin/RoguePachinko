@@ -27,6 +27,7 @@ function love.load()
     BOARDSTARTPOS = {WINDOWX/2 - BOARDSIZEPIXELS/2, WINDOWY/2 - BOARDSIZEPIXELS/2}
     success = love.window.setMode(WINDOWX, WINDOWY)
     board = love.graphics.newCanvas(WINDOWX, WINDOWY)
+    pegLocCanvas = love.graphics.newCanvas(WINDOWX, WINDOWY)
     -- background = love.graphics.newImage('/Images/Backgrounds/VintageChessBoard.png')
     
     -- Run initialization functions
@@ -38,7 +39,13 @@ function love.load()
         love.graphics.setBlendMode("alpha")
         drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
         love.graphics.setCanvas()
-    king = love.graphics.newImage('/Images/ChessPieces/KingPiece.png')
+    
+    -- Canvas for drawing the pegboard locations
+    love.graphics.setCanvas(pegLocCanvas)
+     love.graphics.clear(0, 0, 0, 0)
+        love.graphics.setBlendMode("alpha")
+        drawPegLocations(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
+        love.graphics.setCanvas()
 end
 
 
@@ -68,10 +75,8 @@ function love.draw()
     drawBalls()
     -- love.graphics.setColor(1,0,0)
     love.graphics.draw(board, 0, 0)
+    love.graphics.draw(pegLocCanvas, 0, 0)
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)
-    love.graphics.print("Click the dot ...", 40, 400)
-    --love.graphics.draw(king, 0,0)
-    
 
     love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
     love.graphics.print("Mouse clicked ..." .. tostring(clickX), 40, 350)

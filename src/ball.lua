@@ -1,4 +1,4 @@
-ball = {x=400, y=400, radius=50, color={1,0,0}}
+ball = {x=400, y=400, vel=0, radius=50, color={1,0,0}}
 
 function drawBalls()
     balls = {
