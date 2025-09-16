@@ -19,25 +19,33 @@ end
 -- Funtion for initalizing the board
 ------------------------------------
 
-function initBoardState(xStartPos, yStartPos, spaceSize, boardSize)
+function initBoardState(xStartPos, yStartPos, pegSize, boardSize, world)
     -- Initiate the boardstate as a blank table
     boardState = {}
     pegLocations = {}
-    x = 0 + xStartPos
+    y = 0 + yStartPos
     heightSpaces = 10
     widthSpaces = 10
+    offset = ((boardSize - pegSize)/heightSpaces)/2
     math.randomseed(os.time())
     -- iterate through each space based on the size of the board
     for i = 1, widthSpaces + 1 do
         boardState[i] = {}
         pegLocations[i] = {}
-        -- y position has to be reinitallized for each index of the x position so we start from top
-        y = 0 + yStartPos
+        -- x starting position has to be reinitallized for each index of the y position so we start from left
+        if i%2 == 0 then
+            x = offset + xStartPos
+        else
+            x = 0 + xStartPos
+        end
+
         for j = 1, heightSpaces + 1 do
             -- set all the attributes for each space
             boardState[i][j] = {
             ["xpos"] = 0,
             ["ypos"] = 0,
+            ["w"] = 0,
+            ["h"] = 0,
             ["visible"] = true,
             ["piece"] = "none",
             ["upgrade"] = "none",
@@ -52,17 +60,24 @@ function initBoardState(xStartPos, yStartPos, spaceSize, boardSize)
             ["ypos"] = 0
             }
             -- set each x and y position of the currently indexed space
-            boardState[i][j]["xpos"] = x
-            boardState[i][j]["ypos"] = y
-            pegLocations[i][j]["xpos"] = x
-            pegLocations[i][j]["ypos"] = y
+            boardState[i][j].xpos = x
+            boardState[i][j].ypos = y
+            boardState[i][j].w = pegSize
+            boardState[i][j].h = pegSize
+            boardState[i][j].body = love.physics.newBody(world,x,y,"static")
+            boardState[i][j].shape = love.physics.newCircleShape(boardState[i][j].w/2)
+            boardState[i][j].shape = love.physics.newFixture(boardState[i][j].body, boardState[i][j].shape)
+            boardState[i][j].body:setFixedRotation(true)
+
+            pegLocations[i][j].xpos = x
+            pegLocations[i][j].ypos = y
 
             -- Increment the y pos after setting each paramater
-            y = y + (boardSize - spaceSize)/heightSpaces
+            x = x + (boardSize - pegSize)/heightSpaces
         end
 
         -- Increment the x pos after setting each paramater
-        x = x + (boardSize - spaceSize)/widthSpaces
+        y = y + (boardSize - pegSize)/widthSpaces
 
     end
 end
@@ -79,14 +94,14 @@ end
 -----------------------------------
 -- Function to draw the chess board
 -----------------------------------
-function drawBoard(boardStartPos, boardSize, spaceSize)
+function drawBoard(boardStartPos, boardSize, pegSize)
     love.graphics.rectangle("line", boardStartPos[1], boardStartPos[2], boardSize, boardSize)
     colorIndex = 1
     for i = 1, #boardState do
         for j = 1, #boardState[i] do
             love.graphics.setColor(0,0,1)
             colorIndex = colorIndex + 1
-            love.graphics.rectangle( "fill", boardState[i][j]["xpos"], boardState[i][j]["ypos"], spaceSize, spaceSize)
+            love.graphics.circle( "fill", boardState[i][j]["xpos"], boardState[i][j]["ypos"], pegSize/2)
         end
         colorIndex = colorIndex + 1
     end
@@ -97,7 +112,7 @@ function drawPegLocations(boardStartPos, boardSize, pegLocSize)
     for i = 1, #pegLocations do
         for j = 1, #pegLocations[i] do
             love.graphics.setColor(0,1,0)
-            love.graphics.rectangle("fill", pegLocations[i][j]["xpos"], pegLocations[i][j]["ypos"], pegLocSize, pegLocSize)
+            love.graphics.circle("fill", pegLocations[i][j]["xpos"], pegLocations[i][j]["ypos"], pegLocSize/2)
         end
     end
 end
