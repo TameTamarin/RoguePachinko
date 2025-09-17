@@ -7,7 +7,18 @@
 -----------------------------------------------------
 -- Load Function callback, called when program starts
 -----------------------------------------------------
-local world = love.physics.newWorld(0, 100, true)
+
+
+FPSCAP = 60
+DT = 1/1000 --miliseconds
+WINDOWX = 1000
+WINDOWY = 900
+BOARDSIZEPIXELS = 600
+PEGSIZEPIXELS = 10
+YGRAVITY = 500
+XGRAVITY = 10
+
+local world = love.physics.newWorld(XGRAVITY, YGRAVITY, true)
 
 function love.load()
     -- load in submodules
@@ -19,32 +30,17 @@ function love.load()
     
     -- Setup GLobal variables
     timeStart = love.timer.getTime()
-    FPSCAP = 60
-    DT = 1/1000 --miliseconds
-    WINDOWX = 1000
-    WINDOWY = 900
-    BOARDSIZEPIXELS = 600
-    PEGSIZEPIXELS = 10
     
     BOARDSTARTPOS = {WINDOWX/2 - BOARDSIZEPIXELS/2, WINDOWY/2 - BOARDSIZEPIXELS/2}
-    success = love.window.setMode(WINDOWX, WINDOWY)
+    success = love.window.setMode(WINDOWX, WINDOWY, {vsync = 1})
     board = love.graphics.newCanvas(WINDOWX, WINDOWY)
     pegLocCanvas = love.graphics.newCanvas(WINDOWX, WINDOWY)
     -- background = love.graphics.newImage('/Images/Backgrounds/VintageChessBoard.png')
-    
-    
-    
-    object = {}
-    object.x, object.y = 450, 450
-    object.w, object.h = 20, 20
-    object.body = love.physics.newBody(world, object.x, object.y, "dynamic")
-    object.shape = love.physics.newCircleShape(object.w/2)
-    object.fixture = love.physics.newFixture(object.body, object.shape)
-    object.body:setFixedRotation(true)
-    
+
 
     -- Run initialization functions
     initBoardState(BOARDSTARTPOS[1], BOARDSTARTPOS[2], PEGSIZEPIXELS, BOARDSIZEPIXELS, world)
+    initBalls(world)
 
     
 
@@ -69,20 +65,16 @@ end
 -----------------------------------------------------
 -- Update Function callback
 -----------------------------------------------------
-function love.update(DT)
+function love.update(dt)
     -- Control frame rate
-    world:update(DT)
-    sleep(DT, FPSCAP)
+    world:update(dt)
+    -- sleep(DT, FPSCAP)
     
     cursorX, cursorY = getCursorPosition()
 
     clickX, clickY = getMousePosOnClick()
 
-    object.x, object.y = object.body:getPosition()
-    -- object.body:applyForce(5, 5)
-
-
-    
+    updateBallsLocations()
     
 end
 
@@ -95,7 +87,6 @@ function love.draw()
     -- love.graphics.setColor(1,0,0)
     love.graphics.draw(board, 0, 0)
     love.graphics.draw(pegLocCanvas, 0, 0)
-    love.graphics.circle("fill", object.x, object.y, object.w, object.h)
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)
 
     love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
