@@ -34,3 +34,13 @@ function updateBallsLocations()
     end
 end
 
+
+function resetBallPosition()
+    for i, ball in ipairs(balls) do
+        balls[i].body:setLinearVelocity( 0, 0 )
+        balls[i].body:setX(i*100)
+        balls[i].body:setY(0)
+        balls[i].x, balls[i].y = i*100, 0
+        
+    end
+end

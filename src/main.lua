@@ -74,7 +74,12 @@ function love.update(dt)
 
     clickX, clickY = getMousePosOnClick()
 
+    if checkMouseClick() then
+        resetBallPosition()
+    end
+
     updateBallsLocations()
+
     
 end
 
