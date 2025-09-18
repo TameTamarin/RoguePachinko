@@ -13,7 +13,7 @@ function initBalls(world)
     for i, ball in ipairs(balls) do
         ball.body = love.physics.newBody(world, ball.x, ball.y, "dynamic")
         ball.shape = love.physics.newCircleShape(ball.radius)
-        ball.fixture = love.physics.newFixture(ball.body, ball.shape)
+        ball.fixture = love.physics.newFixture(ball.body, ball.shape,100)
         ball.body:setFixedRotation(true)
     end
 end
@@ -37,10 +37,11 @@ end
 
 function resetBallPosition()
     for i, ball in ipairs(balls) do
-        balls[i].body:setLinearVelocity( 0, 0 )
+        balls[i].body:setLinearVelocity( 1, 1 )
+        balls[i].x, balls[i].y = i*100, balls[i].radius
         balls[i].body:setX(i*100)
-        balls[i].body:setY(0)
-        balls[i].x, balls[i].y = i*100, 0
+        balls[i].body:setY(balls[i].radius)
+        
         
     end
 end

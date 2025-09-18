@@ -66,7 +66,7 @@ function initBoardState(xStartPos, yStartPos, pegSize, boardSize, world)
             boardState[i][j].h = pegSize
             boardState[i][j].body = love.physics.newBody(world,x,y,"static")
             boardState[i][j].shape = love.physics.newCircleShape(boardState[i][j].w/2)
-            boardState[i][j].shape = love.physics.newFixture(boardState[i][j].body, boardState[i][j].shape)
+            boardState[i][j].shape = love.physics.newFixture(boardState[i][j].body, boardState[i][j].shape,1000)
             boardState[i][j].body:setFixedRotation(true)
 
             pegLocations[i][j].xpos = x
