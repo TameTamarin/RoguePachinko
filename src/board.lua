@@ -3,6 +3,25 @@ require "math"
 -- Functions for settibg board
 -- dimensions
 ------------------------------------
+
+local boardDim = {
+    hSpaces = 10,
+    wSpaces = 10,
+    xStart = 0,
+    yStart = 0,
+    size = 0
+    }
+
+function initBoard(hSpaces, wSpaces, xStart, yStart, size)
+    boardDim.hSpaces = hSpaces
+    boardDim.wSpaces = wSpaces
+    boardDim.xStart = xStart
+    boardDim.yStart = yStart
+    boardDim.size = size
+end
+    
+    
+
 function updateSpaceSize(spaceSize)
     
 end
@@ -11,7 +30,7 @@ function updateBoardPosition(xStartPos, yStartPos)
     
 end
 
-function updateBoardSpaceDimensions(heightSpaces, widthSpaces)
+function updateBoardSpaceDim(heightSpaces, widthSpaces)
    
 end
 
@@ -19,27 +38,25 @@ end
 -- Funtion for initalizing the board
 ------------------------------------
 
-function initBoardState(xStartPos, yStartPos, pegSize, boardSize, world)
+function initBoardState(pegSize, world)
     -- Initiate the boardstate as a blank table
     boardState = {}
     pegLocations = {}
-    y = 0 + yStartPos
-    heightSpaces = 10
-    widthSpaces = 10
-    offset = ((boardSize - pegSize)/heightSpaces)/2
+    y = 0 + boardDim.yStart
+    offset = ((boardDim.size - pegSize)/boardDim.hSpaces)/2
     math.randomseed(os.time())
     -- iterate through each space based on the size of the board
-    for i = 1, widthSpaces + 1 do
+    for i = 1, boardDim.wSpaces + 1 do
         boardState[i] = {}
         pegLocations[i] = {}
         -- x starting position has to be reinitallized for each index of the y position so we start from left
         if i%2 == 0 then
-            x = offset + xStartPos
+            x = offset + boardDim.xStart
         else
-            x = 0 + xStartPos
+            x = 0 + boardDim.xStart
         end
 
-        for j = 1, heightSpaces + 1 do
+        for j = 1, boardDim.hSpaces + 1 do
             -- set all the attributes for each space
             boardState[i][j] = {
             ["xpos"] = 0,
@@ -73,11 +90,11 @@ function initBoardState(xStartPos, yStartPos, pegSize, boardSize, world)
             pegLocations[i][j].ypos = y
 
             -- Increment the y pos after setting each paramater
-            x = x + (boardSize - pegSize)/heightSpaces
+            x = x + (boardDim.size - pegSize)/boardDim.hSpaces
         end
 
         -- Increment the x pos after setting each paramater
-        y = y + (boardSize - pegSize)/widthSpaces
+        y = y + (boardDim.size - pegSize)/boardDim.wSpaces
 
     end
 end

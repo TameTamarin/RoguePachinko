@@ -15,6 +15,7 @@ function initBalls(world)
         ball.shape = love.physics.newCircleShape(ball.radius)
         ball.fixture = love.physics.newFixture(ball.body, ball.shape,100)
         ball.body:setFixedRotation(true)
+        ball.fixture:setRestitution(0.4)
     end
 end
 
