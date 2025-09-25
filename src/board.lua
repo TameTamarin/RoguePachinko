@@ -21,6 +21,8 @@ function initBoard(hSpaces, wSpaces, xStart, yStart, size)
     boardDim.yStart = yStart
     boardDim.size = size
 end
+
+
     
     
 
