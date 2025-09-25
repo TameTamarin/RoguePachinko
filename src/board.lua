@@ -12,6 +12,8 @@ local boardDim = {
     size = 0
     }
 
+    local leftWall = {w=10, h = 400, x = 100, y = 100}
+
 function initBoard(hSpaces, wSpaces, xStart, yStart, size)
     boardDim.hSpaces = hSpaces
     boardDim.wSpaces = wSpaces
@@ -33,6 +35,21 @@ end
 function updateBoardSpaceDim(heightSpaces, widthSpaces)
    
 end
+
+------------------------------------
+-- Funtion for initalizing the leftWall
+------------------------------------
+function initLeftWall(world)
+    leftWall.body = love.physics.newBody(world,leftWall.x,leftWall.y,"static")
+    leftWall.shape = love.physics.newRectangleShape(leftWall.w,leftWall.h)
+    leftWall.fixture = love.physics.newFixture(leftWall.body, leftWall.shape, 1000)
+end
+
+function drawLeftWall()
+    
+    love.graphics.rectangle("fill", leftWall.x - leftWall.w/2, leftWall.y - leftWall.h/2, leftWall.w, leftWall.h)
+end
+
 
 ------------------------------------
 -- Funtion for initalizing the board
@@ -83,7 +100,7 @@ function initBoardState(pegSize, world)
             boardState[i][j].h = pegSize
             boardState[i][j].body = love.physics.newBody(world,x,y,"static")
             boardState[i][j].shape = love.physics.newCircleShape(boardState[i][j].w/2)
-            boardState[i][j].shape = love.physics.newFixture(boardState[i][j].body, boardState[i][j].shape,1000)
+            boardState[i][j].fixture = love.physics.newFixture(boardState[i][j].body, boardState[i][j].shape,1000)
             boardState[i][j].body:setFixedRotation(true)
 
             pegLocations[i][j].xpos = x
@@ -109,7 +126,7 @@ function updateBoardSpaceAttr(row, col, attr, val)
 end
 
 -----------------------------------
--- Function to draw the chess board
+-- Function to draw the peg board
 -----------------------------------
 function drawBoard(boardStartPos, boardSize, pegSize)
     love.graphics.rectangle("line", boardStartPos[1], boardStartPos[2], boardSize, boardSize)

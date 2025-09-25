@@ -46,6 +46,7 @@ function love.load()
     initBoard(10, 15, BOARDSTARTPOS[1], BOARDSTARTPOS[2],BOARDSIZEPIXELS)
     initBoardState(PEGSIZEPIXELS, world)
     initBalls(world)
+    initLeftWall(world)
 
 -- Setup Canvases for drawing background and the board
     board = love.graphics.newCanvas(WINDOWX, WINDOWY)
@@ -176,6 +177,7 @@ end
 -----------------------------------------------------
 function love.draw()
     drawBalls(world)
+    drawLeftWall()
     -- love.graphics.setColor(1,0,0)
     love.graphics.draw(board, 0, 0)
     love.graphics.draw(pegLocCanvas, 0, 0)
