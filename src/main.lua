@@ -43,10 +43,15 @@ function love.load()
     world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     -- Run initialization functions
-    initBoard(10, 15, BOARDSTARTPOS[1], BOARDSTARTPOS[2],BOARDSIZEPIXELS)
+    initBoard(10, 15, BOARDSTARTPOS[1], BOARDSTARTPOS[2], BOARDSIZEPIXELS)
+    setLeftWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] - PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
+    setRightWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] + BOARDSIZEPIXELS + PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
+    
     initBoardState(PEGSIZEPIXELS, world)
     initBalls(world)
     initLeftWall(world)
+    initRightWall(world)
+
 
 -- Setup Canvases for drawing background and the board
     board = love.graphics.newCanvas(WINDOWX, WINDOWY)
@@ -56,6 +61,8 @@ function love.load()
         love.graphics.clear(0, 0, 0, 0)
         love.graphics.setBlendMode("alpha")
         drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
+        drawLeftWall(world)
+        drawRightWall(world)
         love.graphics.setCanvas()
     
     -- Canvas for drawing the pegboard locations
@@ -177,8 +184,7 @@ end
 -----------------------------------------------------
 function love.draw()
     drawBalls(world)
-    drawLeftWall()
-    -- love.graphics.setColor(1,0,0)
+
     love.graphics.draw(board, 0, 0)
     love.graphics.draw(pegLocCanvas, 0, 0)
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)

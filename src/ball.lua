@@ -25,7 +25,6 @@ function drawBalls(world)
         love.graphics.setColor(ball.color)
         love.graphics.circle("fill", ball.x, ball.y, ball.radius)
     end
-
 end
 
 

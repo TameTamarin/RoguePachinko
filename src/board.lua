@@ -12,7 +12,19 @@ local boardDim = {
     size = 0
     }
 
-    local leftWall = {w=10, h = 400, x = 100, y = 100}
+local leftWall = {
+        h = 400,
+        w = 10,
+        x = 100,
+        y = 100
+    }
+
+local rightWall = {
+        h = 400,
+        w = 10,
+        x = 100,
+        y = 100
+    }
 
 function initBoard(hSpaces, wSpaces, xStart, yStart, size)
     boardDim.hSpaces = hSpaces
@@ -22,7 +34,19 @@ function initBoard(hSpaces, wSpaces, xStart, yStart, size)
     boardDim.size = size
 end
 
+function setLeftWallDim(h, w, x, y)
+    leftWall.h = h
+    leftWall.w = w
+    leftWall.x = x
+    leftWall.y = y
+end
 
+function setRightWallDim(h, w, x, y)
+    rightWall.h = h
+    rightWall.w = w
+    rightWall.x = x
+    rightWall.y = y
+end
     
     
 
@@ -39,7 +63,8 @@ function updateBoardSpaceDim(heightSpaces, widthSpaces)
 end
 
 ------------------------------------
--- Funtion for initalizing the leftWall
+-- Funtion for initalizing 
+-- the leftWall and rightWall
 ------------------------------------
 function initLeftWall(world)
     leftWall.body = love.physics.newBody(world,leftWall.x,leftWall.y,"static")
@@ -47,9 +72,20 @@ function initLeftWall(world)
     leftWall.fixture = love.physics.newFixture(leftWall.body, leftWall.shape, 1000)
 end
 
+
 function drawLeftWall()
-    
     love.graphics.rectangle("fill", leftWall.x - leftWall.w/2, leftWall.y - leftWall.h/2, leftWall.w, leftWall.h)
+end
+
+
+function initRightWall(world)
+    rightWall.body = love.physics.newBody(world,rightWall.x,rightWall.y,"static")
+    rightWall.shape = love.physics.newRectangleShape(rightWall.w,rightWall.h)
+    rightWall.fixture = love.physics.newFixture(rightWall.body, rightWall.shape, 1000)
+end
+
+function drawRightWall()
+    love.graphics.rectangle("fill", rightWall.x - rightWall.w/2, rightWall.y - rightWall.h/2, rightWall.w, rightWall.h)
 end
 
 
