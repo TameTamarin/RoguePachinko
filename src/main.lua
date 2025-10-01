@@ -46,11 +46,13 @@ function love.load()
     initBoard(10, 15, BOARDSTARTPOS[1], BOARDSTARTPOS[2], BOARDSIZEPIXELS)
     setLeftWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] - PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
     setRightWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] + BOARDSIZEPIXELS + PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
+    setFloorDim(10, BOARDSIZEPIXELS, BOARDSTARTPOS[1] + BOARDSIZEPIXELS/2, BOARDSTARTPOS[2] + BOARDSIZEPIXELS)
     
     initBoardState(PEGSIZEPIXELS, world)
     initBalls(world)
     initLeftWall(world)
     initRightWall(world)
+    initFloor(world)
 
 
 -- Setup Canvases for drawing background and the board
@@ -61,8 +63,9 @@ function love.load()
         love.graphics.clear(0, 0, 0, 0)
         love.graphics.setBlendMode("alpha")
         drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
-        drawLeftWall(world)
-        drawRightWall(world)
+        drawLeftWall()
+        drawRightWall()
+        drawFloor()
         love.graphics.setCanvas()
     
     -- Canvas for drawing the pegboard locations

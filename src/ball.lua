@@ -1,5 +1,3 @@
--- ball = {x=400, y=400, vel=0, radius=50, color={1,0,0}}
-
 balls = {
     {x=200, y=0, radius=10, color={1,0,0}},
     {x=300, y=0, radius=10, color={0,1,0}},
@@ -15,7 +13,7 @@ function initBalls(world)
         ball.shape = love.physics.newCircleShape(ball.radius)
         ball.fixture = love.physics.newFixture(ball.body, ball.shape,100)
         ball.body:setFixedRotation(true)
-        ball.fixture:setRestitution(0.4)
+        ball.fixture:setRestitution(0.5)
     end
 end
 

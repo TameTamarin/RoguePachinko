@@ -26,6 +26,13 @@ local rightWall = {
         y = 100
     }
 
+local floor = {
+        h = 0,
+        w = 0,
+        x = 0,
+        y = 0
+    }
+
 function initBoard(hSpaces, wSpaces, xStart, yStart, size)
     boardDim.hSpaces = hSpaces
     boardDim.wSpaces = wSpaces
@@ -47,7 +54,13 @@ function setRightWallDim(h, w, x, y)
     rightWall.x = x
     rightWall.y = y
 end
-    
+
+function setFloorDim(h, w, x, y)
+    floor.h = h
+    floor.w = w
+    floor.x = x
+    floor.y = y
+end
     
 
 function updateSpaceSize(spaceSize)
@@ -88,6 +101,15 @@ function drawRightWall()
     love.graphics.rectangle("fill", rightWall.x - rightWall.w/2, rightWall.y - rightWall.h/2, rightWall.w, rightWall.h)
 end
 
+function initFloor(world)
+    floor.body = love.physics.newBody(world,floor.x,floor.y,"static")
+    floor.shape = love.physics.newRectangleShape(floor.w,floor.h)
+    floor.fixture = love.physics.newFixture(floor.body, floor.shape, 1000)
+end
+
+function drawFloor()
+    love.graphics.rectangle("fill", floor.x - floor.w/2, floor.y - floor.h/2, floor.w, floor.h)
+end
 
 ------------------------------------
 -- Funtion for initalizing the board
