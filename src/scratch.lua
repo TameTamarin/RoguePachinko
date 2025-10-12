@@ -17,5 +17,15 @@ function finish()
     end
 end
 
+
+num = nil
+two = nil
+if num == nil or two == nil then
+    return 0, 0
+else
+    print("num is nil")
+end
+
+
 start()
 finish()

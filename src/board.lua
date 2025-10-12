@@ -33,6 +33,13 @@ local floor = {
         y = 0
     }
 
+local resetButton = {
+        h = 50,
+        w = 50,
+        x = 50,
+        y = 100
+    }
+
 function initBoard(hSpaces, wSpaces, xStart, yStart, size)
     boardDim.hSpaces = hSpaces
     boardDim.wSpaces = wSpaces
@@ -162,9 +169,11 @@ function initBoardState(pegSize, world)
             boardState[i][j].shape = love.physics.newCircleShape(boardState[i][j].w/2)
             boardState[i][j].fixture = love.physics.newFixture(boardState[i][j].body, boardState[i][j].shape,1000)
             boardState[i][j].body:setFixedRotation(true)
+            boardState[i][j].enable = true
 
             pegLocations[i][j].xpos = x
             pegLocations[i][j].ypos = y
+            pegLocations[i][j].enable = true
 
             -- Increment the y pos after setting each paramater
             x = x + (boardDim.size - pegSize)/boardDim.hSpaces
@@ -177,13 +186,6 @@ function initBoardState(pegSize, world)
 end
 
 
-function getBoardState()
-    return boardState
-end
-
-function updateBoardSpaceAttr(row, col, attr, val)
-    boardState[row][col][attr] = val
-end
 
 -----------------------------------
 -- Function to draw the peg board
@@ -195,7 +197,9 @@ function drawBoard(boardStartPos, boardSize, pegSize)
         for j = 1, #boardState[i] do
             love.graphics.setColor(0,0,1)
             colorIndex = colorIndex + 1
-            love.graphics.circle( "fill", boardState[i][j]["xpos"], boardState[i][j]["ypos"], pegSize/2)
+            if boardState[i][j].enable == true then
+                love.graphics.circle("fill", boardState[i][j]["xpos"], boardState[i][j]["ypos"], pegSize/2)
+            end
         end
         colorIndex = colorIndex + 1
     end
@@ -206,12 +210,40 @@ function drawPegLocations(boardStartPos, boardSize, pegLocSize)
     for i = 1, #pegLocations do
         for j = 1, #pegLocations[i] do
             love.graphics.setColor(0,1,0)
-            love.graphics.circle("fill", pegLocations[i][j]["xpos"], pegLocations[i][j]["ypos"], pegLocSize/2)
+            if pegLocations[i][j].enable == true then
+                love.graphics.circle("fill", pegLocations[i][j]["xpos"], pegLocations[i][j]["ypos"], pegLocSize/3)
+            end
         end
     end
 end
 
+function drawButtons()
+    -- Draw buttons onto the board
+    love.graphics.rectangle("fill", resetButton.x, resetButton.y, resetButton.h, resetButton.w)
+end
+
+
+function drawAllowedMoves()
+    -- Draws dots for the moves that are allowed to be made for the
+    -- selected space.  Selected space is determined from an input 
+    -- row and collumn indicies.
+end
+
+
+-----------------------------------
+-- Functions for getting status of
+-- the board and for updating
+-- spaces
+-----------------------------------
+
+function getBoardState()
+    return boardState
+end
+
 function getSelectedSpace(xCoord, yCoord, spaceSize)
+    if xCoord == nil or yCoord == nil then
+        return nil, nil
+    end
     -- with a given set of coordinates, return the row and collumn of
     -- the selected space
     for i = 1, #boardState do
@@ -223,7 +255,7 @@ function getSelectedSpace(xCoord, yCoord, spaceSize)
             spaceYUpperBound = boardState[i][j]["ypos"] + spaceSize/2
             
             -- check if input coords fall within indexeded space
-            if (xCoord > spaceXLeftBound) and (xCoord < spaceXRightBound) then --and yCoord > spaceYLowerBound and yCoord < spaceYUpperBound then
+            if (xCoord > spaceXLeftBound) and (xCoord < spaceXRightBound) and yCoord > spaceYLowerBound and yCoord < spaceYUpperBound then
                 return i, j
             end
         end
@@ -233,8 +265,17 @@ function getSelectedSpace(xCoord, yCoord, spaceSize)
 end
 
 
-function drawAllowedMoves()
-    -- Draws dots for the moves that are allowed to be made for the
-    -- selected space.  Selected space is determined from an input 
-    -- row and collumn indicies.
+function updateSpaceParameter(row, collumn)
+    if row == nil or collumn == nil then
+        return
+    else
+        boardState[row][collumn].enable = false
+        pegLocations[row][collumn].enable = false
+        boardState[row][collumn].body:setActive(false)
+    end
+end
+
+
+function updateBoardSpaceAttr(row, col, attr, val)
+    boardState[row][col][attr] = val
 end

@@ -56,16 +56,17 @@ function love.load()
 
 
 -- Setup Canvases for drawing background and the board
-    board = love.graphics.newCanvas(WINDOWX, WINDOWY)
+    backgroundObjects = love.graphics.newCanvas(WINDOWX, WINDOWY)
     pegLocCanvas = love.graphics.newCanvas(WINDOWX, WINDOWY)
 
-    love.graphics.setCanvas(board)
+    love.graphics.setCanvas(backgroundObjects)
         love.graphics.clear(0, 0, 0, 0)
         love.graphics.setBlendMode("alpha")
-        drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
+        -- drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
         drawLeftWall()
         drawRightWall()
         drawFloor()
+        drawButtons()
         love.graphics.setCanvas()
     
     -- Canvas for drawing the pegboard locations
@@ -160,6 +161,8 @@ end
 -- This function runs on every interation of the
 -- main loop.
 -----------------------------------------------------
+row = nil
+collumn = nil
 function love.update(dt)
     -- Control frame rate
     world:update(dt)
@@ -170,7 +173,13 @@ function love.update(dt)
     clickX, clickY = getMousePosOnClick()
 
     if checkMouseClick() then
-        resetBallPosition()
+        if clickX <= 75 and clickX >= 25 and clickY <= 125 and clickY >= 75 then
+            resetBallPosition()
+        end
+
+        row , collumn = getSelectedSpace(clickX, clickY, PEGSIZEPIXELS)
+
+        updateSpaceParameter(row, collumn)
     end
 
     updateBallsLocations()
@@ -188,11 +197,15 @@ end
 function love.draw()
     drawBalls(world)
 
-    love.graphics.draw(board, 0, 0)
-    love.graphics.draw(pegLocCanvas, 0, 0)
+    love.graphics.draw(backgroundObjects, 0, 0)
+    drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
+    drawPegLocations(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
+    -- love.graphics.draw(pegLocCanvas, 0, 0)
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)
 
     love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
-    love.graphics.print("Mouse clicked ..." .. tostring(clickX), 40, 350)
+    love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 40, 350)
+
+    love.graphics.print("Row and collumn ..." .. tostring(row) .. " " .. tostring(collumn), 40, 450)
 
 end

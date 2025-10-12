@@ -14,9 +14,9 @@ end
 
 function getMousePosOnClick()
     if not CLICKED and checkMouseClick() then
-        clickedPos = getCursorPosition()
-        return clickedPos
+        clickedXPos, clickedYPos = getCursorPosition()
+        return love.mouse.getPosition( )
     else
-        return clickedPos
+        return clickedXPos, clickedYPos
     end
 end
