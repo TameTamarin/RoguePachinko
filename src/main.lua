@@ -31,6 +31,7 @@ function love.load()
     cursor = require('cursor')
     board = require('board')
     ball = require('ball')
+    boardElements = require('boardElements')
     
     -- Init the in game timer
     timeStart = love.timer.getTime()
@@ -53,6 +54,7 @@ function love.load()
     initLeftWall(world)
     initRightWall(world)
     initFloor(world)
+    initFlippers(world)
 
 
 -- Setup Canvases for drawing background and the board
@@ -180,6 +182,8 @@ function love.update(dt)
         row , collumn = getSelectedSpace(clickX, clickY, PEGSIZEPIXELS)
 
         updateSpaceParameter(row, collumn)
+
+        updateBallBounce(2, 2)
     end
 
     updateBallsLocations()
@@ -196,6 +200,7 @@ end
 -----------------------------------------------------
 function love.draw()
     drawBalls(world)
+    drawFlippers()
 
     love.graphics.draw(backgroundObjects, 0, 0)
     drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
