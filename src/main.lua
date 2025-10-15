@@ -53,7 +53,7 @@ function love.load()
     initBalls(world)
     initLeftWall(world)
     initRightWall(world)
-    initFloor(world)
+    -- initFloor(world)
     initFlippers(world)
 
 
@@ -67,7 +67,7 @@ function love.load()
         -- drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
         drawLeftWall()
         drawRightWall()
-        drawFloor()
+        -- drawFloor()
         drawButtons()
         love.graphics.setCanvas()
     
@@ -165,6 +165,9 @@ end
 -----------------------------------------------------
 row = nil
 collumn = nil
+
+local rightFlipperAngle = 3
+local leftFlipperAngle = 0
 function love.update(dt)
     -- Control frame rate
     world:update(dt)
@@ -188,6 +191,29 @@ function love.update(dt)
 
     updateBallsLocations()
 
+    -- if rightKeyCheck() == 1 or rightFlipperActivated == 1 then
+    --     rightFlipperActivated = 1
+    --     if rightFlipperAngle <= rightFlipperStopAngle then
+    --         rightFlipperAngle = rightFlipperAngle + dt * rightFlipperSpeed
+    --     elseif rightFlipperAngle >= rightFlipperStopAngle then
+    --         rightFlipperActivated = 0
+    --     end
+    -- elseif rightKeyCheck() == 0 then
+    --     rightFlipperAngle = 3
+    -- end
+    
+    -- if leftKeyCheck() == 1 or leftFlipperActivated == 1 then
+    --     leftFlipperActivated = 1
+    --     if leftFlipperAngle >= -leftFlipperStopAngle then
+    --         leftFlipperAngle = leftFlipperAngle - dt * leftFlipperSpeed
+    --     elseif leftFlipperAngle <= leftFlipperStopAngle then
+    --         leftFlipperActivated = 0
+    --     end
+    -- elseif leftKeyCheck() == 0 then
+    --     leftFlipperAngle = 0
+    -- end
+    leftFlipperAngle = updateLeftFlipper(dt)
+    rightFlipperAngle = updateRightFlipper(dt)
     
 end
 
@@ -200,7 +226,8 @@ end
 -----------------------------------------------------
 function love.draw()
     drawBalls(world)
-    drawFlippers()
+    drawLeftFlipper(rightFlipperAngle)
+    drawRightFlipper(leftFlipperAngle)
 
     love.graphics.draw(backgroundObjects, 0, 0)
     drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
@@ -211,6 +238,6 @@ function love.draw()
     love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
     love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 40, 350)
 
-    love.graphics.print("Row and collumn ..." .. tostring(row) .. " " .. tostring(collumn), 40, 450)
+    love.graphics.print("Angle ..." .. tostring(rightFlipperAngle), 40, 450)
 
 end

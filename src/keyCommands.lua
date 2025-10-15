@@ -18,13 +18,20 @@ function moveCircle(coordinates, speed)
     return coordinates
 end
 
-function flipperCheck()
+function rightKeyCheck()
     --These are commands are used for getting the events for when the arrow keys are pressed
     rightPressed = love.keyboard.isScancodeDown( "right" )
-    leftPressed = love.keyboard.isScancodeDown( "left" )
    
     if rightPressed then return 1
-    elseif leftPressed then return 0
-    else return nil
+    else return 0
+    end
+end
+
+function leftKeyCheck()
+    --These are commands are used for getting the events for when the arrow keys are pressed
+    leftPressed = love.keyboard.isScancodeDown( "left" )
+   
+    if leftPressed then return 1
+    else return 0
     end
 end
