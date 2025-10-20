@@ -12,6 +12,7 @@ function initBalls(world)
         ball.body = love.physics.newBody(world, ball.x, ball.y, "dynamic")
         ball.shape = love.physics.newCircleShape(ball.radius)
         ball.fixture = love.physics.newFixture(ball.body, ball.shape,100)
+        ball.body:setMass(1)
         ball.body:setFixedRotation(true)
         ball.fixture:setRestitution(ball.bounce)
     end

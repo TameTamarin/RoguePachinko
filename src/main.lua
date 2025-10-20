@@ -44,12 +44,12 @@ function love.load()
     world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     -- Run initialization functions
-    initBoard(10, 15, BOARDSTARTPOS[1], BOARDSTARTPOS[2], BOARDSIZEPIXELS)
+    -- initBoard(10, 15, BOARDSTARTPOS[1], BOARDSTARTPOS[2], BOARDSIZEPIXELS)
     setLeftWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] - PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
     setRightWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] + BOARDSIZEPIXELS + PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
     setFloorDim(10, BOARDSIZEPIXELS, BOARDSTARTPOS[1] + BOARDSIZEPIXELS/2, BOARDSTARTPOS[2] + BOARDSIZEPIXELS)
     
-    initBoardState(PEGSIZEPIXELS, world)
+    -- initBoardState(PEGSIZEPIXELS, world)
     initBalls(world)
     initLeftWall(world)
     initRightWall(world)
@@ -75,7 +75,7 @@ function love.load()
     love.graphics.setCanvas(pegLocCanvas)
      love.graphics.clear(0, 0, 0, 0)
         love.graphics.setBlendMode("alpha")
-        drawPegLocations(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
+        -- drawPegLocations(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
         love.graphics.setCanvas()
 
    
@@ -166,7 +166,7 @@ end
 row = nil
 collumn = nil
 
-local rightFlipperAngle = 3
+local rightFlipperAngle = 0
 local leftFlipperAngle = 0
 function love.update(dt)
     -- Control frame rate
@@ -182,36 +182,16 @@ function love.update(dt)
             resetBallPosition()
         end
 
-        row , collumn = getSelectedSpace(clickX, clickY, PEGSIZEPIXELS)
+        -- row , collumn = getSelectedSpace(clickX, clickY, PEGSIZEPIXELS)
 
-        updateSpaceParameter(row, collumn)
+        -- updateSpaceParameter(row, collumn)
 
-        updateBallBounce(2, 2)
+        -- updateBallBounce(2, 2)
     end
 
     updateBallsLocations()
 
-    -- if rightKeyCheck() == 1 or rightFlipperActivated == 1 then
-    --     rightFlipperActivated = 1
-    --     if rightFlipperAngle <= rightFlipperStopAngle then
-    --         rightFlipperAngle = rightFlipperAngle + dt * rightFlipperSpeed
-    --     elseif rightFlipperAngle >= rightFlipperStopAngle then
-    --         rightFlipperActivated = 0
-    --     end
-    -- elseif rightKeyCheck() == 0 then
-    --     rightFlipperAngle = 3
-    -- end
     
-    -- if leftKeyCheck() == 1 or leftFlipperActivated == 1 then
-    --     leftFlipperActivated = 1
-    --     if leftFlipperAngle >= -leftFlipperStopAngle then
-    --         leftFlipperAngle = leftFlipperAngle - dt * leftFlipperSpeed
-    --     elseif leftFlipperAngle <= leftFlipperStopAngle then
-    --         leftFlipperActivated = 0
-    --     end
-    -- elseif leftKeyCheck() == 0 then
-    --     leftFlipperAngle = 0
-    -- end
     leftFlipperAngle = updateLeftFlipper(dt)
     rightFlipperAngle = updateRightFlipper(dt)
     
@@ -226,12 +206,12 @@ end
 -----------------------------------------------------
 function love.draw()
     drawBalls(world)
-    drawLeftFlipper(rightFlipperAngle)
-    drawRightFlipper(leftFlipperAngle)
+    drawLeftFlipper(leftFlipperAngle)
+    drawRightFlipper(rightFlipperAngle)
 
     love.graphics.draw(backgroundObjects, 0, 0)
-    drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
-    drawPegLocations(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
+    -- drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
+    -- drawPegLocations(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
     -- love.graphics.draw(pegLocCanvas, 0, 0)
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)
 
