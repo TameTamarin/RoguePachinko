@@ -31,7 +31,7 @@ function love.load()
     cursor = require('cursor')
     board = require('board')
     ball = require('ball')
-    boardElements = require('boardElements')
+    boardElements = require('flippers')
     
     -- Init the in game timer
     timeStart = love.timer.getTime()
@@ -172,6 +172,9 @@ function love.update(dt)
     -- Control frame rate
     world:update(dt)
     -- sleep(DT, FPSCAP)
+
+    leftFlipperAngle = updateLeftFlipper(dt)
+    rightFlipperAngle = updateRightFlipper(dt)
     
     cursorX, cursorY = getCursorPosition()
 
@@ -191,9 +194,15 @@ function love.update(dt)
 
     updateBallsLocations()
 
-    
-    leftFlipperAngle = updateLeftFlipper(dt)
-    rightFlipperAngle = updateRightFlipper(dt)
+    ballPosX, ballPosY = getBallPos(1)
+    leftFlipperX, leftFlipperY = getLeftFlipperPos()
+    rightFlipperX, rightFlipperY = getRightFlipperPos()
+
+    if rightFlipperX + 100 >= ballPosX and rightFlipperY + 10 <= ballPosY then
+        ballApplyForce(4, -1000, 90)
+    elseif leftFlipperX + 100 >= ballPosX and leftFlipperY+10 <= ballPosY then
+        ballApplyForce(4, -1000, 90)
+    end
     
 end
 

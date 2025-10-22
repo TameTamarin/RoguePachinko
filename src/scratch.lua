@@ -1,31 +1,10 @@
-balls = {
-        {x=200, y=0, radius=10, color={1,0,0}},
-        {x=300, y=0, radius=15, color={0,1,0}},
-        {x=400, y=0, radius=20, color={0,0,1}},
-        {x=500, y=0, radius=25, color={1,1,0}},
-        {x=600, y=0, radius=30, color={0,1,1}},
-    }
-function start()
-    for i, ball in ipairs(balls) do
-        ball.thing = 7
-    end
+require "math"
+
+function ballApplyForce(ballIndex, forceVal, angle)
+    iy = math.sin(angle)*forceVal
+    ix = math.cos(angle)*forceVal
+    return ix,iy
 end
 
-function finish()
-    for i, ball in ipairs(balls) do
-        print(ball.thing)
-    end
-end
-
-
-num = nil
-two = nil
-if num == nil or two == nil then
-    return 0, 0
-else
-    print("num is nil")
-end
-
-
-start()
-finish()
+print(ballApplyForce(2, 20, 20))
+print("hello")

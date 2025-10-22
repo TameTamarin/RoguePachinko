@@ -1,3 +1,6 @@
+require "math"
+
+
 balls = {
     {x=200, y=0, radius=10, color={1,0,0}, bounce = 0.5},
     {x=300, y=0, radius=10, color={0,1,0}, bounce = 0.5},
@@ -41,6 +44,16 @@ function updateBallBounce(i, val)
     balls[i].fixture:setRestitution(val)
 end
 
+function getBallPos(ballIndex)
+    return balls[ballIndex].x, balls[ballIndex].y
+end
+
+function ballApplyForce(ballIndex, forceVal, angle)
+    radAngle = math.rad(angle)    
+    iy = math.sin(radAngle)*forceVal
+    ix = math.cos(radAngle)*forceVal
+    balls[ballIndex].body:applyLinearImpulse(ix, iy)
+end
 
 function resetBallPosition()
     for i, ball in ipairs(balls) do

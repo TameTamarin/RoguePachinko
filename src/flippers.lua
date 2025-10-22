@@ -63,6 +63,13 @@ function drawRightFlipper(angle)
     
 end
 
+function getLeftFlipperPos()
+    return leftFlipper.x, leftFlipper.y
+end
+
+function getRightFlipperPos()
+    return rightFlipper.x, rightFlipper.y
+end
 
 function activateFlipper()
     return
