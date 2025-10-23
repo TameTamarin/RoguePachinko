@@ -174,8 +174,8 @@ function love.update(dt)
     -- sleep(DT, FPSCAP)
 
     leftFlipperAngle = updateLeftFlipper(dt)
-    rightFlipperAngle = updateRightFlipper(dt)
-    
+    -- rightFlipperAngle = updateRightFlipper(dt)
+    activateFlipper()
     cursorX, cursorY = getCursorPosition()
 
     clickX, clickY = getMousePosOnClick()
