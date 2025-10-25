@@ -198,11 +198,11 @@ function love.update(dt)
     leftFlipperX, leftFlipperY = getLeftFlipperPos()
     rightFlipperX, rightFlipperY = getRightFlipperPos()
 
-    if rightFlipperX + 100 >= ballPosX and rightFlipperY + 10 <= ballPosY then
-        ballApplyForce(4, -1000, 90)
-    elseif leftFlipperX + 100 >= ballPosX and leftFlipperY+10 <= ballPosY then
-        ballApplyForce(4, -1000, 90)
-    end
+    -- if rightFlipperX + 100 >= ballPosX and rightFlipperY + 10 <= ballPosY then
+    --     ballApplyForce(4, -1000, 90)
+    -- elseif leftFlipperX + 100 >= ballPosX and leftFlipperY+10 <= ballPosY then
+    --     ballApplyForce(4, -1000, 90)
+    -- end
     
 end
 

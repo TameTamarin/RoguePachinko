@@ -1,8 +1,9 @@
 leftFlipper = {
     h = 20,
-    w = 200,
+    w = 100,
     x = 300,
     y = 800,
+    anchorRadius = 10,
     anchorh = 20,
     anchorw = 200,
     anchorx = 300,
@@ -18,12 +19,13 @@ leftFlipper = {
 
 rightFlipper = {
     h = 20,
-    w = 200,
+    w = 100,
     x = 400,
     y = 500,
+    anchorRadius = 10,
     anchorh = 20,
     anchorw = 200,
-    anchorx = 400,
+    anchorx = 600,
     anchory = 500,
     anchorAngle = -45,
     bounce = 0.5,
@@ -37,19 +39,35 @@ rightFlipper = {
 
 
 function initFlippers(world)
-    rightFlipper.body = love.physics.newBody(world, rightFlipper.x, rightFlipper.y, "dynamic")
+    -- create teh bodies for the flipper and anchor
     rightFlipper.anchor = love.physics.newBody(world, rightFlipper.anchorx, rightFlipper.anchory, "static")
+    rightFlipper.body = love.physics.newBody(world, rightFlipper.anchorx - rightFlipper.w/2 + rightFlipper.anchorRadius, rightFlipper.anchory + rightFlipper.h/2 - rightFlipper.anchorRadius, "dynamic")
+    -- set the flipper angle
     rightFlipper.anchor:setAngle(rightFlipper.anchorAngle)
-    rightFlipper.joint = love.physics.newRevoluteJoint(rightFlipper.anchor,rightFlipper.body, rightFlipper.x + rightFlipper.w/2, rightFlipper.y+rightFlipper.h/2, true)
+    -- create the shapes of each body
     rightFlipper.shape = love.physics.newRectangleShape(rightFlipper.w,rightFlipper.h)
-    rightFlipper.anchorShape = love.physics.newRectangleShape(rightFlipper.anchorw,rightFlipper.anchorh)
+    rightFlipper.anchorShape = love.physics.newCircleShape(rightFlipper.anchorRadius)
+    -- add shapes to fixtures
     rightFlipper.fixture = love.physics.newFixture(rightFlipper.body, rightFlipper.shape, 100)
     rightFlipper.anchorFixture = love.physics.newFixture(rightFlipper.anchor, rightFlipper.anchorShape, 50)
+    -- create the joint that the flipper will rotate around based on the location of the anchor
+    rightFlipper.joint = love.physics.newRevoluteJoint(rightFlipper.anchor, rightFlipper.body, rightFlipper.anchorx, rightFlipper.anchory, false)
+    -- set bouncyness of the flipper
     rightFlipper.fixture:setRestitution(rightFlipper.bounce)
     
-    leftFlipper.body = love.physics.newBody(world, leftFlipper.x, leftFlipper.y, "dynamic")
+    leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory, "static")
+    leftFlipper.body = love.physics.newBody(world, leftFlipper.anchorx - leftFlipper.w/2 + leftFlipper.anchorRadius, leftFlipper.anchory + leftFlipper.h/2 - leftFlipper.anchorRadius, "dynamic")
+    -- set the flipper angle
+    leftFlipper.anchor:setAngle(leftFlipper.anchorAngle)
+    -- create the shapes of each body
     leftFlipper.shape = love.physics.newRectangleShape(leftFlipper.w,leftFlipper.h)
+    leftFlipper.anchorShape = love.physics.newCircleShape(leftFlipper.anchorRadius)
+    -- add shapes to fixtures
     leftFlipper.fixture = love.physics.newFixture(leftFlipper.body, leftFlipper.shape, 100)
+    leftFlipper.anchorFixture = love.physics.newFixture(leftFlipper.anchor, leftFlipper.anchorShape, 50)
+    -- create the joint that the flipper will rotate around based on the location of the anchor
+    leftFlipper.joint = love.physics.newRevoluteJoint(leftFlipper.anchor, leftFlipper.body, leftFlipper.anchorx, leftFlipper.anchory, false)
+    -- set bouncyness of the flipper
     leftFlipper.fixture:setRestitution(leftFlipper.bounce)
 end
 
@@ -69,21 +87,17 @@ function getRgtFlipAnchorCorner()
 end
 
 function drawLeftFlipper(angle)
-    drawRotatedRectangle("fill", leftFlipper.x, leftFlipper.y, leftFlipper.w, leftFlipper.h, angle)
-    leftFlipper.body:setAngle(angle)
-    leftFlipper.body:setPosition(leftFlipper.x, leftFlipper.y)
-    -- bx, by = leftFlipper.body:getPosition()
+    bx, by = leftFlipper.body:getPosition()
+    drawRotatedRectangle("fill", bx, by, leftFlipper.w, leftFlipper.h, leftFlipper.body:getAngle())
+    bx, by = leftFlipper.anchor:getPosition()
+    love.graphics.circle("fill", bx, by, leftFlipper.anchorRadius)
 end
 
 function drawRightFlipper(angle)
-    -- rightFlipper.body:setAngle(angle)
-    -- bx, by = rightFlipper.body:getPosition()
-    -- drawRotatedRectangle("fill", bx, by, rightFlipper.w, rightFlipper.h, angle)
-    
     bx, by = rightFlipper.body:getPosition()
     drawRotatedRectangle("fill", bx, by, rightFlipper.w, rightFlipper.h, rightFlipper.body:getAngle())
     bx, by = rightFlipper.anchor:getPosition()
-    drawRotatedRectangle("fill", bx, by, rightFlipper.anchorw, rightFlipper.anchorh, rightFlipper.anchor:getAngle())
+    love.graphics.circle("fill", bx, by, rightFlipper.anchorRadius)
     
 end
 
@@ -99,6 +113,12 @@ function activateFlipper()
     if rightKeyCheck() == 1 or rightFlipper.activated == 1 then
         -- rightFlipper.activated = 1
         rightFlipper.body:applyLinearImpulse(-100000,-100000)
+
+    end
+
+    if leftKeyCheck() == 1 or leftFlipper.activated == 1 then
+        -- leftFlipper.activated = 1
+        leftFlipper.body:applyLinearImpulse(-100000,-100000)
 
     end
 end
