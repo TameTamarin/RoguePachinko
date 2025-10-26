@@ -1,11 +1,14 @@
 require "utilities"
 
 
+----------------------------------------------------------------
+-- 
+-- Data structure for each flippers attributes
+--
+----------------------------------------------------------------
 leftFlipper = {
     h = 20,
     w = 150,
-    -- x = 280, -- anchor x and y used to set starting pos
-    -- y = 800,
     anchorRadius = 10,
     anchorh = 20,
     anchorw = 200,
@@ -25,8 +28,6 @@ leftFlipper = {
 rightFlipper = {
     h = 20,
     w = 150,
-    -- x = 720, -- anchor x and y used to set starting pos
-    -- y = 800,
     anchorRadius = 10,
     anchorh = 20,
     anchorw = 200,
@@ -60,6 +61,11 @@ function setRightFlipperDim(h, w, x, y)
 end
 
 
+----------------------------------------------------------------
+-- 
+-- Initialization of each flipper
+--
+----------------------------------------------------------------
 function initFlippers(world)
 
     rightFlipper.anchor = love.physics.newBody(world, rightFlipper.anchorx, rightFlipper.anchory, "static")
@@ -129,6 +135,11 @@ function getRgtFlipAnchorCorner()
     return
 end
 
+----------------------------------------------------------------
+-- 
+-- Drawing flippers
+--
+----------------------------------------------------------------
 function drawLeftFlipper(angle)
     bx, by = leftFlipper.body:getPosition()
     drawRotatedRectangle("fill", bx, by, leftFlipper.w, leftFlipper.h, leftFlipper.body:getAngle())
@@ -144,6 +155,12 @@ function drawRightFlipper(angle)
     
 end
 
+
+----------------------------------------------------------------
+-- 
+-- Returning the data structure for each flipper
+--
+----------------------------------------------------------------
 function getLeftFlipper()
     return leftFlipper
 end
@@ -152,6 +169,12 @@ function getRightFlipper()
     return rightFlipper
 end
 
+
+----------------------------------------------------------------
+-- 
+-- Returning each flipper position
+--
+----------------------------------------------------------------
 function getLeftFlipperPos()
     return leftFlipper.x, leftFlipper.y
 end
@@ -162,6 +185,12 @@ end
 
 
 
+----------------------------------------------------------------
+-- 
+-- Updating the flippers after they have been
+-- activated by the cooresponding command
+--
+----------------------------------------------------------------
 function updateRightFlipper()
     -- check if the flipper has been activated
     if rightFlipper.activated == 1 then

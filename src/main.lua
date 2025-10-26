@@ -6,7 +6,9 @@
 
 
 -----------------------------------------------------
+--
 -- Global Variables
+--
 -----------------------------------------------------
 FPSCAP = 60
 DT = 1/1000 --miliseconds
@@ -23,10 +25,12 @@ BALLWIDTH = 50
 INOUTLANEGAP = BALLWIDTH * 1.25
 
 -----------------------------------------------------
+--
 -- Load Function callback
 -- 
 --  This fuction is called at the beginning of the
 --  game start and runs only once
+--
 -----------------------------------------------------
 function love.load()
     -- load in submodules
@@ -73,8 +77,9 @@ function love.load()
 
     initFlippers(world)
 
-
+----------------------------------------------------------------
 -- Setup Canvases for drawing background and the board
+----------------------------------------------------------------
     backgroundObjects = love.graphics.newCanvas(WINDOWX, WINDOWY)
     pegLocCanvas = love.graphics.newCanvas(WINDOWX, WINDOWY)
 
@@ -105,9 +110,11 @@ end
 
 
 -----------------------------------------------------
+--
 -- Run Function Callback
 --
 -- This is the main loop of the program.
+--
 -----------------------------------------------------
 function love.run()
 	if love.load then love.load(love.arg.parseGameArguments(arg), arg) end
@@ -153,6 +160,7 @@ end
 
 
 -----------------------------------------------------
+--
 -- World Function callbacks
 --
 -- Functions that run when specific tagged events 
@@ -160,6 +168,7 @@ end
 --
 -- These funcitons need to match the listed functions
 -- in the world creation.
+--
 -----------------------------------------------------
 function beginContact(a, b, coll)
 
@@ -180,10 +189,12 @@ end
 
 
 -----------------------------------------------------
+--
 -- Update Function callback
 -- 
 -- This function runs on every interation of the
 -- main loop.
+--
 -----------------------------------------------------
 row = nil
 collumn = nil
@@ -195,28 +206,19 @@ function love.update(dt)
     world:update(dt)
     -- sleep(DT, FPSCAP)
 
-    -- updateFlipper(getRightFlipper())
-    -- updateFlipper(getLeftFlipper())
     updateLeftFlipper()
     updateRightFlipper()
-    -- activateFlipper(dt)
-    cursorX, cursorY = getCursorPosition()
+    updateBallsLocations()
 
+    cursorX, cursorY = getCursorPosition()
     clickX, clickY = getMousePosOnClick()
+
 
     if checkMouseClick() then
         if clickX <= 75 and clickX >= 25 and clickY <= 125 and clickY >= 75 then
             resetBallPosition()
         end
-
-        -- row , collumn = getSelectedSpace(clickX, clickY, PEGSIZEPIXELS)
-
-        -- updateSpaceParameter(row, collumn)
-
-        -- updateBallBounce(2, 2)
     end
-
-    updateBallsLocations()
 
     ballPosX, ballPosY = getBallPos(1)
     leftFlipperX, leftFlipperY = getLeftFlipperPos()
@@ -227,10 +229,12 @@ end
 
 
 -----------------------------------------------------
+--
 -- Draw Function callback
 -- 
 -- Draws shapes onto the screen.  Runs once every
 -- interation of the main loop.
+--
 -----------------------------------------------------
 function love.draw()
     drawBalls(world)
