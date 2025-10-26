@@ -1,8 +1,11 @@
+require "utilities"
+
+
 leftFlipper = {
     h = 20,
     w = 150,
-    x = 280, -- anchor x and y used to set starting pos
-    y = 800,
+    -- x = 280, -- anchor x and y used to set starting pos
+    -- y = 800,
     anchorRadius = 10,
     anchorh = 20,
     anchorw = 200,
@@ -22,8 +25,8 @@ leftFlipper = {
 rightFlipper = {
     h = 20,
     w = 150,
-    x = 720, -- anchor x and y used to set starting pos
-    y = 800,
+    -- x = 720, -- anchor x and y used to set starting pos
+    -- y = 800,
     anchorRadius = 10,
     anchorh = 20,
     anchorw = 200,
@@ -41,10 +44,26 @@ rightFlipper = {
 
 }
 
+function setLeftFlipperDim(h, w, x, y)
+    leftFlipper.h = h
+    leftFlipper.w = w
+    leftFlipper.anchorx = x
+    leftFlipper.anchory = y
+end
+
+
+function setRightFlipperDim(h, w, x, y)
+    rightFlipper.h = h
+    rightFlipper.w = w
+    rightFlipper.anchorx = x
+    rightFlipper.anchory = y
+end
+
 
 function initFlippers(world)
+
     rightFlipper.anchor = love.physics.newBody(world, rightFlipper.anchorx, rightFlipper.anchory, "static")
-    rightFlipper.body = love.physics.newBody(world, rightFlipper.anchorx - rightFlipper.w/2 + rightFlipper.anchorRadius, rightFlipper.anchory + rightFlipper.h/2 - rightFlipper.anchorRadius, "dynamic")
+    rightFlipper.body = love.physics.newBody(world, rightFlipper.anchorx - rightFlipper.w/2, rightFlipper.anchory + rightFlipper.h/2 - rightFlipper.anchorRadius, "dynamic")
     -- set the flipper angle
     rightFlipper.anchor:setAngle(rightFlipper.anchorAngle)
     -- create the shapes of each body
@@ -62,7 +81,7 @@ function initFlippers(world)
     
     
     leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory, "static")
-    leftFlipper.body = love.physics.newBody(world, leftFlipper.anchorx + leftFlipper.w/2 - leftFlipper.anchorRadius, leftFlipper.anchory + leftFlipper.h/2 - leftFlipper.anchorRadius, "dynamic")
+    leftFlipper.body = love.physics.newBody(world, leftFlipper.anchorx + leftFlipper.w/2, leftFlipper.anchory + leftFlipper.h/2 - leftFlipper.anchorRadius, "dynamic")
     -- set the flipper angle
     leftFlipper.anchor:setAngle(leftFlipper.anchorAngle)
     -- create the shapes of each body
@@ -105,16 +124,6 @@ function getLftFlipAngle()
     return leftFlipper.body:getAngle()
 end
 
-function drawRotatedRectangle(mode, x, y, width, height, angle)
-	-- We cannot rotate the rectangle directly, but we
-	-- can move and rotate the coordinate system.
-	love.graphics.push()
-	love.graphics.translate(x, y)
-	love.graphics.rotate(angle)
-	-- love.graphics.rectangle(mode, 0, 0, width, height) -- origin in the top left corner
-	love.graphics.rectangle(mode, -width/2, -height/2, width, height) -- origin in the middle
-	love.graphics.pop()
-end
 
 function getRgtFlipAnchorCorner()
     return
@@ -243,7 +252,7 @@ function updateLeftFlipper()
 end
 
 
------- This code doesn;t work properly when calling the left flipper
+------ This code doesn't work properly when calling the left flipper
 
 function updateFlipper(flipper)
     -- check if the flipper has been activated

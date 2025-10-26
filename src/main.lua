@@ -13,10 +13,14 @@ DT = 1/1000 --miliseconds
 WINDOWX = 1000
 WINDOWY = 900
 BOARDSIZEPIXELS = 600
+BOARDHEIGHTPIXELS = 600
+BOARDWIDTHPIXELS = 400
 PEGSIZEPIXELS = 10
 XGRAVITY = 0
 YGRAVITY = 500
-BOARDSTARTPOS = {WINDOWX/2 - BOARDSIZEPIXELS/2, WINDOWY/2 - BOARDSIZEPIXELS/2}
+BOARDSTARTPOS = {WINDOWX/2 - BOARDWIDTHPIXELS/2, WINDOWY/2 - BOARDHEIGHTPIXELS/2}
+BALLWIDTH = 50
+INOUTLANEGAP = BALLWIDTH * 1.25
 
 -----------------------------------------------------
 -- Load Function callback
@@ -32,6 +36,7 @@ function love.load()
     board = require('board')
     ball = require('ball')
     boardElements = require('flippers')
+    utilities = require "utilities"
     
     -- Init the in game timer
     timeStart = love.timer.getTime()
@@ -44,16 +49,16 @@ function love.load()
     world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     -- Run initialization functions
-    -- initBoard(10, 15, BOARDSTARTPOS[1], BOARDSTARTPOS[2], BOARDSIZEPIXELS)
-    -- setLeftWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] - PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
-    -- setRightWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] + BOARDSIZEPIXELS + PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
-    -- setFloorDim(10, BOARDSIZEPIXELS, BOARDSTARTPOS[1] + BOARDSIZEPIXELS/2, BOARDSTARTPOS[2] + BOARDSIZEPIXELS)
-    setLeftWallDim(BOARDSIZEPIXELS, 10, 200, 100 + BOARDSIZEPIXELS/2)
-    setRightWallDim(BOARDSIZEPIXELS, 10, 700, 100 + BOARDSIZEPIXELS/2)
-    setFloorDim(10, BOARDSIZEPIXELS, BOARDSTARTPOS[1] + BOARDSIZEPIXELS/2, BOARDSTARTPOS[2] + BOARDSIZEPIXELS)
-    setCeilingDim(10, BOARDSIZEPIXELS, 450, 100)
-    
-
+    setLeftWallDim(BOARDHEIGHTPIXELS, 10, BOARDSTARTPOS[1], BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
+    setRightWallDim(BOARDHEIGHTPIXELS, 10,BOARDSTARTPOS[1] + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
+    setFloorDim(10, BOARDWIDTHPIXELS, BOARDSTARTPOS[1] + BOARDSIZEPIXELS/2, BOARDSTARTPOS[2] + BOARDSIZEPIXELS)
+    setCeilingDim(10, BOARDWIDTHPIXELS, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS/2, BOARDSTARTPOS[2])
+    setLeftOutLaneDim(175, 10, BOARDSTARTPOS[1], BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 135)
+    setLeftInLaneDim(75, 10, BOARDSTARTPOS[1] + INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 135)
+    setRightOutLaneDim(175, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 45)
+    setRightInLaneDim(75, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS - INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 45)
+    setLeftFlipperDim(20, 75, BOARDSTARTPOS[1] + INOUTLANEGAP + getLeftInLane().h/2, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getLeftInLane().h/2)
+    setRightFlipperDim(20, 75, BOARDSTARTPOS[1] - INOUTLANEGAP - getRightInLane().h/2 + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getRightInLane().h/2)
     
     -- initBoardState(PEGSIZEPIXELS, world)
     initBalls(world)
@@ -61,6 +66,10 @@ function love.load()
     initRightWall(world)
     -- initFloor(world)
     initCeiling(world)
+    initLeftInLane(world)
+    initLeftOutLane(world)
+    initRightInLane(world)
+    initRightOutLane(world)
 
     initFlippers(world)
 
@@ -77,6 +86,10 @@ function love.load()
         drawRightWall()
         -- drawFloor()
         drawCeiling()
+        drawLeftInLane()
+        drawLeftOutLane()
+        drawRightInLane()
+        drawRightOutLane()
         drawButtons()
         love.graphics.setCanvas()
     

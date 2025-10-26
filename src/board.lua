@@ -41,6 +41,37 @@ local ceiling = {
         y = 0
     }
 
+local leftInLane = {
+        h = 400,
+        w = 10,
+        x = 0,
+        y = 0,
+        angle = 0
+    }
+
+local leftOutLane = {
+    h = 100,
+    w = 10,
+    x = 0,
+    y = 0,
+    angle = 0
+}
+
+local rightInLane = {
+        h = 100,
+        w = 10,
+        x = 0,
+        y = 0,
+        angle = 0
+    }
+
+local rightOutLane = {
+        h = 100,
+        w = 10,
+        x = 0,
+        y = 0,
+        angle = 0
+    }
 
 local resetButton = {
         h = 50,
@@ -48,6 +79,12 @@ local resetButton = {
         x = 50,
         y = 100
     }
+
+------------------------------------------------------------------------------------
+--
+-- Fucntions for setting and retreiving the dimensions of the board pieces before initialization
+--
+------------------------------------------------------------------------------------
 
 function initBoard(hSpaces, wSpaces, xStart, yStart, size)
     boardDim.hSpaces = hSpaces
@@ -85,7 +122,54 @@ function setCeilingDim(h, w, x, y)
     ceiling.y = y
 end
 
-    
+function setLeftInLaneDim(h, w, x, y, angle)
+    leftInLane.h = h
+    leftInLane.w = w
+    leftInLane.x = x
+    leftInLane.y = y
+    leftInLane.angle = angle
+end
+
+function setLeftOutLaneDim(h, w, x, y, angle)
+    leftOutLane.h = h
+    leftOutLane.w = w
+    leftOutLane.x = x
+    leftOutLane.y = y
+    leftOutLane.angle = angle
+end
+
+function setRightInLaneDim(h, w, x, y, angle)
+    rightInLane.h = h
+    rightInLane.w = w
+    rightInLane.x = x
+    rightInLane.y = y
+    rightInLane.angle = angle
+end
+
+function setRightOutLaneDim(h, w, x, y, angle)
+    rightOutLane.h = h
+    rightOutLane.w = w
+    rightOutLane.x = x
+    rightOutLane.y = y
+    rightOutLane.angle = angle
+end
+
+function getLeftInLane()
+    return leftInLane
+end
+
+function getLeftOutLane()
+    return leftOutLane
+end
+
+function getRightInLane()
+    return rightInLane
+end
+
+function getRightOutLane()
+    return rightOutLane
+end
+
 
 function updateSpaceSize(spaceSize)
     
@@ -100,8 +184,10 @@ function updateBoardSpaceDim(heightSpaces, widthSpaces)
 end
 
 ------------------------------------
+--
 -- Funtion for initalizing 
--- the leftWall and rightWall
+-- the walls, floor, ceiling
+--
 ------------------------------------
 function initLeftWall(world)
     leftWall.body = love.physics.newBody(world,leftWall.x,leftWall.y,"static")
@@ -143,6 +229,55 @@ end
 
 function drawCeiling()
     love.graphics.rectangle("fill", ceiling.x - ceiling.w/2, ceiling.y - ceiling.h/2, ceiling.w, ceiling.h)
+end
+
+function initLeftOutLane(world)
+    leftOutLane.body = love.physics.newBody(world,leftOutLane.x + leftOutLane.h/4,leftOutLane.y + leftOutLane.h/4,"static")
+    leftOutLane.shape = love.physics.newRectangleShape(leftOutLane.w,leftOutLane.h)
+    leftOutLane.fixture = love.physics.newFixture(leftOutLane.body, leftOutLane.shape, 1000)
+    leftOutLane.body:setAngle(leftOutLane.angle * 3.14 / 180)
+end
+
+function drawLeftOutLane()
+    bx, by = leftOutLane.body:getPosition()
+    drawRotatedRectangle("fill", bx, by, leftOutLane.w, leftOutLane.h, leftOutLane.body:getAngle())
+end
+
+function initLeftInLane(world)
+    leftInLane.body = love.physics.newBody(world,leftInLane.x,leftInLane.y,"static")
+    leftInLane.shape = love.physics.newRectangleShape(leftInLane.w,leftInLane.h)
+    leftInLane.fixture = love.physics.newFixture(leftInLane.body, leftInLane.shape, 1000)
+    leftInLane.body:setAngle(leftInLane.angle * 3.14 / 180)
+end
+
+function drawLeftInLane()
+    bx, by = leftInLane.body:getPosition()
+    drawRotatedRectangle("fill", bx, by, leftInLane.w, leftInLane.h, leftInLane.body:getAngle())
+end
+
+
+function initRightOutLane(world)
+    rightOutLane.body = love.physics.newBody(world,rightOutLane.x - rightOutLane.h/4,rightOutLane.y + rightOutLane.h/4,"static")
+    rightOutLane.shape = love.physics.newRectangleShape(rightOutLane.w,rightOutLane.h)
+    rightOutLane.fixture = love.physics.newFixture(rightOutLane.body, rightOutLane.shape, 1000)
+    rightOutLane.body:setAngle(rightOutLane.angle * 3.14 / 180)
+end
+
+function drawRightOutLane()
+    bx, by = rightOutLane.body:getPosition()
+    drawRotatedRectangle("fill", bx, by, rightOutLane.w, rightOutLane.h, rightOutLane.body:getAngle())
+end
+
+function initRightInLane(world)
+    rightInLane.body = love.physics.newBody(world,rightInLane.x,rightInLane.y,"static")
+    rightInLane.shape = love.physics.newRectangleShape(rightInLane.w,rightInLane.h)
+    rightInLane.fixture = love.physics.newFixture(rightInLane.body, rightInLane.shape, 1000)
+    rightInLane.body:setAngle(rightInLane.angle * 3.14 / 180)
+end
+
+function drawRightInLane()
+    bx, by = rightInLane.body:getPosition()
+    drawRotatedRectangle("fill", bx, by, rightInLane.w, rightInLane.h, rightInLane.body:getAngle())
 end
 
 ------------------------------------
