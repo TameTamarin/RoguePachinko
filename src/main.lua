@@ -173,8 +173,10 @@ function love.update(dt)
     world:update(dt)
     -- sleep(DT, FPSCAP)
 
-    leftFlipperAngle = updateLeftFlipper(dt)
-    updateRightFlipper(dt)
+    -- updateFlipper(getRightFlipper())
+    -- updateFlipper(getLeftFlipper())
+    updateLeftFlipper()
+    updateRightFlipper()
     -- activateFlipper(dt)
     cursorX, cursorY = getCursorPosition()
 
@@ -222,6 +224,6 @@ function love.draw()
     love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
     love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 40, 350)
 
-    love.graphics.print("Angle ..." .. tostring(getRgtFlipAngle()*180/3.14), 40, 450)
+    love.graphics.print("Angle ..." .. tostring(getLftFlipAngle()*180/3.14), 40, 450)
 
 end
