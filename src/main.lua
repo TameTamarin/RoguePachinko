@@ -174,8 +174,8 @@ function love.update(dt)
     -- sleep(DT, FPSCAP)
 
     leftFlipperAngle = updateLeftFlipper(dt)
-    -- rightFlipperAngle = updateRightFlipper(dt)
-    activateFlipper()
+    updateRightFlipper(dt)
+    -- activateFlipper(dt)
     cursorX, cursorY = getCursorPosition()
 
     clickX, clickY = getMousePosOnClick()
@@ -198,11 +198,6 @@ function love.update(dt)
     leftFlipperX, leftFlipperY = getLeftFlipperPos()
     rightFlipperX, rightFlipperY = getRightFlipperPos()
 
-    -- if rightFlipperX + 100 >= ballPosX and rightFlipperY + 10 <= ballPosY then
-    --     ballApplyForce(4, -1000, 90)
-    -- elseif leftFlipperX + 100 >= ballPosX and leftFlipperY+10 <= ballPosY then
-    --     ballApplyForce(4, -1000, 90)
-    -- end
     
 end
 
@@ -227,6 +222,6 @@ function love.draw()
     love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
     love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 40, 350)
 
-    love.graphics.print("Angle ..." .. tostring(rightFlipperAngle), 40, 450)
+    love.graphics.print("Angle ..." .. tostring(getRgtFlipAngle()*180/3.14), 40, 450)
 
 end

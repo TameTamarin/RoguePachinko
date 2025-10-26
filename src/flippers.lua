@@ -14,12 +14,12 @@ leftFlipper = {
     angle = 0,
     speed = 5,
     activated = 0,
-    stopAngle = 0.5
+    stopAngle = 135
 }
 
 rightFlipper = {
     h = 20,
-    w = 100,
+    w = 150,
     x = 400,
     y = 500,
     anchorRadius = 10,
@@ -27,19 +27,19 @@ rightFlipper = {
     anchorw = 200,
     anchorx = 600,
     anchory = 500,
-    anchorAngle = -45,
+    anchorAngle = 0,
     bounce = 0.5,
     color = "red",
     angle = 0,
     speed = 5,
     activated = 0,
-    stopAngle = 0.5
+    upperStopAngle = 45,
+    lowerStopAngle = -45
 
 }
 
 
 function initFlippers(world)
-    -- create teh bodies for the flipper and anchor
     rightFlipper.anchor = love.physics.newBody(world, rightFlipper.anchorx, rightFlipper.anchory, "static")
     rightFlipper.body = love.physics.newBody(world, rightFlipper.anchorx - rightFlipper.w/2 + rightFlipper.anchorRadius, rightFlipper.anchory + rightFlipper.h/2 - rightFlipper.anchorRadius, "dynamic")
     -- set the flipper angle
@@ -55,6 +55,9 @@ function initFlippers(world)
     -- set bouncyness of the flipper
     rightFlipper.fixture:setRestitution(rightFlipper.bounce)
     
+    
+    
+    
     leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory, "static")
     leftFlipper.body = love.physics.newBody(world, leftFlipper.anchorx - leftFlipper.w/2 + leftFlipper.anchorRadius, leftFlipper.anchory + leftFlipper.h/2 - leftFlipper.anchorRadius, "dynamic")
     -- set the flipper angle
@@ -69,6 +72,27 @@ function initFlippers(world)
     leftFlipper.joint = love.physics.newRevoluteJoint(leftFlipper.anchor, leftFlipper.body, leftFlipper.anchorx, leftFlipper.anchory, false)
     -- set bouncyness of the flipper
     leftFlipper.fixture:setRestitution(leftFlipper.bounce)
+end
+
+function initSpnningObject(world)
+    leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory, "static")
+    leftFlipper.body = love.physics.newBody(world, leftFlipper.anchorx - leftFlipper.w/2 + leftFlipper.anchorRadius, leftFlipper.anchory + leftFlipper.h/2 - leftFlipper.anchorRadius, "dynamic")
+    -- set the flipper angle
+    leftFlipper.anchor:setAngle(leftFlipper.anchorAngle)
+    -- create the shapes of each body
+    leftFlipper.shape = love.physics.newRectangleShape(leftFlipper.w,leftFlipper.h)
+    leftFlipper.anchorShape = love.physics.newCircleShape(leftFlipper.anchorRadius)
+    -- add shapes to fixtures
+    leftFlipper.fixture = love.physics.newFixture(leftFlipper.body, leftFlipper.shape, 100)
+    leftFlipper.anchorFixture = love.physics.newFixture(leftFlipper.anchor, leftFlipper.anchorShape, 50)
+    -- create the joint that the flipper will rotate around based on the location of the anchor
+    leftFlipper.joint = love.physics.newRevoluteJoint(leftFlipper.anchor, leftFlipper.body, leftFlipper.anchorx, leftFlipper.anchory, false)
+    -- set bouncyness of the flipper
+    leftFlipper.fixture:setRestitution(leftFlipper.bounce)
+end
+
+function getRgtFlipAngle()
+    return rightFlipper.body:getAngle()
 end
 
 function drawRotatedRectangle(mode, x, y, width, height, angle)
@@ -109,12 +133,14 @@ function getRightFlipperPos()
     return rightFlipper.x, rightFlipper.y
 end
 
-function activateFlipper()
-    if rightKeyCheck() == 1 or rightFlipper.activated == 1 then
-        -- rightFlipper.activated = 1
-        rightFlipper.body:applyLinearImpulse(-100000,-100000)
-
-    end
+function activateFlipper(dt)
+--     rightFlipper.angle = (rightFlipper.angle + 0.1)
+--     rightFlipper.body:setAngle(rightFlipper.angle * (3.14/180))
+    -- if rightKeyCheck() == 1 or rightFlipper.activated == 1 then
+    --     rightFlipper.body:applyLinearImpulse(-100000,-100000)
+    --     rightFlipper.body:setFixedRotation(true)
+        
+    -- end
 
     if leftKeyCheck() == 1 or leftFlipper.activated == 1 then
         -- leftFlipper.activated = 1
@@ -122,6 +148,9 @@ function activateFlipper()
 
     end
 end
+
+
+
 
 function updateLeftFlipper(dt)
     -- check if the key for flipper has been pressed
@@ -142,17 +171,38 @@ function updateLeftFlipper(dt)
     return leftFlipper.angle
 end
 
+-- function updateRightFlipper(dt)
+--     if rightKeyCheck() == 1 or rightFlipper.activated == 1 then
+--         -- rightFlipper.activated = 1
+--         rightFlipper.body:applyLinearImpulse(-100000,-100000)
+--         if rightFlipper.angle >= -rightFlipper.stopAngle then
+--             rightFlipper.angle = rightFlipper.angle - dt * rightFlipper.speed
+--         elseif rightFlipper.angle <= rightFlipper.stopAngle then
+--             rightFlipper.activated = 0
+--         end
+--     elseif rightKeyCheck() == 0 then
+--         rightFlipper.angle = 0
+--     end
+--     return rightFlipper.angle
+-- end
+
+
 function updateRightFlipper(dt)
-    if rightKeyCheck() == 1 or rightFlipper.activated == 1 then
-        rightFlipper.activated = 1
-        if rightFlipper.angle >= -rightFlipper.stopAngle then
-            rightFlipper.angle = rightFlipper.angle - dt * rightFlipper.speed
-        elseif rightFlipper.angle <= rightFlipper.stopAngle then
-            rightFlipper.activated = 0
+    -- want to apply a force if the right key is pressed
+    if rightKeyCheck() == 1 then
+        rightFlipper.body:setFixedRotation(false)
+        rightFlipper.body:applyLinearImpulse(-100000,-100000)
+        if rightFlipper.body:getAngle()*180/3.14 >= rightFlipper.upperStopAngle then
+            rightFlipper.body:setFixedRotation(true)
+        -- elseif rightFlipper.body:getAngle()*180/3.14 <= rightFlipper.lowerStopAngle then
+            -- rightFlipper.body:setFixedRotation(true)
         end
     elseif rightKeyCheck() == 0 then
-        rightFlipper.angle = 0
+        rightFlipper.body:setFixedRotation(false)
+        rightFlipper.body:applyLinearImpulse(-100000,100000)
+        if rightFlipper.body:getAngle()*180/3.14 <= rightFlipper.lowerStopAngle then
+            rightFlipper.body:setFixedRotation(true)
+        end
     end
     return rightFlipper.angle
 end
-    
