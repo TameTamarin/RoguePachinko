@@ -15,14 +15,14 @@ local boardDim = {
 local leftWall = {
         h = 400,
         w = 10,
-        x = 100,
+        x = 200,
         y = 100
     }
 
 local rightWall = {
         h = 400,
         w = 10,
-        x = 100,
+        x = 700,
         y = 100
     }
 
@@ -32,6 +32,15 @@ local floor = {
         x = 0,
         y = 0
     }
+
+
+local ceiling = {
+        h = 0,
+        w = 0,
+        x = 0,
+        y = 0
+    }
+
 
 local resetButton = {
         h = 50,
@@ -68,6 +77,14 @@ function setFloorDim(h, w, x, y)
     floor.x = x
     floor.y = y
 end
+
+function setCeilingDim(h, w, x, y)
+    ceiling.h = h
+    ceiling.w = w
+    ceiling.x = x
+    ceiling.y = y
+end
+
     
 
 function updateSpaceSize(spaceSize)
@@ -116,6 +133,16 @@ end
 
 function drawFloor()
     love.graphics.rectangle("fill", floor.x - floor.w/2, floor.y - floor.h/2, floor.w, floor.h)
+end
+
+function initCeiling(world)
+    ceiling.body = love.physics.newBody(world,ceiling.x,ceiling.y,"static")
+    ceiling.shape = love.physics.newRectangleShape(ceiling.w,ceiling.h)
+    ceiling.fixture = love.physics.newFixture(ceiling.body, ceiling.shape, 1000)
+end
+
+function drawCeiling()
+    love.graphics.rectangle("fill", ceiling.x - ceiling.w/2, ceiling.y - ceiling.h/2, ceiling.w, ceiling.h)
 end
 
 ------------------------------------

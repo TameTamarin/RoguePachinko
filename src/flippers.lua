@@ -1,15 +1,15 @@
 leftFlipper = {
     h = 20,
-    w = 100,
+    w = 150,
     x = 280, -- anchor x and y used to set starting pos
     y = 800,
     anchorRadius = 10,
     anchorh = 20,
     anchorw = 200,
-    anchorx = 300,
-    anchory = 800,
+    anchorx = 200,
+    anchory = 720,
     anchorAngle = 45,
-    bounce = 0.5,
+    bounce = 0,
     color = "red",
     angle = 0,
     angularVelocity = -20,
@@ -21,16 +21,16 @@ leftFlipper = {
 
 rightFlipper = {
     h = 20,
-    w = 100,
-    x = 700, -- anchor x and y used to set starting pos
+    w = 150,
+    x = 720, -- anchor x and y used to set starting pos
     y = 800,
     anchorRadius = 10,
     anchorh = 20,
     anchorw = 200,
     anchorx = 700,
-    anchory = 800,
+    anchory = 720,
     anchorAngle = 0,
-    bounce = 0.5,
+    bounce = 0,
     color = "red",
     angle = 0,
     angularVelocity = 20,
@@ -57,6 +57,8 @@ function initFlippers(world)
     rightFlipper.joint = love.physics.newRevoluteJoint(rightFlipper.anchor, rightFlipper.body, rightFlipper.anchorx, rightFlipper.anchory, false)
     -- set bouncyness of the flipper
     rightFlipper.fixture:setRestitution(rightFlipper.bounce)
+    rightFlipper.body:setAngle(rightFlipper.lowerStopAngle * 3.14 / 180)
+    rightFlipper.body:setMass(1)
     
     
     leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory, "static")
@@ -74,6 +76,7 @@ function initFlippers(world)
     -- set bouncyness of the flipper
     leftFlipper.fixture:setRestitution(leftFlipper.bounce)
     leftFlipper.body:setAngle(leftFlipper.lowerStopAngle * 3.14 / 180)
+    leftFlipper.body:setMass(1)
 end
 
 function initSpnningObject(world)

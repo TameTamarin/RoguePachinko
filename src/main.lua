@@ -45,15 +45,23 @@ function love.load()
 
     -- Run initialization functions
     -- initBoard(10, 15, BOARDSTARTPOS[1], BOARDSTARTPOS[2], BOARDSIZEPIXELS)
-    setLeftWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] - PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
-    setRightWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] + BOARDSIZEPIXELS + PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
+    -- setLeftWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] - PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
+    -- setRightWallDim(BOARDSIZEPIXELS, 10, BOARDSTARTPOS[1] + BOARDSIZEPIXELS + PEGSIZEPIXELS, BOARDSTARTPOS[2] + BOARDSIZEPIXELS/2)
+    -- setFloorDim(10, BOARDSIZEPIXELS, BOARDSTARTPOS[1] + BOARDSIZEPIXELS/2, BOARDSTARTPOS[2] + BOARDSIZEPIXELS)
+    setLeftWallDim(BOARDSIZEPIXELS, 10, 200, 100 + BOARDSIZEPIXELS/2)
+    setRightWallDim(BOARDSIZEPIXELS, 10, 700, 100 + BOARDSIZEPIXELS/2)
     setFloorDim(10, BOARDSIZEPIXELS, BOARDSTARTPOS[1] + BOARDSIZEPIXELS/2, BOARDSTARTPOS[2] + BOARDSIZEPIXELS)
+    setCeilingDim(10, BOARDSIZEPIXELS, 450, 100)
+    
+
     
     -- initBoardState(PEGSIZEPIXELS, world)
     initBalls(world)
     initLeftWall(world)
     initRightWall(world)
     -- initFloor(world)
+    initCeiling(world)
+
     initFlippers(world)
 
 
@@ -68,6 +76,7 @@ function love.load()
         drawLeftWall()
         drawRightWall()
         -- drawFloor()
+        drawCeiling()
         drawButtons()
         love.graphics.setCanvas()
     

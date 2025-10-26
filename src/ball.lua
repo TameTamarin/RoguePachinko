@@ -2,11 +2,11 @@ require "math"
 
 
 balls = {
-    {x=200, y=0, radius=10, color={1,0,0}, bounce = 0.5},
-    {x=300, y=0, radius=10, color={0,1,0}, bounce = 0.5},
-    {x=400, y=0, radius=10, color={0,0,1}, bounce = 0.5},
-    {x=500, y=0, radius=10, color={1,1,0}, bounce = 0.5},
-    {x=600, y=0, radius=10, color={0,1,1}, bounce = 0.5},
+    {x=250, y=150, radius=10, color={1,0,0}, bounce = 0.5},
+    {x=300, y=150, radius=10, color={0,1,0}, bounce = 0.5},
+    {x=400, y=150, radius=10, color={0,0,1}, bounce = 0.5},
+    {x=500, y=150, radius=10, color={1,1,0}, bounce = 0.5},
+    {x=600, y=150, radius=10, color={0,1,1}, bounce = 0.5},
 }
     
 
@@ -15,7 +15,7 @@ function initBalls(world)
         ball.body = love.physics.newBody(world, ball.x, ball.y, "dynamic")
         ball.shape = love.physics.newCircleShape(ball.radius)
         ball.fixture = love.physics.newFixture(ball.body, ball.shape,100)
-        ball.body:setMass(1)
+        ball.body:setMass(100)
         ball.body:setFixedRotation(true)
         ball.fixture:setRestitution(ball.bounce)
     end
@@ -58,9 +58,9 @@ end
 function resetBallPosition()
     for i, ball in ipairs(balls) do
         balls[i].body:setLinearVelocity( 1, 1 )
-        balls[i].x, balls[i].y = i*100, balls[i].radius
+        balls[i].x, balls[i].y = i*100, balls[i].radius +150
         balls[i].body:setX(i*100)
-        balls[i].body:setY(balls[i].radius)
+        balls[i].body:setY(balls[i].y)
         
         
     end
