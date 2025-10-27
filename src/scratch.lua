@@ -1,33 +1,45 @@
-function updateRightFlipper(dt)
-    -- want to apply a force if the right key is pressed
+require "math"
+
+points = {
+		x1 = 1,
+		y1 = 0,
+		x2 = 2,
+		y2 = 0,
+		x3 = 0,
+		y3 = 0,
+		x4 = 0,
+		y4 = 0,
+		x5 = 0,
+		y5 = 0,
+		x6 = 0,
+		y6 = 0,
+		x7 = 0,
+		y7 = 0,
+		x8 = 0,
+		y8 = 0
+	}
+
+    points2 = {
+		x1,
+		y1,
+		x2,
+		y2,
+		x3,
+		y3,
+		x4,
+		y4,
+		x5,
+		y5,
+		x6,
+		y6,
+		x7,
+		y7,
+		x8,
+		y8
+	}
+
+
+for i = 1, 8 do
+    print(math.sin(1))
     
-    if rightFlipper.activated == 1 then
-        if rightFlipper.body:getAngle()*180/3.14 >= rightFlipper.upperStopAngle and rightKeyCheck() == 1 then
-            rightFlipper.body:setFixedRotation(true)
-            return
-        end
-
-        elseif rightFlipper.body:getAngle()*180/3.14 >= rightFlipper.upperStopAngle then
-            rightFlipper.activated = 0
-            rightFlipper.body:setFixedRotation(false)
-            rightFlipper.body:applyLinearImpulse(-100000,100000)
-            return
-        end
-    end
-
-    elseif rightKeyCheck() == 1 then
-        rightFlipper.activated = 1
-        rightFlipper.body:setFixedRotation(false)
-        rightFlipper.body:applyLinearImpulse(-100000,-100000)
-        return
-    end
-
-    -- elseif rightKeyCheck() == 0 then
-    --     rightFlipper.body:setFixedRotation(false)
-    --     rightFlipper.body:applyLinearImpulse(-100000,100000)
-    --     if rightFlipper.body:getAngle()*180/3.14 <= rightFlipper.lowerStopAngle then
-    --         rightFlipper.body:setFixedRotation(true)
-    --     end
-    -- end
-    -- return rightFlipper.angle
 end

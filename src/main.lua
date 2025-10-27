@@ -63,7 +63,8 @@ function love.load()
     setRightInLaneDim(75, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS - INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 45)
     setLeftFlipperDim(20, 75, BOARDSTARTPOS[1] + INOUTLANEGAP + getLeftInLane().h/2, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getLeftInLane().h/2)
     setRightFlipperDim(20, 75, BOARDSTARTPOS[1] - INOUTLANEGAP - getRightInLane().h/2 + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getRightInLane().h/2)
-    
+    setPlungerFeedDim(BOARDHEIGHTPIXELS, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS + INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
+
     -- initBoardState(PEGSIZEPIXELS, world)
     initBalls(world)
     initLeftWall(world)
@@ -74,8 +75,10 @@ function love.load()
     initLeftOutLane(world)
     initRightInLane(world)
     initRightOutLane(world)
+    initPlungerFeed(world)
 
     initFlippers(world)
+
 
 ----------------------------------------------------------------
 -- Setup Canvases for drawing background and the board
@@ -95,6 +98,7 @@ function love.load()
         drawLeftOutLane()
         drawRightInLane()
         drawRightOutLane()
+        drawPlungerFeed()
         drawButtons()
         love.graphics.setCanvas()
     

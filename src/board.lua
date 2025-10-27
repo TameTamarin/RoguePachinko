@@ -58,20 +58,27 @@ local leftOutLane = {
 }
 
 local rightInLane = {
-        h = 100,
-        w = 10,
-        x = 0,
-        y = 0,
-        angle = 0
-    }
+    h = 100,
+    w = 10,
+    x = 0,
+    y = 0,
+    angle = 0
+}
 
 local rightOutLane = {
-        h = 100,
-        w = 10,
-        x = 0,
-        y = 0,
-        angle = 0
-    }
+    h = 100,
+    w = 10,
+    x = 0,
+    y = 0,
+    angle = 0
+}
+
+local plungerFeed = {
+    h = 100,
+    w = 10,
+    x = 0,
+    y = 0
+}
 
 local resetButton = {
         h = 50,
@@ -152,6 +159,13 @@ function setRightOutLaneDim(h, w, x, y, angle)
     rightOutLane.x = x
     rightOutLane.y = y
     rightOutLane.angle = angle
+end
+
+function setPlungerFeedDim(h, w, x, y)
+    plungerFeed.h = h
+    plungerFeed.w = w
+    plungerFeed.x = x
+    plungerFeed.y = y
 end
 
 function getLeftInLane()
@@ -278,6 +292,16 @@ end
 function drawRightInLane()
     bx, by = rightInLane.body:getPosition()
     drawRotatedRectangle("fill", bx, by, rightInLane.w, rightInLane.h, rightInLane.body:getAngle())
+end
+
+function initPlungerFeed(world)
+    plungerFeed.body = love.physics.newBody(world,plungerFeed.x,plungerFeed.y,"static")
+    plungerFeed.shape = love.physics.newRectangleShape(plungerFeed.w,plungerFeed.h)
+    plungerFeed.fixture = love.physics.newFixture(plungerFeed.body, plungerFeed.shape, 1000)
+end
+
+function drawPlungerFeed()
+    love.graphics.rectangle("fill", plungerFeed.x - plungerFeed.w/2, plungerFeed.y - plungerFeed.h/2, plungerFeed.w, plungerFeed.h)
 end
 
 ------------------------------------
