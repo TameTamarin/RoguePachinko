@@ -100,6 +100,8 @@ function initFlippers(world)
     leftFlipper.joint = love.physics.newRevoluteJoint(leftFlipper.anchor, leftFlipper.body, leftFlipper.anchorx, leftFlipper.anchory, false)
     -- set bouncyness of the flipper
     leftFlipper.fixture:setRestitution(leftFlipper.bounce)
+    -- set user data, tag to be used for collision detections
+    leftFlipper.fixture:setUserData("leftFlipper")
     leftFlipper.body:setAngle(leftFlipper.lowerStopAngle * 3.14 / 180)
     leftFlipper.body:setMass(1)
 end

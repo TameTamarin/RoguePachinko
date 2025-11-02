@@ -43,3 +43,18 @@ for i = 1, 8 do
     print(math.sin(1))
     
 end
+
+
+balls = {
+    {x=250, y=150, radius=10, color={1,0,0}, bounce = 0.5},
+    {x=300, y=150, radius=10, color={0,1,0}, bounce = 0.5},
+    {x=400, y=150, radius=10, color={0,0,1}, bounce = 0.5},
+    {x=500, y=150, radius=10, color={1,1,0}, bounce = 0.5},
+    {x=600, y=150, radius=10, color={0,1,1}, bounce = 0.5}
+}
+
+print(balls[1])
+print(balls[1])
+table.insert(balls, {x=250, y=150, radius=10, color={1,0,0}, bounce = 0.5})
+
+print(balls[2])

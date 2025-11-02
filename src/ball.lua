@@ -1,23 +1,27 @@
-require "math"
+require("math")
 
-
-balls = {
-    {x=250, y=150, radius=10, color={1,0,0}, bounce = 0.5},
-    {x=300, y=150, radius=10, color={0,1,0}, bounce = 0.5},
-    {x=400, y=150, radius=10, color={0,0,1}, bounce = 0.5},
-    {x=500, y=150, radius=10, color={1,1,0}, bounce = 0.5},
-    {x=600, y=150, radius=10, color={0,1,1}, bounce = 0.5},
-}
+balls = {}
     
 
-function initBalls(world)
+function initBall(world, x, y)
+    table.insert(balls, {
+    x = x,
+    y = y,
+    radius = 10,
+    color = {1,0,0},
+    bounce = 0.5,
+    body = love.physics.newBody(world, x, y, "dynamic"),
+    shape = nil,
+    fixture = nil
+})
     for i, ball in ipairs(balls) do
-        ball.body = love.physics.newBody(world, ball.x, ball.y, "dynamic")
-        ball.shape = love.physics.newCircleShape(ball.radius)
-        ball.fixture = love.physics.newFixture(ball.body, ball.shape,100)
-        ball.body:setMass(100)
-        ball.body:setFixedRotation(true)
-        ball.fixture:setRestitution(ball.bounce)
+        balls[#balls].body = love.physics.newBody(world, x, y, "dynamic")
+        balls[#balls].shape = love.physics.newCircleShape(balls[#balls].radius)
+        balls[#balls].fixture = love.physics.newFixture(balls[#balls].body, balls[#balls].shape,100)
+        balls[#balls].body:setMass(1)
+        balls[#balls].body:setFixedRotation(true)
+        balls[#balls].fixture:setRestitution(balls[#balls].bounce)
+        balls[#balls].fixture:setUserData("ball")
     end
 end
 
@@ -58,10 +62,10 @@ end
 function resetBallPosition()
     for i, ball in ipairs(balls) do
         balls[i].body:setLinearVelocity( 1, 1 )
-        balls[i].x, balls[i].y = i*100, balls[i].radius +150
-        balls[i].body:setX(i*100)
+        balls[i].x, balls[i].y = 450, 250
+        balls[i].body:setX(balls[i].x)
         balls[i].body:setY(balls[i].y)
-        
-        
+         
     end
 end
+

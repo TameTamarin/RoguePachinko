@@ -40,7 +40,8 @@ function love.load()
     board = require('board')
     ball = require('ball')
     boardElements = require('flippers')
-    utilities = require "utilities"
+    utilities = require('utilities')
+    bumpers = require('bumpers')
     
     -- Init the in game timer
     timeStart = love.timer.getTime()
@@ -66,7 +67,7 @@ function love.load()
     setPlungerFeedDim(BOARDHEIGHTPIXELS, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS + INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
 
     -- initBoardState(PEGSIZEPIXELS, world)
-    initBalls(world)
+    initBall(world, 730, 710, 10)
     initLeftWall(world)
     initRightWall(world)
     -- initFloor(world)
@@ -78,6 +79,9 @@ function love.load()
     initPlungerFeed(world)
 
     initFlippers(world)
+    initBumper(world, 450, 400)
+    initBumper(world, 500, 450)
+    initBumper(world, 550, 400)
 
 
 ----------------------------------------------------------------
@@ -120,6 +124,7 @@ end
 -- This is the main loop of the program.
 --
 -----------------------------------------------------
+printdata = ""
 function love.run()
 	if love.load then love.load(love.arg.parseGameArguments(arg), arg) end
 
@@ -174,8 +179,15 @@ end
 -- in the world creation.
 --
 -----------------------------------------------------
-function beginContact(a, b, coll)
-
+function beginContact(fixture_a, fixture_b, contact)
+    local object_a = fixture_a:getUserData()
+    local object_b = fixture_b:getUserData()
+    printdata = object_a
+    -- Check if both objects are valid and have a "tag"
+    if object_a and object_b and object_a.tag and object_b.tag then
+        -- do something
+        
+    end
 end
 
 
@@ -228,6 +240,10 @@ function love.update(dt)
     leftFlipperX, leftFlipperY = getLeftFlipperPos()
     rightFlipperX, rightFlipperY = getRightFlipperPos()
 
+    if ballPosY > WINDOWY then
+        resetBallPosition()
+    end
+
     
 end
 
@@ -244,6 +260,7 @@ function love.draw()
     drawBalls(world)
     drawLeftFlipper(leftFlipperAngle)
     drawRightFlipper(rightFlipperAngle)
+    drawBumpers(world)
 
     love.graphics.draw(backgroundObjects, 0, 0)
     -- drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
@@ -254,6 +271,6 @@ function love.draw()
     love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
     love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 40, 350)
 
-    love.graphics.print("Angle ..." .. tostring(getLftFlipAngle()*180/3.14), 40, 450)
+    love.graphics.print("Collision ..." .. tostring(printdata), 40, 450)
 
 end
