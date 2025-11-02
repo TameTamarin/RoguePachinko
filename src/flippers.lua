@@ -7,9 +7,10 @@ require "utilities"
 --
 ----------------------------------------------------------------
 leftFlipper = {
-    h = 20,
+    h = 10,
     w = 150,
-    anchorRadius = 10,
+    -- the anchor is the axis of rotation and the origin of the flipper
+    anchorRadius = 5,
     anchorh = 20,
     anchorw = 200,
     anchorx = 200,
@@ -26,9 +27,10 @@ leftFlipper = {
 }
 
 rightFlipper = {
-    h = 20,
+    h = 10,
     w = 150,
-    anchorRadius = 10,
+    -- the anchor is the axis of rotation and the origin of the flipper
+    anchorRadius = 5,
     anchorh = 20,
     anchorw = 200,
     anchorx = 700,

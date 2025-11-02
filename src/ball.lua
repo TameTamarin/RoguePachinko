@@ -69,3 +69,13 @@ function resetBallPosition()
     end
 end
 
+
+function resetBallToRandomPos(xMin, xMax, yMin, yMax)
+    for i, ball in ipairs(balls) do
+        balls[i].body:setLinearVelocity( 1, 1 )
+        balls[i].x, balls[i].y = math.random(xMin, xMax), math.random(yMin, yMax)
+        balls[i].body:setX(balls[i].x)
+        balls[i].body:setY(balls[i].y)
+         
+    end
+end

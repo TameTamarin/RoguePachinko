@@ -34,6 +34,7 @@ INOUTLANEGAP = BALLWIDTH * 1.25
 -----------------------------------------------------
 function love.load()
     -- load in submodules
+    require("math")
     timing = require('timing')
     keyCommands = require('keyCommands')
     cursor = require('cursor')
@@ -45,6 +46,9 @@ function love.load()
     
     -- Init the in game timer
     timeStart = love.timer.getTime()
+
+    -- Set the random seed
+    math.randomseed(os.time())
 
     -- Set the window size 
     success = love.window.setMode(WINDOWX, WINDOWY, {vsync = 1})
@@ -62,8 +66,8 @@ function love.load()
     setLeftInLaneDim(75, 10, BOARDSTARTPOS[1] + INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 135)
     setRightOutLaneDim(175, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 45)
     setRightInLaneDim(75, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS - INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 45)
-    setLeftFlipperDim(20, 75, BOARDSTARTPOS[1] + INOUTLANEGAP + getLeftInLane().h/2, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getLeftInLane().h/2)
-    setRightFlipperDim(20, 75, BOARDSTARTPOS[1] - INOUTLANEGAP - getRightInLane().h/2 + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getRightInLane().h/2)
+    setLeftFlipperDim(10, 75, BOARDSTARTPOS[1] + INOUTLANEGAP + getLeftInLane().h/2, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getLeftInLane().h/2)
+    setRightFlipperDim(10, 75, BOARDSTARTPOS[1] - INOUTLANEGAP - getRightInLane().h/2 + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getRightInLane().h/2)
     setPlungerFeedDim(BOARDHEIGHTPIXELS, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS + INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
 
     -- initBoardState(PEGSIZEPIXELS, world)
@@ -241,7 +245,7 @@ function love.update(dt)
     rightFlipperX, rightFlipperY = getRightFlipperPos()
 
     if ballPosY > WINDOWY then
-        resetBallPosition()
+        resetBallToRandomPos(300, 500, 300, 500)
     end
 
     

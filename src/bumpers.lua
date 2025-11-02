@@ -7,7 +7,7 @@ function initBumper(world, x, y)
     y = y,
     radius = 15,
     color = {1,0,0},
-    bounce = 2,
+    bounce = 1.5,
     body = love.physics.newBody(world, x, y, "static"),
     shape = nil,
     fixture = nil
