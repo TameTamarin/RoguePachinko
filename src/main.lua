@@ -20,7 +20,8 @@ BOARDWIDTHPIXELS = 400
 PEGSIZEPIXELS = 10
 XGRAVITY = 0
 YGRAVITY = 500
-BOARDSTARTPOS = {WINDOWX/2 - BOARDWIDTHPIXELS/2, WINDOWY/2 - BOARDHEIGHTPIXELS/2}
+-- BOARDSTARTPOS = {WINDOWX/2 - BOARDWIDTHPIXELS/2, WINDOWY/2 - BOARDHEIGHTPIXELS/2}
+BOARDSTARTPOS = {100, 100}
 BALLWIDTH = 50
 INOUTLANEGAP = BALLWIDTH * 1.25
 
@@ -43,6 +44,7 @@ function love.load()
     boardElements = require('flippers')
     utilities = require('utilities')
     bumpers = require('bumpers')
+    pinBallTable = require('pinBallTable')
     
     -- Init the in game timer
     timeStart = love.timer.getTime()
@@ -68,24 +70,30 @@ function love.load()
     setRightInLaneDim(75, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS - INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 45)
     setLeftFlipperDim(10, 75, BOARDSTARTPOS[1] + INOUTLANEGAP + getLeftInLane().h/2, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getLeftInLane().h/2)
     setRightFlipperDim(10, 75, BOARDSTARTPOS[1] - INOUTLANEGAP - getRightInLane().h/2 + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getRightInLane().h/2)
+    
+    setLeftFlipperDim(10, 75, 236, 837)
+    setRightFlipperDim(10, 75, 422, 837)
+        
     setPlungerFeedDim(BOARDHEIGHTPIXELS, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS + INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
 
     -- initBoardState(PEGSIZEPIXELS, world)
     initBall(world, 730, 710, 10)
-    initLeftWall(world)
-    initRightWall(world)
-    -- initFloor(world)
-    initCeiling(world)
-    initLeftInLane(world)
-    initLeftOutLane(world)
-    initRightInLane(world)
-    initRightOutLane(world)
-    initPlungerFeed(world)
+    -- initLeftWall(world)
+    -- initRightWall(world)
+    
+    -- initCeiling(world)
+    -- initLeftInLane(world)
+    -- initLeftOutLane(world)
+    -- initRightInLane(world)
+    -- initRightOutLane(world)
+    -- initPlungerFeed(world)
 
     initFlippers(world)
     initBumper(world, 450, 400)
     initBumper(world, 500, 450)
     initBumper(world, 550, 400)
+
+    initTable(world, BOARDSTARTPOS[1], BOARDSTARTPOS[2])
 
 
 ----------------------------------------------------------------
@@ -98,17 +106,19 @@ function love.load()
         love.graphics.clear(0, 0, 0, 0)
         love.graphics.setBlendMode("alpha")
         -- drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
-        drawLeftWall()
-        drawRightWall()
-        -- drawFloor()
-        drawCeiling()
-        drawLeftInLane()
-        drawLeftOutLane()
-        drawRightInLane()
-        drawRightOutLane()
-        drawPlungerFeed()
+        -- drawLeftWall()
+        -- drawRightWall()
+        
+        -- drawCeiling()
+        -- drawLeftInLane()
+        -- drawLeftOutLane()
+        -- drawRightInLane()
+        -- drawRightOutLane()
+        -- drawPlungerFeed()
         drawButtons()
+        drawTable()
         love.graphics.setCanvas()
+
     
     -- Canvas for drawing the pegboard locations
     love.graphics.setCanvas(pegLocCanvas)
@@ -221,14 +231,16 @@ collumn = nil
 
 local rightFlipperAngle = 0
 local leftFlipperAngle = 0
+dt = 1/60
 function love.update(dt)
     -- Control frame rate
-    world:update(dt)
+    
     -- sleep(DT, FPSCAP)
 
+    updateBallsLocations()
     updateLeftFlipper()
     updateRightFlipper()
-    updateBallsLocations()
+    
 
     cursorX, cursorY = getCursorPosition()
     clickX, clickY = getMousePosOnClick()
@@ -248,6 +260,7 @@ function love.update(dt)
         resetBallToRandomPos(300, 500, 300, 500)
     end
 
+    world:update(dt, 5, 5)
     
 end
 
@@ -272,7 +285,7 @@ function love.draw()
     -- love.graphics.draw(pegLocCanvas, 0, 0)
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)
 
-    love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
+    -- love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
     love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 40, 350)
 
     love.graphics.print("Collision ..." .. tostring(printdata), 40, 450)

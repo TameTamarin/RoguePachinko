@@ -19,7 +19,7 @@ leftFlipper = {
     bounce = 0,
     color = "red",
     angle = 0,
-    angularVelocity = -30,
+    angularVelocity = -35,
     activated = 0,
     upperStopAngle = -405,
     lowerStopAngle = -315,
@@ -39,7 +39,7 @@ rightFlipper = {
     bounce = 0,
     color = "red",
     angle = 0,
-    angularVelocity = 30,
+    angularVelocity = 35,
     activated = 0,
     upperStopAngle = 45,
     lowerStopAngle = -45,
@@ -85,7 +85,7 @@ function initFlippers(world)
     -- set bouncyness of the flipper
     rightFlipper.fixture:setRestitution(rightFlipper.bounce)
     rightFlipper.body:setAngle(rightFlipper.lowerStopAngle * 3.14 / 180)
-    rightFlipper.body:setMass(1)
+    rightFlipper.body:setMass(10)
     
     
     leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory, "static")
@@ -105,7 +105,7 @@ function initFlippers(world)
     -- set user data, tag to be used for collision detections
     leftFlipper.fixture:setUserData("leftFlipper")
     leftFlipper.body:setAngle(leftFlipper.lowerStopAngle * 3.14 / 180)
-    leftFlipper.body:setMass(1)
+    leftFlipper.body:setMass(10)
 end
 
 function initSpnningObject(world)
