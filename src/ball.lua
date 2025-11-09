@@ -22,6 +22,8 @@ function initBall(world, x, y)
         balls[#balls].body:setFixedRotation(true)
         balls[#balls].fixture:setRestitution(balls[#balls].bounce)
         balls[#balls].fixture:setUserData("ball")
+        balls[#balls].fixture:setCategory(1)  -- set to category 1 for balls
+        
     end
 end
 

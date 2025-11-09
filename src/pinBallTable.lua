@@ -25,6 +25,7 @@ function initTable(world, xOffset, yOffset)
         -- Attach a circle fixture to the body
         local shape = love.physics.newCircleShape(radius)
         local fixture = love.physics.newFixture(body, shape)
+        fixture:setCategory(3)  -- set to category 3 for walls
         table.insert(bodies, body)
         table.insert(fixtures, fixture)
     end

@@ -11,7 +11,6 @@
 --
 -----------------------------------------------------
 FPSCAP = 60
-DT = 1/1000 --miliseconds
 WINDOWX = 1000
 WINDOWY = 900
 BOARDSIZEPIXELS = 600
@@ -71,8 +70,8 @@ function love.load()
     setLeftFlipperDim(10, 75, BOARDSTARTPOS[1] + INOUTLANEGAP + getLeftInLane().h/2, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getLeftInLane().h/2)
     setRightFlipperDim(10, 75, BOARDSTARTPOS[1] - INOUTLANEGAP - getRightInLane().h/2 + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getRightInLane().h/2)
     
-    setLeftFlipperDim(10, 75, 236, 837)
-    setRightFlipperDim(10, 75, 422, 837)
+    setLeftFlipperDim(40, 85, 236, 837)
+    setRightFlipperDim(40, 85, 422, 837)
         
     setPlungerFeedDim(BOARDHEIGHTPIXELS, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS + INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
 
@@ -260,7 +259,7 @@ function love.update(dt)
         resetBallToRandomPos(300, 500, 300, 500)
     end
 
-    world:update(dt, 5, 5)
+    world:update(dt, 10, 10)
     
 end
 

@@ -7,7 +7,7 @@ require "utilities"
 --
 ----------------------------------------------------------------
 leftFlipper = {
-    h = 10,
+    h = 20,
     w = 150,
     -- the anchor is the axis of rotation and the origin of the flipper
     anchorRadius = 5,
@@ -16,18 +16,19 @@ leftFlipper = {
     anchorx = 200,
     anchory = 720,
     anchorAngle = 45,
-    bounce = 0,
+    bounce = 0.5,
     color = "red",
     angle = 0,
     angularVelocity = -35,
     activated = 0,
     upperStopAngle = -405,
     lowerStopAngle = -325,
-    keyCommand = leftKeyCheck
+    keyCommand = leftKeyCheck,
+    mass = 10
 }
 
 rightFlipper = {
-    h = 10,
+    h = 0,
     w = 150,
     -- the anchor is the axis of rotation and the origin of the flipper
     anchorRadius = 5,
@@ -36,14 +37,15 @@ rightFlipper = {
     anchorx = 700,
     anchory = 720,
     anchorAngle = 0,
-    bounce = 0,
+    bounce = 0.5,
     color = "red",
     angle = 0,
     angularVelocity = 35,
     activated = 0,
     upperStopAngle = 45,
     lowerStopAngle = -35,
-    keyCommand = rightKeyCheck
+    keyCommand = rightKeyCheck,
+    mass = 10
 
 }
 
@@ -85,9 +87,12 @@ function initFlippers(world)
     -- set bouncyness of the flipper
     rightFlipper.fixture:setRestitution(rightFlipper.bounce)
     rightFlipper.body:setAngle(rightFlipper.lowerStopAngle * 3.14 / 180)
-    rightFlipper.body:setMass(10)
-    
-    
+    rightFlipper.body:setMass(rightFlipper.mass)
+    rightFlipper.anchor:setMass(rightFlipper.mass)
+    -- set to category 2 for flippers, will be used in collision filtering
+    rightFlipper.fixture:setCategory(2)
+    rightFlipper.fixture:setMask(3)  -- ignore collisions with walls (category 3)
+
     leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory, "static")
     leftFlipper.body = love.physics.newBody(world, leftFlipper.anchorx + leftFlipper.w/2, leftFlipper.anchory + leftFlipper.h/2 - leftFlipper.anchorRadius, "dynamic")
     -- set the flipper angle
@@ -105,7 +110,11 @@ function initFlippers(world)
     -- set user data, tag to be used for collision detections
     leftFlipper.fixture:setUserData("leftFlipper")
     leftFlipper.body:setAngle(leftFlipper.lowerStopAngle * 3.14 / 180)
-    leftFlipper.body:setMass(10)
+    leftFlipper.body:setMass(leftFlipper.mass)
+    leftFlipper.anchor:setMass(leftFlipper.mass)
+    -- set to category 2 for flippers, will be used in collision filtering
+    leftFlipper.fixture:setCategory(2)
+    leftFlipper.fixture:setMask(3)  -- ignore collisions with walls (category 3)
 end
 
 function initSpnningObject(world)
