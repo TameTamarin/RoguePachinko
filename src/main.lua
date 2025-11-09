@@ -70,8 +70,8 @@ function love.load()
     setLeftFlipperDim(10, 75, BOARDSTARTPOS[1] + INOUTLANEGAP + getLeftInLane().h/2, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getLeftInLane().h/2)
     setRightFlipperDim(10, 75, BOARDSTARTPOS[1] - INOUTLANEGAP - getRightInLane().h/2 + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getRightInLane().h/2)
     
-    setLeftFlipperDim(40, 85, 236, 837)
-    setRightFlipperDim(40, 85, 422, 837)
+    setLeftFlipperDim(35, 75, 236, 837)
+    setRightFlipperDim(35, 75, 422, 837)
         
     setPlungerFeedDim(BOARDHEIGHTPIXELS, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS + INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
 

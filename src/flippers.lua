@@ -7,10 +7,10 @@ require "utilities"
 --
 ----------------------------------------------------------------
 leftFlipper = {
-    h = 20,
+    h = 15,
     w = 150,
     -- the anchor is the axis of rotation and the origin of the flipper
-    anchorRadius = 5,
+    anchorRadius = 10,
     anchorh = 20,
     anchorw = 200,
     anchorx = 200,
@@ -19,10 +19,10 @@ leftFlipper = {
     bounce = 0.5,
     color = "red",
     angle = 0,
-    angularVelocity = -35,
+    angularVelocity = -45,
     activated = 0,
-    upperStopAngle = -405,
-    lowerStopAngle = -325,
+    upperStopAngle = -385,
+    lowerStopAngle = -335,
     keyCommand = leftKeyCheck,
     mass = 10
 }
@@ -31,7 +31,7 @@ rightFlipper = {
     h = 0,
     w = 150,
     -- the anchor is the axis of rotation and the origin of the flipper
-    anchorRadius = 5,
+    anchorRadius = 10,
     anchorh = 20,
     anchorw = 200,
     anchorx = 700,
@@ -40,10 +40,10 @@ rightFlipper = {
     bounce = 0.5,
     color = "red",
     angle = 0,
-    angularVelocity = 35,
+    angularVelocity = 45,
     activated = 0,
-    upperStopAngle = 45,
-    lowerStopAngle = -35,
+    upperStopAngle = 25,
+    lowerStopAngle = -25,
     keyCommand = rightKeyCheck,
     mass = 10
 
@@ -72,7 +72,7 @@ end
 ----------------------------------------------------------------
 function initFlippers(world)
 
-    rightFlipper.anchor = love.physics.newBody(world, rightFlipper.anchorx, rightFlipper.anchory, "static")
+    rightFlipper.anchor = love.physics.newBody(world, rightFlipper.anchorx, rightFlipper.anchory + rightFlipper.anchorRadius, "static")
     rightFlipper.body = love.physics.newBody(world, rightFlipper.anchorx - rightFlipper.w/2, rightFlipper.anchory + rightFlipper.h/2 - rightFlipper.anchorRadius, "dynamic")
     -- set the flipper angle
     rightFlipper.anchor:setAngle(rightFlipper.anchorAngle)
@@ -93,7 +93,7 @@ function initFlippers(world)
     rightFlipper.fixture:setCategory(2)
     rightFlipper.fixture:setMask(3)  -- ignore collisions with walls (category 3)
 
-    leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory, "static")
+    leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory + leftFlipper.anchorRadius, "static")
     leftFlipper.body = love.physics.newBody(world, leftFlipper.anchorx + leftFlipper.w/2, leftFlipper.anchory + leftFlipper.h/2 - leftFlipper.anchorRadius, "dynamic")
     -- set the flipper angle
     leftFlipper.anchor:setAngle(leftFlipper.anchorAngle)
@@ -211,6 +211,7 @@ function updateRightFlipper()
         -- then hold the flipper at that angle
         if rightFlipper.body:getAngle()*180/3.14 >= rightFlipper.upperStopAngle and rightFlipper.keyCommand() == 1 then
             rightFlipper.body:setFixedRotation(true)
+            rightFlipper.body:setAngle(rightFlipper.upperStopAngle * 3.14 / 180)
             return  
         
         -- if the flipper has reached its max point WITHOUT the key still pressed
@@ -237,6 +238,7 @@ function updateRightFlipper()
     -- if the flipper is ever lower than the lower stop angle then freeze it in place
     elseif rightFlipper.body:getAngle()*180/3.14 <= rightFlipper.lowerStopAngle then
         rightFlipper.body:setFixedRotation(true)
+        rightFlipper.body:setAngle(rightFlipper.lowerStopAngle * 3.14 / 180)
     
     -- if the flipper ever reaches an angle above the upper stop angle then reverse the velocity
     elseif rightFlipper.body:getAngle()*180/3.14 > rightFlipper.upperStopAngle then
@@ -256,6 +258,7 @@ function updateLeftFlipper()
         -- then hold the flipper at that angle
         if leftFlipper.body:getAngle()*180/3.14 <= leftFlipper.upperStopAngle and leftFlipper.keyCommand() == 1 then
             leftFlipper.body:setFixedRotation(true)
+            leftFlipper.body:setAngle(leftFlipper.upperStopAngle * 3.14 / 180)
             return  
         
         -- if the flipper has reached its max point WITHOUT the key still pressed
@@ -282,6 +285,7 @@ function updateLeftFlipper()
     -- if the flipper is ever lower than the lower stop angle then freeze it in place
     elseif leftFlipper.body:getAngle()*180/3.14 >= leftFlipper.lowerStopAngle then
         leftFlipper.body:setFixedRotation(true)
+        leftFlipper.body:setAngle(leftFlipper.lowerStopAngle * 3.14 / 180)
     
     -- if the flipper ever reaches an angle above the upper stop angle then reverse the velocity
     elseif leftFlipper.body:getAngle()*180/3.14 < leftFlipper.upperStopAngle then
