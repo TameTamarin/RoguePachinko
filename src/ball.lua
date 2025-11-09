@@ -64,7 +64,7 @@ end
 function resetBallPosition()
     for i, ball in ipairs(balls) do
         balls[i].body:setLinearVelocity( 1, 1 )
-        balls[i].x, balls[i].y = 450, 250
+        balls[i].x, balls[i].y = 578, 880
         balls[i].body:setX(balls[i].x)
         balls[i].body:setY(balls[i].y)
          

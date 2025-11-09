@@ -35,3 +35,13 @@ function leftKeyCheck()
     else return 0
     end
 end
+
+
+function spaceKeyCheck()
+    --These are commands are used for getting the events for when the arrow keys are pressed
+    spacePressed = love.keyboard.isScancodeDown( "space" )
+   
+    if spacePressed then return 1
+    else return 0
+    end
+end

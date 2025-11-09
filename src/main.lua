@@ -44,6 +44,7 @@ function love.load()
     utilities = require('utilities')
     bumpers = require('bumpers')
     pinBallTable = require('pinBallTable')
+    scoreBoard = require("scoreBoard")
     
     -- Init the in game timer
     timeStart = love.timer.getTime()
@@ -88,9 +89,9 @@ function love.load()
     -- initPlungerFeed(world)
 
     initFlippers(world)
+    initBumper(world, 350, 400)
+    initBumper(world, 400, 450)
     initBumper(world, 450, 400)
-    initBumper(world, 500, 450)
-    initBumper(world, 550, 400)
 
     initTable(world, BOARDSTARTPOS[1], BOARDSTARTPOS[2])
 
@@ -200,6 +201,8 @@ function beginContact(fixture_a, fixture_b, contact)
     if object_a and object_b and object_a.tag and object_b.tag then
         -- do something
         
+    elseif object_a == 'bumper' or object_b == 'bumper' then
+        addToScoreBoard(100)
     end
 end
 
@@ -255,8 +258,12 @@ function love.update(dt)
     leftFlipperX, leftFlipperY = getLeftFlipperPos()
     rightFlipperX, rightFlipperY = getRightFlipperPos()
 
+    if spaceKeyCheck() == 1 then
+        ballApplyForce(1, 1000, 270)
+    end
+
     if ballPosY > WINDOWY then
-        resetBallToRandomPos(300, 500, 300, 500)
+        resetBallPosition()
     end
 
     world:update(dt, 10, 10)
@@ -277,6 +284,7 @@ function love.draw()
     drawLeftFlipper(leftFlipperAngle)
     drawRightFlipper(rightFlipperAngle)
     drawBumpers(world)
+    drawScoreBoard()
 
     love.graphics.draw(backgroundObjects, 0, 0)
     -- drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
