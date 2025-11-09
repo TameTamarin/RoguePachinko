@@ -22,7 +22,7 @@ leftFlipper = {
     angularVelocity = -35,
     activated = 0,
     upperStopAngle = -405,
-    lowerStopAngle = -315,
+    lowerStopAngle = -325,
     keyCommand = leftKeyCheck
 }
 
@@ -42,7 +42,7 @@ rightFlipper = {
     angularVelocity = 35,
     activated = 0,
     upperStopAngle = 45,
-    lowerStopAngle = -45,
+    lowerStopAngle = -35,
     keyCommand = rightKeyCheck
 
 }
