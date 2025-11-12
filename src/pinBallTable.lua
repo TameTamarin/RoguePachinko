@@ -1,21 +1,11 @@
+utilities = require('utilities')
+
 local world
 local bodies = {}
 local fixtures = {}
 local radius = 1
 
-function load_xy_from_txt(filepath)
-    local points = {}
-    for line in love.filesystem.lines(filepath) do
-        line = line:match("^%s*(.-)%s*$")
-        if line ~= "" then
-            local x, y = line:match("([^,%s]+)[,%s]+([^,%s]+)")
-            if x and y then
-                table.insert(points, {x = tonumber(x), y = tonumber(y)})
-            end
-        end
-    end
-    return points
-end
+
 
 function initTable(world, xOffset, yOffset)
     local points = load_xy_from_txt("edge_coordinates.txt")

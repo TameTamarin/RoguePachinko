@@ -11,16 +11,16 @@
 --
 -----------------------------------------------------
 FPSCAP = 60
-WINDOWX = 1000
-WINDOWY = 900
+WINDOWX = 600
+WINDOWY = 1000
 BOARDSIZEPIXELS = 600
-BOARDHEIGHTPIXELS = 600
-BOARDWIDTHPIXELS = 400
+BOARDWIDTHPIXELS = 600
+BOARDHEIGHTPIXELS = 1000
 PEGSIZEPIXELS = 10
 XGRAVITY = 0
 YGRAVITY = 500
 -- BOARDSTARTPOS = {WINDOWX/2 - BOARDWIDTHPIXELS/2, WINDOWY/2 - BOARDHEIGHTPIXELS/2}
-BOARDSTARTPOS = {100, 100}
+BOARDSTARTPOS = {0, 100}
 BALLWIDTH = 50
 INOUTLANEGAP = BALLWIDTH * 1.25
 
@@ -290,11 +290,14 @@ function love.draw()
     -- drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
     -- drawPegLocations(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
     -- love.graphics.draw(pegLocCanvas, 0, 0)
-    love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)
+    love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 0, 20)
 
     -- love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
-    love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 40, 350)
+    love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 0, 40)
 
-    love.graphics.print("Collision ..." .. tostring(printdata), 40, 450)
+    love.graphics.print("Collision ..." .. tostring(printdata), 0, 60)
+    points = load_xy_from_txt("flipper_coordinates.txt")
+    love.graphics.print("points ..." .. tostring(points[1]), 0, 80)
+   
 
 end

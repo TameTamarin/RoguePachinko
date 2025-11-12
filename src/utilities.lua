@@ -55,3 +55,18 @@ function newSemiCircleShape(xStartPoint, yStartPoint, radius, numDegrees)
 	return arcShape
 
 end
+
+
+function load_xy_from_txt(filepath)
+    local points = {}
+    for line in love.filesystem.lines(filepath) do
+        line = line:match("^%s*(.-)%s*$")
+        if line ~= "" then
+            local x, y = line:match("([^,%s]+)[,%s]+([^,%s]+)")
+            if x and y then
+                table.insert(points, {x = tonumber(x), y = tonumber(y)})
+            end
+        end
+    end
+    return points
+end

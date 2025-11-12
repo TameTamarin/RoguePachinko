@@ -1,4 +1,4 @@
-require "utilities"
+utilities = require('utilities')
 
 
 ----------------------------------------------------------------

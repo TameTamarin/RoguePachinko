@@ -34,3 +34,5 @@ def save_image_edges(image_path, output_txt_path, low_thresh=100, high_thresh=20
 
 if __name__ == "__main__":
     save_image_edges("tableBackground.png", "edge_coordinates.txt")
+    save_image_edges("flipperCoords.png", "flipper_coordinates.txt")
+    save_image_edges("ballStartCoord.png", "ball_start_coordinates.txt")

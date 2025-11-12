@@ -1,6 +1,6 @@
 local scoreBoard = {
 score = 0,
-x = 300,
+x = 0,
 y = 0
 }
 
