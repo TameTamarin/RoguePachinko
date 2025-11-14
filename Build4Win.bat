@@ -1,3 +1,4 @@
+python src/generateBackgroundCoords.py
 xcopy src\ bin\build\ /S /Y
 rmdir bin\dist\ /s /q
 mkdir bin\dist\

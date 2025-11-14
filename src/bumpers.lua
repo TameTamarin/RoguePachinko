@@ -1,3 +1,5 @@
+math = require("math")
+
 -- Can't use "bumpers" because for some reason it is considered a boolean value
 bumps = {}
 
@@ -10,7 +12,8 @@ function initBumper(world, x, y)
     bounce = 1.5,
     body = love.physics.newBody(world, x, y, "static"),
     shape = nil,
-    fixture = nil
+    fixture = nil,
+    force = 750
 })
 
     bumps[#bumps].body = love.physics.newBody(world, x, y, "static")
@@ -18,7 +21,7 @@ function initBumper(world, x, y)
     bumps[#bumps].fixture = love.physics.newFixture(bumps[#bumps].body, bumps[#bumps].shape,100)
     bumps[#bumps].body:setMass(100)
     bumps[#bumps].body:setFixedRotation(true)
-    bumps[#bumps].fixture:setRestitution(bumps[#bumps].bounce)
+    -- bumps[#bumps].fixture:setRestitution(bumps[#bumps].bounce)
     bumps[#bumps].fixture:setUserData("bumper")
     
 end
@@ -28,4 +31,16 @@ function drawBumpers(world)
         love.graphics.setColor(bumper.color)
         love.graphics.circle("fill", bumper.x, bumper.y, bumper.radius)
     end
+end
+
+function getBumperAppliedVel(ballVelX, ballVelY)
+    if math.abs(ballVelX) > math.abs(ballVelY) then
+        divisor = math.abs(ballVelX)
+    else
+        divisor = math.abs(ballVelY)
+        
+    end
+    ix = ballVelX / divisor * bumps[1].force
+    iy = ballVelY / divisor * bumps[1].force
+    return ix, iy
 end

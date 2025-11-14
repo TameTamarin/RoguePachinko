@@ -71,8 +71,8 @@ function love.load()
     setLeftFlipperDim(10, 75, BOARDSTARTPOS[1] + INOUTLANEGAP + getLeftInLane().h/2, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getLeftInLane().h/2)
     setRightFlipperDim(10, 75, BOARDSTARTPOS[1] - INOUTLANEGAP - getRightInLane().h/2 + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getRightInLane().h/2)
     
-    setLeftFlipperDim(35, 75, 142, 845)
-    setRightFlipperDim(35, 75, 320, 845)
+    setLeftFlipperDim(35, 75, 135, 945)
+    setRightFlipperDim(35, 75, 325, 945)
         
     setPlungerFeedDim(BOARDHEIGHTPIXELS, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS + INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
 
@@ -89,9 +89,9 @@ function love.load()
     -- initPlungerFeed(world)
 
     initFlippers(world)
+    initBumper(world, 250, 400)
+    initBumper(world, 300, 450)
     initBumper(world, 350, 400)
-    initBumper(world, 400, 450)
-    initBumper(world, 450, 400)
 
     initTable(world, BOARDSTARTPOS[1], BOARDSTARTPOS[2])
 
@@ -203,11 +203,22 @@ function beginContact(fixture_a, fixture_b, contact)
         
     elseif object_a == 'bumper' or object_b == 'bumper' then
         addToScoreBoard(100)
+        -- ballVelX, ballVelY = getBallVelocity(1)
+        -- bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)
+        -- ballSetVelocityWComponents(1, bumperVelX, bumperVelY)
     end
 end
 
 
-function endContact(a, b, coll)
+function endContact(fixture_a, fixture_b, coll)
+    local object_a = fixture_a:getUserData()
+    local object_b = fixture_b:getUserData()
+    if object_a == 'bumper' or object_b == 'bumper' then
+        ballVelX, ballVelY = getBallVelocity(1)
+        printdata = "Ball Vel X: "..tostring(ballVelX).." Ball Vel Y: "..tostring(ballVelY)
+        bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)
+        ballSetVelocityWComponents(1, bumperVelX, bumperVelY)
+    end
     
 end
 
@@ -259,7 +270,7 @@ function love.update(dt)
     rightFlipperX, rightFlipperY = getRightFlipperPos()
 
     if spaceKeyCheck() == 1 then
-        ballApplyForce(1, 1000, 270)
+        ballSetVelocityWAngle(1, 1000, 270)
     end
 
     if ballPosY > WINDOWY then

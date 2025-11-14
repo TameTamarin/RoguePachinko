@@ -63,6 +63,22 @@ function ballApplyForce(ballIndex, forceVal, angle)
     balls[ballIndex].body:applyLinearImpulse(ix, iy)
 end
 
+function ballSetVelocityWAngle(ballIndex, forceVal, angle)
+    radAngle = math.rad(angle)    
+    iy = math.sin(radAngle)*forceVal
+    ix = math.cos(radAngle)*forceVal
+    balls[ballIndex].body:setLinearVelocity(ix, iy)
+end
+
+function ballSetVelocityWComponents(ballIndex, ix, iy)
+    balls[ballIndex].body:setLinearVelocity(ix, iy)
+end
+
+function getBallVelocity(ballIndex)
+    return balls[ballIndex].body:getLinearVelocity()
+end
+
+
 function resetBallPosition()
     for i, ball in ipairs(balls) do
         balls[i].body:setLinearVelocity( 1, 1 )

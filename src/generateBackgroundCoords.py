@@ -1,3 +1,4 @@
+import os
 import cv2
 import numpy as np
 
@@ -33,6 +34,7 @@ def save_image_edges(image_path, output_txt_path, low_thresh=100, high_thresh=20
 
 
 if __name__ == "__main__":
-    save_image_edges("tableBackground.png", "edge_coordinates.txt")
-    save_image_edges("flipperCoords.png", "flipper_coordinates.txt")
-    save_image_edges("ballStartCoord.png", "ball_start_coordinates.txt")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    save_image_edges(os.path.join(script_dir, "tableBackground.png"), os.path.join(script_dir, "edge_coordinates.txt"))
+    save_image_edges(os.path.join(script_dir, "flipperCoords.png"), os.path.join(script_dir, "flipper_coordinates.txt"))
+    save_image_edges(os.path.join(script_dir, "ballStartCoord.png"), os.path.join(script_dir, "ball_start_coordinates.txt"))
