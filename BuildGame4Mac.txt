@@ -5,6 +5,8 @@ rm -r bin
 
 cd src
 
+python3 generateBackgroundCoords.py
+
 mkdir -p bin
 
 zip -r 'bin/Main.love' .
