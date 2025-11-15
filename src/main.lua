@@ -12,7 +12,7 @@
 -----------------------------------------------------
 FPSCAP = 60
 WINDOWX = 600
-WINDOWY = 1000
+WINDOWY = WINDOWX*2
 BOARDSIZEPIXELS = 600
 BOARDWIDTHPIXELS = 600
 BOARDHEIGHTPIXELS = 1000
@@ -45,15 +45,20 @@ function love.load()
     bumpers = require('bumpers')
     pinBallTable = require('pinBallTable')
     scoreBoard = require("scoreBoard")
-    
+
     -- Init the in game timer
     timeStart = love.timer.getTime()
 
     -- Set the random seed
     math.randomseed(os.time())
 
-    -- Set the window size 
-    success = love.window.setMode(WINDOWX, WINDOWY, {vsync = 1})
+    -- Set the window size scaled based on screen resolution
+    limitsX, limitsY = love.window.getDesktopDimensions()
+    sx = limitsX/WINDOWX
+    sy = limitsY/WINDOWY
+    success = love.window.setMode(WINDOWX*sy, WINDOWY*sy, {vsync = 1})
+
+    
     
     -- Setup the world and its fucntion callbacks
     world = love.physics.newWorld(XGRAVITY, YGRAVITY, true)
@@ -115,7 +120,7 @@ function love.load()
         -- drawRightInLane()
         -- drawRightOutLane()
         -- drawPlungerFeed()
-        drawButtons()
+        -- drawButtons()
         drawTable()
         love.graphics.setCanvas()
 
@@ -139,6 +144,8 @@ end
 --
 -----------------------------------------------------
 printdata = ""
+
+
 function love.run()
 	if love.load then love.load(love.arg.parseGameArguments(arg), arg) end
 
@@ -215,7 +222,6 @@ function endContact(fixture_a, fixture_b, coll)
     local object_b = fixture_b:getUserData()
     if object_a == 'bumper' or object_b == 'bumper' then
         ballVelX, ballVelY = getBallVelocity(1)
-        printdata = "Ball Vel X: "..tostring(ballVelX).." Ball Vel Y: "..tostring(ballVelY)
         bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)
         ballSetVelocityWComponents(1, bumperVelX, bumperVelY)
     end
@@ -291,6 +297,11 @@ end
 --
 -----------------------------------------------------
 function love.draw()
+    -- set scale to draw at baed on on the screen resoltion and window size
+    love.graphics.push()
+    love.graphics.scale( sy, sy )
+
+    -- draw objects
     drawBalls(world)
     drawLeftFlipper(leftFlipperAngle)
     drawRightFlipper(rightFlipperAngle)
@@ -307,8 +318,13 @@ function love.draw()
     love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 0, 40)
 
     love.graphics.print("Collision ..." .. tostring(printdata), 0, 60)
-    points = load_xy_from_txt("flipper_coordinates.txt")
-    love.graphics.print("points ..." .. tostring(points[1]), 0, 80)
+    
+    love.graphics.print("Screen dimensions: " .. tostring(sx) .. ", " .. tostring(sy), 0, 80)
+    printdata = ""
+
+    -- return to normal scale to prevent crashing
+    love.graphics.pop()
+
    
 
 end

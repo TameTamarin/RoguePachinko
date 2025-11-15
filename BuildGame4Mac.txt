@@ -5,7 +5,7 @@ rm -r bin
 
 cd src
 
-python3 generateBackgroundCoords.py
+python3 generateBackgroundCoords.py save_image_edges "tableBackground.png" "edge_coordinates.txt". "100" "200"
 
 mkdir -p bin
 
