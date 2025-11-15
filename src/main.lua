@@ -58,6 +58,11 @@ function love.load()
     sy = limitsY/WINDOWY
     success = love.window.setMode(WINDOWX*sy, WINDOWY*sy, {vsync = 1})
 
+    -- Load auido files
+    audio = {
+        bumper = love.audio.newSource("audio/Bumper1.wav", "static")
+    }
+
     
     
     -- Setup the world and its fucntion callbacks
@@ -224,6 +229,7 @@ function endContact(fixture_a, fixture_b, coll)
         ballVelX, ballVelY = getBallVelocity(1)
         bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)
         ballSetVelocityWComponents(1, bumperVelX, bumperVelY)
+        audio.bumper:play()
     end
     
 end
