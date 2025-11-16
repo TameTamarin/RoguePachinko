@@ -24,7 +24,7 @@ leftFlipper = {
     upperStopAngle = -385,
     lowerStopAngle = -335,
     keyCommand = leftKeyCheck,
-    mass = 10
+    mass = 1
 }
 
 rightFlipper = {
@@ -45,7 +45,7 @@ rightFlipper = {
     upperStopAngle = 25,
     lowerStopAngle = -25,
     keyCommand = rightKeyCheck,
-    mass = 10
+    mass = 1
 
 }
 
@@ -72,8 +72,8 @@ end
 ----------------------------------------------------------------
 function initFlippers(world)
 
-    rightFlipper.anchor = love.physics.newBody(world, rightFlipper.anchorx, rightFlipper.anchory + rightFlipper.anchorRadius, "static")
-    rightFlipper.body = love.physics.newBody(world, rightFlipper.anchorx - rightFlipper.w/2, rightFlipper.anchory + rightFlipper.h/2 - rightFlipper.anchorRadius, "dynamic")
+    rightFlipper.anchor = love.physics.newBody(world, rightFlipper.anchorx, rightFlipper.anchory, "static")
+    rightFlipper.body = love.physics.newBody(world, rightFlipper.anchorx - rightFlipper.w/3, rightFlipper.anchory, "dynamic")
     -- set the flipper angle
     rightFlipper.anchor:setAngle(rightFlipper.anchorAngle)
     -- create the shapes of each body
@@ -93,8 +93,8 @@ function initFlippers(world)
     rightFlipper.fixture:setCategory(2)
     rightFlipper.fixture:setMask(3)  -- ignore collisions with walls (category 3)
 
-    leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory + leftFlipper.anchorRadius, "static")
-    leftFlipper.body = love.physics.newBody(world, leftFlipper.anchorx + leftFlipper.w/2, leftFlipper.anchory + leftFlipper.h/2 - leftFlipper.anchorRadius, "dynamic")
+    leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory, "static")
+    leftFlipper.body = love.physics.newBody(world, leftFlipper.anchorx + leftFlipper.w/3, leftFlipper.anchory, "dynamic")
     -- set the flipper angle
     leftFlipper.anchor:setAngle(leftFlipper.anchorAngle)
     -- create the shapes of each body

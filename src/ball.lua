@@ -14,13 +14,14 @@ function initBall(world, x, y)
     bounce = 0.5,
     body = love.physics.newBody(world, x, y, "dynamic"),
     shape = nil,
-    fixture = nil
+    fixture = nil,
+    mass = 1000
 })
     for i, ball in ipairs(balls) do
         balls[#balls].body = love.physics.newBody(world, x, y, "dynamic")
         balls[#balls].shape = love.physics.newCircleShape(balls[#balls].radius)
         balls[#balls].fixture = love.physics.newFixture(balls[#balls].body, balls[#balls].shape,100)
-        balls[#balls].body:setMass(1)
+        balls[#balls].body:setMass(balls[#balls].mass)
         balls[#balls].body:setFixedRotation(true)
         balls[#balls].fixture:setRestitution(balls[#balls].bounce)
         balls[#balls].fixture:setUserData("ball")

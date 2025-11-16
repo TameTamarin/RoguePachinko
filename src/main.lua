@@ -13,16 +13,12 @@
 FPSCAP = 60
 WINDOWX = 600
 WINDOWY = WINDOWX*2
-BOARDSIZEPIXELS = 600
 BOARDWIDTHPIXELS = 600
 BOARDHEIGHTPIXELS = 1000
-PEGSIZEPIXELS = 10
 XGRAVITY = 0
 YGRAVITY = 500
--- BOARDSTARTPOS = {WINDOWX/2 - BOARDWIDTHPIXELS/2, WINDOWY/2 - BOARDHEIGHTPIXELS/2}
 BOARDSTARTPOS = {0, 100}
 BALLWIDTH = 50
-INOUTLANEGAP = BALLWIDTH * 1.25
 
 -----------------------------------------------------
 --
@@ -60,48 +56,26 @@ function love.load()
 
     -- Load auido files
     audio = {
-        bumper = love.audio.newSource("audio/Bumper1.wav", "static")
+        bumper = love.audio.newSource("audio/Bumper2.wav", "static")
     }
-
-    
     
     -- Setup the world and its fucntion callbacks
     world = love.physics.newWorld(XGRAVITY, YGRAVITY, true)
     world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     -- Run initialization functions
-    setLeftWallDim(BOARDHEIGHTPIXELS, 10, BOARDSTARTPOS[1], BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
-    setRightWallDim(BOARDHEIGHTPIXELS, 10,BOARDSTARTPOS[1] + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
-    setFloorDim(10, BOARDWIDTHPIXELS, BOARDSTARTPOS[1] + BOARDSIZEPIXELS/2, BOARDSTARTPOS[2] + BOARDSIZEPIXELS)
-    setCeilingDim(10, BOARDWIDTHPIXELS, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS/2, BOARDSTARTPOS[2])
-    setLeftOutLaneDim(175, 10, BOARDSTARTPOS[1], BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 135)
-    setLeftInLaneDim(75, 10, BOARDSTARTPOS[1] + INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 135)
-    setRightOutLaneDim(175, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 45)
-    setRightInLaneDim(75, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS - INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS, 45)
-    setLeftFlipperDim(10, 75, BOARDSTARTPOS[1] + INOUTLANEGAP + getLeftInLane().h/2, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getLeftInLane().h/2)
-    setRightFlipperDim(10, 75, BOARDSTARTPOS[1] - INOUTLANEGAP - getRightInLane().h/2 + BOARDWIDTHPIXELS, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS + getRightInLane().h/2)
     
-    setLeftFlipperDim(35, 75, 135, 945)
-    setRightFlipperDim(35, 75, 325, 945)
-        
-    setPlungerFeedDim(BOARDHEIGHTPIXELS, 10, BOARDSTARTPOS[1] + BOARDWIDTHPIXELS + INOUTLANEGAP, BOARDSTARTPOS[2] + BOARDHEIGHTPIXELS/2)
-
-    -- initBoardState(PEGSIZEPIXELS, world)
+    setLeftFlipperDim(34, 85, 135, 950)
+    setRightFlipperDim(34, 85, 325, 950)
+    
     initBall(world, 730, 710, 10)
-    -- initLeftWall(world)
-    -- initRightWall(world)
-    
-    -- initCeiling(world)
-    -- initLeftInLane(world)
-    -- initLeftOutLane(world)
-    -- initRightInLane(world)
-    -- initRightOutLane(world)
-    -- initPlungerFeed(world)
-
     initFlippers(world)
     initBumper(world, 250, 400)
     initBumper(world, 300, 450)
     initBumper(world, 350, 400)
+    initBumper(world, 150, 200)
+    initBumper(world, 100, 250)
+    initBumper(world, 200, 300)
 
     initTable(world, BOARDSTARTPOS[1], BOARDSTARTPOS[2])
 
@@ -196,7 +170,7 @@ end
 
 -----------------------------------------------------
 --
--- World Function callbacks
+-- World and Collisions Function callbacks
 --
 -- Functions that run when specific tagged events 
 -- occur in the world.
@@ -215,6 +189,9 @@ function beginContact(fixture_a, fixture_b, contact)
         
     elseif object_a == 'bumper' or object_b == 'bumper' then
         addToScoreBoard(100)
+        audio.bumper:stop()
+        audio.bumper:play()
+        -- soundsssss = love.audio.play(bumperSound2)
         -- ballVelX, ballVelY = getBallVelocity(1)
         -- bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)
         -- ballSetVelocityWComponents(1, bumperVelX, bumperVelY)
@@ -229,7 +206,7 @@ function endContact(fixture_a, fixture_b, coll)
         ballVelX, ballVelY = getBallVelocity(1)
         bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)
         ballSetVelocityWComponents(1, bumperVelX, bumperVelY)
-        audio.bumper:play()
+        
     end
     
 end
