@@ -59,7 +59,7 @@ function love.load()
         bumper = love.audio.newSource("audio/Bumper2.wav", "static")
     }
     
-    -- Setup the world and its fucntion callbacks
+    -- Setup the world and its function callbacks
     world = love.physics.newWorld(XGRAVITY, YGRAVITY, true)
     world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
@@ -68,7 +68,7 @@ function love.load()
     setLeftFlipperDim(34, 85, 135, 950)
     setRightFlipperDim(34, 85, 325, 950)
     
-    initBall(world, 730, 710, 10)
+    initBall(world, 476, 872, 10)
     initFlippers(world)
     initBumper(world, 250, 400)
     initBumper(world, 300, 450)
@@ -89,24 +89,14 @@ function love.load()
     love.graphics.setCanvas(backgroundObjects)
         love.graphics.clear(0, 0, 0, 0)
         love.graphics.setBlendMode("alpha")
-        -- drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
-        -- drawLeftWall()
-        -- drawRightWall()
-        
-        -- drawCeiling()
-        -- drawLeftInLane()
-        -- drawLeftOutLane()
-        -- drawRightInLane()
-        -- drawRightOutLane()
-        -- drawPlungerFeed()
-        -- drawButtons()
+
         drawTable()
         love.graphics.setCanvas()
 
     
     -- Canvas for drawing the pegboard locations
     love.graphics.setCanvas(pegLocCanvas)
-     love.graphics.clear(0, 0, 0, 0)
+        love.graphics.clear(0, 0, 0, 0)
         love.graphics.setBlendMode("alpha")
         -- drawPegLocations(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
         love.graphics.setCanvas()
@@ -191,10 +181,6 @@ function beginContact(fixture_a, fixture_b, contact)
         addToScoreBoard(100)
         audio.bumper:stop()
         audio.bumper:play()
-        -- soundsssss = love.audio.play(bumperSound2)
-        -- ballVelX, ballVelY = getBallVelocity(1)
-        -- bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)
-        -- ballSetVelocityWComponents(1, bumperVelX, bumperVelY)
     end
 end
 
@@ -233,16 +219,39 @@ collumn = nil
 
 local rightFlipperAngle = 0
 local leftFlipperAngle = 0
+local ballsRemaining = 3
 dt = 1/60
 function love.update(dt)
     -- Control frame rate
     
     -- sleep(DT, FPSCAP)
 
-    updateBallsLocations()
+    leftFlipperX, leftFlipperY = getLeftFlipperPos()
+    rightFlipperX, rightFlipperY = getRightFlipperPos()
     updateLeftFlipper()
     updateRightFlipper()
     
+    -- perform actions if there is a ball on screen
+    if getNumBalls() ~= 0 then
+
+        updateBallsLocations()
+        ballPosX, ballPosY = getBallPos(1)
+
+        if ballPosY > WINDOWY then
+            destroyBall(1)
+            -- resetBallPosition()
+            ballsRemaining = ballsRemaining - 1
+            if ballsRemaining > 0 then
+                initBall(world, 476, 872, 10)
+            end
+        end
+
+        -- Plunge ball
+        if spaceKeyCheck() == 1 then
+            ballSetVelocityWAngle(1, 1000, 270)
+        end
+    end
+
 
     cursorX, cursorY = getCursorPosition()
     clickX, clickY = getMousePosOnClick()
@@ -254,17 +263,6 @@ function love.update(dt)
         end
     end
 
-    ballPosX, ballPosY = getBallPos(1)
-    leftFlipperX, leftFlipperY = getLeftFlipperPos()
-    rightFlipperX, rightFlipperY = getRightFlipperPos()
-
-    if spaceKeyCheck() == 1 then
-        ballSetVelocityWAngle(1, 1000, 270)
-    end
-
-    if ballPosY > WINDOWY then
-        resetBallPosition()
-    end
 
     world:update(dt, 10, 10)
     
@@ -292,22 +290,20 @@ function love.draw()
     drawScoreBoard()
 
     love.graphics.draw(backgroundObjects, 0, 0)
-    -- drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
-    -- drawPegLocations(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
-    -- love.graphics.draw(pegLocCanvas, 0, 0)
+
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 0, 20)
 
     -- love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
     love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 0, 40)
 
     love.graphics.print("Collision ..." .. tostring(printdata), 0, 60)
+
+    love.graphics.print("Balls of Field: " .. tostring(getNumBalls()), 0, 70)
     
-    love.graphics.print("Screen dimensions: " .. tostring(sx) .. ", " .. tostring(sy), 0, 80)
-    printdata = ""
+    love.graphics.print("Balls Remaining: " .. tostring(ballsRemaining), 0, 80)
+
 
     -- return to normal scale to prevent crashing
     love.graphics.pop()
-
-   
 
 end

@@ -57,6 +57,10 @@ function getBallPos(ballIndex)
     return balls[ballIndex].x, balls[ballIndex].y
 end
 
+function getNumBalls()
+    return #balls
+end
+
 function ballApplyForce(ballIndex, forceVal, angle)
     radAngle = math.rad(angle)    
     iy = math.sin(radAngle)*forceVal
@@ -99,4 +103,9 @@ function resetBallToRandomPos(xMin, xMax, yMin, yMax)
         balls[i].body:setY(balls[i].y)
          
     end
+end
+
+function destroyBall(i)
+    balls[i].body:release()
+    table.remove(balls,i)
 end
