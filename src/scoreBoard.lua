@@ -1,3 +1,13 @@
+-----------------------------------------------------
+--
+-- Scoreboard
+-- 
+-- This file will contain the code for updating the
+-- scroreboard and any animations involved with it
+--
+-----------------------------------------------------
+
+
 local scoreBoard = {
 score = 0,
 x = 0,

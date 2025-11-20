@@ -41,6 +41,7 @@ function love.load()
     bumpers = require('bumpers')
     pinBallTable = require('pinBallTable')
     scoreBoard = require("scoreBoard")
+    events = require("events")
 
     -- Init the in game timer
     timeStart = love.timer.getTime()
@@ -61,6 +62,8 @@ function love.load()
     
     -- Setup the world and its function callbacks
     world = love.physics.newWorld(XGRAVITY, YGRAVITY, true)
+    gameEngineVars.world = world
+    world:setSleepingAllowed(true)
     world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     -- Run initialization functions
@@ -78,6 +81,7 @@ function love.load()
     initBumper(world, 200, 300)
 
     initTable(world, BOARDSTARTPOS[1], BOARDSTARTPOS[2])
+
 
 
 ----------------------------------------------------------------
@@ -220,19 +224,22 @@ collumn = nil
 local rightFlipperAngle = 0
 local leftFlipperAngle = 0
 local ballsRemaining = 3
+local bumpersHit = 0
+local targetsHit = 0
+local ballsActive = 0
 dt = 1/60
+local worldAwake = true
 function love.update(dt)
     -- Control frame rate
     
     -- sleep(DT, FPSCAP)
 
-    leftFlipperX, leftFlipperY = getLeftFlipperPos()
-    rightFlipperX, rightFlipperY = getRightFlipperPos()
     updateLeftFlipper()
     updateRightFlipper()
     
     -- perform actions if there is a ball on screen
-    if getNumBalls() ~= 0 then
+    ballsActive = getNumBalls()
+    if ballsActive ~= 0 then
 
         updateBallsLocations()
         ballPosX, ballPosY = getBallPos(1)
@@ -259,12 +266,22 @@ function love.update(dt)
 
     if checkMouseClick() then
         if clickX <= 75 and clickX >= 25 and clickY <= 125 and clickY >= 75 then
-            resetBallPosition()
+            worldAwake = not worldAwake
+            -- setAllBallSleep(ballSleep)
         end
     end
 
+    gameEngineVars.score = score
+    gameEngineVars.ballsRemaining = ballsRemaining
+    gameEngineVars.ballsActive = ballsActive
+    gameEngineVars.bumpersHit = bumpersHit
+    gameEngineVars.targetsHit = targetsHit
 
-    world:update(dt, 10, 10)
+    eventCheck()
+
+    if not gameEngineVars.worldSleep then
+        world:update(dt, 10, 10)
+    end
     
 end
 
@@ -278,12 +295,12 @@ end
 --
 -----------------------------------------------------
 function love.draw()
-    -- set scale to draw at baed on on the screen resoltion and window size
+    -- set scale to draw at based on on the screen resoltion and window size
     love.graphics.push()
     love.graphics.scale( sy, sy )
 
     -- draw objects
-    drawBalls(world)
+    drawBalls()
     drawLeftFlipper(leftFlipperAngle)
     drawRightFlipper(rightFlipperAngle)
     drawBumpers(world)
@@ -298,10 +315,11 @@ function love.draw()
 
     love.graphics.print("Collision ..." .. tostring(printdata), 0, 60)
 
-    love.graphics.print("Balls of Field: " .. tostring(getNumBalls()), 0, 70)
+    love.graphics.print("Balls on Field: " .. tostring(ballsActive), 0, 70)
     
     love.graphics.print("Balls Remaining: " .. tostring(ballsRemaining), 0, 80)
-
+    getNumEvents()
+    eventResolve()
 
     -- return to normal scale to prevent crashing
     love.graphics.pop()

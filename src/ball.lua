@@ -31,7 +31,7 @@ function initBall(world, x, y)
 end
 
 
-function drawBalls(world)
+function drawBalls()
     for i, ball in ipairs(balls) do
         love.graphics.setColor(ball.color)
         love.graphics.circle("fill", ball.x, ball.y, ball.radius)
@@ -108,4 +108,10 @@ end
 function destroyBall(i)
     balls[i].body:release()
     table.remove(balls,i)
+end
+
+function setAllBallSleep(sleep)
+    for i, ball in ipairs(balls) do
+        balls[i].body:setAwake(sleep)
+    end
 end
