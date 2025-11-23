@@ -9,16 +9,16 @@ balls = {}
 function initBall(xInit, yInit)
     local world = getWorld()
     table.insert(balls, {
-    x = xInit,
-    y = yInit,
-    radius = 10,
-    color = {1,0,0},
-    bounce = 0.5,
-    body = love.physics.newBody(world, xInit, yInit, "dynamic"),
-    shape = nil,
-    fixture = nil,
-    mass = 1000
-})
+        x = xInit,
+        y = yInit,
+        radius = 10,
+        color = {1,0,0},
+        bounce = 0.5,
+        body = love.physics.newBody(world, xInit, yInit, "dynamic"),
+        shape = nil,
+        fixture = nil,
+        mass = 1000
+    })
     for i, ball in ipairs(balls) do
         balls[#balls].body = love.physics.newBody(world, xInit, yInit, "dynamic")
         balls[#balls].shape = love.physics.newCircleShape(balls[#balls].radius)
@@ -38,17 +38,18 @@ function spawnBallAtPlunger()
     local yInit = 872
     local world = getWorld()
     table.insert(balls, {
-    x = xInit,
-    y = yInit,
-    radius = 10,
-    color = {1,0,0},
-    bounce = 0.5,
-    body = love.physics.newBody(world, xInit, yInit, "dynamic"),
-    shape = nil,
-    fixture = nil,
-    mass = 1000
-})
-    for i, ball in ipairs(balls) do
+        x = xInit,
+        y = yInit,
+        radius = 10,
+        color = {1,0,0},
+        bounce = 0.5,
+        body = love.physics.newBody(world, xInit, yInit, "dynamic"),
+        shape = nil,
+        fixture = nil,
+        mass = 1000
+    })
+    
+    -- for i, ball in ipairs(balls) do
         balls[#balls].body = love.physics.newBody(world, xInit, yInit, "dynamic")
         balls[#balls].shape = love.physics.newCircleShape(balls[#balls].radius)
         balls[#balls].fixture = love.physics.newFixture(balls[#balls].body, balls[#balls].shape,100)
@@ -58,7 +59,7 @@ function spawnBallAtPlunger()
         balls[#balls].fixture:setUserData("ball")
         balls[#balls].fixture:setCategory(1)  -- set to category 1 for balls
         
-    end
+    -- end
 end
 
 function drawBalls()
@@ -99,18 +100,40 @@ function ballApplyForce(ballIndex, forceVal, angle)
 end
 
 function ballSetVelocityWAngle(ballIndex, forceVal, angle)
+    -- This function is used to set the linear velocity of a ball
+    -- with a specific angle and from the index of the balls table
     radAngle = math.rad(angle)    
     iy = math.sin(radAngle)*forceVal
     ix = math.cos(radAngle)*forceVal
     balls[ballIndex].body:setLinearVelocity(ix, iy)
 end
 
+function ballSetBodyVelocityWAngle(ballBody, forceVal, angle)
+    -- This function is used to set the linear velocity of a ball
+    -- with a specific angle and from the index of the balls table
+    radAngle = math.rad(angle)    
+    iy = math.sin(radAngle)*forceVal
+    ix = math.cos(radAngle)*forceVal
+    ballBody:setLinearVelocity(ix, iy)
+end
+
 function ballSetVelocityWComponents(ballIndex, ix, iy)
     balls[ballIndex].body:setLinearVelocity(ix, iy)
 end
 
+function ballSetBodyVelocityWComponents(ballBody, ix, iy)
+    -- This function is used to set the linear velocity of a ball's
+    -- body with a set of x and y vel components
+    ballBody:setLinearVelocity(ix, iy)
+end
+
 function getBallVelocity(ballIndex)
     return balls[ballIndex].body:getLinearVelocity()
+end
+
+
+function getBallVelocityFromBody(ballBody)
+    return ballBody:getLinearVelocity()
 end
 
 

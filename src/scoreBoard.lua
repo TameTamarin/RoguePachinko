@@ -7,6 +7,7 @@
 --
 -----------------------------------------------------
 
+events = require("events")
 
 local scoreBoard = {
 score = 0,
@@ -16,13 +17,13 @@ y = 0
 
 
 function drawScoreBoard()
-    love.graphics.print('Score: ' .. tostring(scoreBoard.score), scoreBoard.x, scoreBoard.y)
+    love.graphics.print('Score: ' .. tostring(gameEngineVars.score), scoreBoard.x, scoreBoard.y)
 end
 
 function addToScoreBoard(value)
-    scoreBoard.score = scoreBoard.score + value
+    gameEngineVars.score = gameEngineVars.score + value
 end
 
 function resetScoreBoard()
-    scoreBoard.score = 0
+    gameEngineVars.score = 0
 end

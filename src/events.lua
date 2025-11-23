@@ -32,7 +32,10 @@ gameEngineVars = {
     ballsActive = 0,
     bumpersHit = 0,
     targetsHit = 0,
-    world = nil
+    world = nil,
+    windowX = 0,
+    windowY = 0,
+    gameOver = false
 }
 
 eventStack = {}
@@ -40,6 +43,7 @@ eventStack = {}
 -- Check that an event has occurred
 --------------------------------------------------------
 function eventCheck()
+    ballActiveCheck()
     gameOverCheck()
 
 end
@@ -87,6 +91,33 @@ function queueEvent(event)
     table.insert(eventStack, event)
 end
 
+
+function ballActiveCheck()
+    -- We only want to check the balls position if there is a ball active
+    if gameEngineVars.ballsActive ~= 0 then
+
+        updateBallsLocations()
+        ballPosX, ballPosY = getBallPos(1)
+
+        if ballPosY > gameEngineVars.windowY then
+            destroyBall(1)
+            gameEngineVars.ballsActive = getNumBalls()
+            -- resetBallPosition()
+            if gameEngineVars.ballsActive == 0 then
+                gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
+                if gameEngineVars.ballsRemaining > 0 then
+                    spawnBallAtPlunger()
+                end
+            end
+            
+        end
+
+        -- -- Plunge ball
+        -- if spaceKeyCheck() == 1 then
+        --     ballSetVelocityWAngle(1, 1000, 270)
+        -- end
+    end
+end
 --------------------------------------------------------
 --
 -- Events to be called
@@ -96,9 +127,12 @@ end
 ---------------------------------------------------------
 
 function newGame()
+    -- Start a new game by resetting score, balls remaining,
+    -- and spawning a new ball
     gameEngineVars.score = 0
     gameEngineVars.worldSleep = false
     gameEngineVars.ballsRemaining = 3
+    gameEngineVars.gameOver = false
     table.insert(eventStack, spawnBallAtPlunger) 
 end
 
@@ -109,6 +143,7 @@ function gameOver()
     love.graphics.print("Game Over", 300, 80)
     love.graphics.print("New Game", 300, 150)
     gameEngineVars.worldSleep = true
+    gameEngineVars.gameOver = true
     love.event.clear()
     if spaceKeyCheck() == 1 then
         table.insert(eventStack, newGame)

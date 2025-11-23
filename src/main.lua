@@ -55,6 +55,8 @@ function love.load()
     sx = limitsX/WINDOWX
     sy = limitsY/WINDOWY
     success = love.window.setMode(WINDOWX*sy, WINDOWY*sy, {vsync = 1})
+    gameEngineVars.windowX = WINDOWX
+    gameEngineVars.windowY = WINDOWY
 
     -- Load auido files
     audio = {
@@ -85,7 +87,9 @@ function love.load()
     initBumper(100, 250)
     initBumper(200, 300)
 
+    initPlunger()
     initTable(BOARDSTARTPOS[1], BOARDSTARTPOS[2])
+    
 
     queueEvent(newGame)
 
@@ -193,19 +197,44 @@ function beginContact(fixture_a, fixture_b, contact)
         audio.bumper:stop()
         audio.bumper:play()
     end
+
+
 end
 
 
 function endContact(fixture_a, fixture_b, coll)
     local object_a = fixture_a:getUserData()
     local object_b = fixture_b:getUserData()
+
+    -- Check for bumper collisions
     if object_a == 'bumper' or object_b == 'bumper' then
-        ballVelX, ballVelY = getBallVelocity(1)
-        bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)
-        ballSetVelocityWComponents(1, bumperVelX, bumperVelY)
-        
+        local ballBody = nil
+        if object_a == 'ball' then
+            ballBody = fixture_a:getBody()
+            ballVelX, ballVelY = getBallVelocityFromBody(ballBody)
+            bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)
+            ballSetBodyVelocityWComponents(ballBody, bumperVelX, bumperVelY)
+        end
+        if object_b == 'ball' then
+            ballBody = fixture_b:getBody()
+            ballVelX, ballVelY = getBallVelocityFromBody(ballBody)
+            bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)
+            ballSetBodyVelocityWComponents(ballBody, bumperVelX, bumperVelY)
+        end
     end
-    
+
+    -- Check for plunger collisions
+    if object_a == 'plunger' or object_b == 'plunger' then
+        local ballBody = nil
+        if object_a == 'ball' then
+            ballBody = fixture_a:getBody()
+            ballSetBodyVelocityWAngle(ballBody, 1000, 270)
+        end
+        if object_b == 'ball' then
+            ballBody = fixture_b:getBody()
+            ballSetBodyVelocityWAngle(ballBody, 1000 , 270)
+        end
+    end
 end
 
 function preSolve(a, b, coll)
@@ -239,25 +268,25 @@ function love.update(dt)
     
     -- perform actions if there is a ball on screen
     gameEngineVars.ballsActive = getNumBalls()
-    if gameEngineVars.ballsActive ~= 0 then
+    -- if gameEngineVars.ballsActive ~= 0 then
 
-        updateBallsLocations()
-        ballPosX, ballPosY = getBallPos(1)
+    --     updateBallsLocations()
+    --     ballPosX, ballPosY = getBallPos(1)
 
-        if ballPosY > WINDOWY then
-            destroyBall(1)
-            -- resetBallPosition()
-            gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
-            if gameEngineVars.ballsRemaining > 0 then
-                spawnBallAtPlunger()
-            end
-        end
+    --     if ballPosY > WINDOWY then
+    --         destroyBall(1)
+    --         -- resetBallPosition()
+    --         gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
+    --         if gameEngineVars.ballsRemaining > 0 then
+    --             spawnBallAtPlunger()
+    --         end
+    --     end
 
-        -- Plunge ball
-        if spaceKeyCheck() == 1 then
-            ballSetVelocityWAngle(1, 1000, 270)
-        end
-    end
+        -- -- Plunge ball
+        -- if spaceKeyCheck() == 1 then
+        --     ballSetVelocityWAngle(1, 1000, 270)
+        -- end
+    -- end
 
 
     cursorX, cursorY = getCursorPosition()
@@ -269,8 +298,6 @@ function love.update(dt)
             -- event to occur on mouse click
         end
     end
-
-    gameEngineVars.score = score
 
     eventCheck()
 
@@ -303,6 +330,7 @@ function love.draw()
     drawRightFlipper(rightFlipperAngle)
     drawBumpers()
     drawScoreBoard()
+    drawPlunger()
 
     love.graphics.draw(backgroundObjects, 0, 0)
 
@@ -311,7 +339,7 @@ function love.draw()
     -- love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
     love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 0, 40)
 
-    love.graphics.print("Collision ..." .. tostring(printdata), 0, 60)
+    love.graphics.print("Collision:" .. tostring(printdata), 0, 60)
 
     love.graphics.print("Balls on Field: " .. tostring(gameEngineVars.ballsActive), 0, 70)
     
