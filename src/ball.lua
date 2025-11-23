@@ -1,24 +1,26 @@
 require("math")
+world = require("world")
 utilities = require('utilities')
 
 
 balls = {}
-    
 
-function initBall(world, x, y)
+
+function initBall(xInit, yInit)
+    local world = getWorld()
     table.insert(balls, {
-    x = x,
-    y = y,
+    x = xInit,
+    y = yInit,
     radius = 10,
     color = {1,0,0},
     bounce = 0.5,
-    body = love.physics.newBody(world, x, y, "dynamic"),
+    body = love.physics.newBody(world, xInit, yInit, "dynamic"),
     shape = nil,
     fixture = nil,
     mass = 1000
 })
     for i, ball in ipairs(balls) do
-        balls[#balls].body = love.physics.newBody(world, x, y, "dynamic")
+        balls[#balls].body = love.physics.newBody(world, xInit, yInit, "dynamic")
         balls[#balls].shape = love.physics.newCircleShape(balls[#balls].radius)
         balls[#balls].fixture = love.physics.newFixture(balls[#balls].body, balls[#balls].shape,100)
         balls[#balls].body:setMass(balls[#balls].mass)
@@ -30,6 +32,34 @@ function initBall(world, x, y)
     end
 end
 
+
+function spawnBallAtPlunger()
+    local xInit = 476
+    local yInit = 872
+    local world = getWorld()
+    table.insert(balls, {
+    x = xInit,
+    y = yInit,
+    radius = 10,
+    color = {1,0,0},
+    bounce = 0.5,
+    body = love.physics.newBody(world, xInit, yInit, "dynamic"),
+    shape = nil,
+    fixture = nil,
+    mass = 1000
+})
+    for i, ball in ipairs(balls) do
+        balls[#balls].body = love.physics.newBody(world, xInit, yInit, "dynamic")
+        balls[#balls].shape = love.physics.newCircleShape(balls[#balls].radius)
+        balls[#balls].fixture = love.physics.newFixture(balls[#balls].body, balls[#balls].shape,100)
+        balls[#balls].body:setMass(balls[#balls].mass)
+        balls[#balls].body:setFixedRotation(true)
+        balls[#balls].fixture:setRestitution(balls[#balls].bounce)
+        balls[#balls].fixture:setUserData("ball")
+        balls[#balls].fixture:setCategory(1)  -- set to category 1 for balls
+        
+    end
+end
 
 function drawBalls()
     for i, ball in ipairs(balls) do

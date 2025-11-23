@@ -1,14 +1,13 @@
 utilities = require('utilities')
+world = require("world")
 
-local world
 local bodies = {}
 local fixtures = {}
 local radius = 1
 
-
-
-function initTable(world, xOffset, yOffset)
+function initTable(xOffset, yOffset)
     local points = load_xy_from_txt("edge_coordinates.txt")
+    local world = getWorld()
     for _, pt in ipairs(points) do
         -- Create a static body at each point
         local body = love.physics.newBody(world, pt.x + xOffset, pt.y + yOffset, "static")

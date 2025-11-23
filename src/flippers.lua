@@ -1,3 +1,4 @@
+world = require("world")
 utilities = require('utilities')
 
 
@@ -70,7 +71,9 @@ end
 -- Initialization of each flipper
 --
 ----------------------------------------------------------------
-function initFlippers(world)
+function initFlippers()
+    -- Get the world that the flippers will exist in
+    local world = getWorld()
 
     rightFlipper.anchor = love.physics.newBody(world, rightFlipper.anchorx, rightFlipper.anchory, "static")
     rightFlipper.body = love.physics.newBody(world, rightFlipper.anchorx - rightFlipper.w/3, rightFlipper.anchory, "dynamic")
@@ -117,7 +120,8 @@ function initFlippers(world)
     leftFlipper.fixture:setMask(3)  -- ignore collisions with walls (category 3)
 end
 
-function initSpnningObject(world)
+function initSpnningObject()
+    local world = getWorld()
     leftFlipper.anchor = love.physics.newBody(world, leftFlipper.anchorx, leftFlipper.anchory, "static")
     leftFlipper.body = love.physics.newBody(world, leftFlipper.anchorx - leftFlipper.w/2 + leftFlipper.anchorRadius, leftFlipper.anchory + leftFlipper.h/2 - leftFlipper.anchorRadius, "dynamic")
     -- set the flipper angle

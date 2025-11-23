@@ -1,9 +1,11 @@
 math = require("math")
+world = require("world")
 
 -- Can't use "bumpers" because for some reason it is considered a boolean value
 bumps = {}
 
-function initBumper(world, x, y)
+function initBumper(x, y)
+    local world = getWorld()
     table.insert(bumps, {
     x = x,
     y = y,
@@ -26,7 +28,7 @@ function initBumper(world, x, y)
     
 end
 
-function drawBumpers(world)
+function drawBumpers()
     for i, bumper in ipairs(bumps) do
         love.graphics.setColor(bumper.color)
         love.graphics.circle("fill", bumper.x, bumper.y, bumper.radius)
