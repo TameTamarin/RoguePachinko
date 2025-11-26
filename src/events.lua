@@ -94,30 +94,13 @@ end
 
 function ballActiveCheck()
     -- We only want to check the balls position if there is a ball active
+    gameEngineVars.ballsActive = getNumBalls()
     if gameEngineVars.ballsActive ~= 0 then
 
-        updateBallsLocations()
-        ballPosX, ballPosY = getBallPos(1)
-
-        if ballPosY > gameEngineVars.windowY then
-            destroyBall(1)
-            gameEngineVars.ballsActive = getNumBalls()
-            -- resetBallPosition()
-            if gameEngineVars.ballsActive == 0 then
-                gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
-                if gameEngineVars.ballsRemaining > 0 then
-                    spawnBallAtPlunger()
-                end
-            end
-            
-        end
-
-        -- -- Plunge ball
-        -- if spaceKeyCheck() == 1 then
-        --     ballSetVelocityWAngle(1, 1000, 270)
-        -- end
+        -- updateBallsLocations()
     end
 end
+
 --------------------------------------------------------
 --
 -- Events to be called
@@ -132,6 +115,9 @@ function newGame()
     gameEngineVars.score = 0
     gameEngineVars.worldSleep = false
     gameEngineVars.ballsRemaining = 3
+    -- Set to one ball active so that we do not trigger
+    -- a second ball spawn on next ball check
+    gameEngineVars.ballsActive = 1
     gameEngineVars.gameOver = false
     table.insert(eventStack, spawnBallAtPlunger) 
 end

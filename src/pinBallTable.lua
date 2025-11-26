@@ -58,3 +58,31 @@ function drawPlunger()
     love.graphics.rectangle('fill', plunger.x - plunger.w/2, plunger.y - plunger.h/2, plunger.w, plunger.h)
 end
 
+
+function initOutOfBounds()
+    local xInit = 400
+    local yInit = 1100
+    local world = getWorld()
+    outOfBounds = {
+        x = xInit,
+        y = yInit,
+        h = 10,
+        w = 1000,
+        color = {1,0,0},
+        body = nil,
+        shape = nil,
+        fixture = nil,
+        mass = 10
+    }
+  
+    outOfBounds.body = love.physics.newBody(world, xInit, yInit, "static")
+    outOfBounds.shape = love.physics.newRectangleShape(outOfBounds.w , outOfBounds.h)
+    outOfBounds.fixture = love.physics.newFixture(outOfBounds.body, outOfBounds.shape, 100)
+    outOfBounds.fixture:setUserData("outOfBounds")
+end
+
+function drawOutOfBounds()
+    outOfBounds.x, outOfBounds.y = outOfBounds.body:getPosition()
+    love.graphics.rectangle('fill', outOfBounds.x - outOfBounds.w/2, outOfBounds.y - outOfBounds.h/2, outOfBounds.w, outOfBounds.h)
+end
+

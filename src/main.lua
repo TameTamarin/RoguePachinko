@@ -20,6 +20,8 @@ YGRAVITY = 500
 BOARDSTARTPOS = {0, 100}
 BALLWIDTH = 50
 
+
+
 -----------------------------------------------------
 --
 -- Load Function callback
@@ -31,18 +33,19 @@ BALLWIDTH = 50
 function love.load()
     -- load in submodules
     require("math")
-    world = require("world")
-    timing = require('timing')
-    keyCommands = require('keyCommands')
-    cursor = require('cursor')
-    board = require('board')
-    ball = require('ball')
-    boardElements = require('flippers')
-    utilities = require('utilities')
-    bumpers = require('bumpers')
-    pinBallTable = require('pinBallTable')
-    scoreBoard = require("scoreBoard")
-    events = require("events")
+    local world = require("world")
+    local timing = require('timing')
+    local keyCommands = require('keyCommands')
+    local cursor = require('cursor')
+    local board = require('board')
+    local ball = require('ball')
+    local boardElements = require('flippers')
+    local utilities = require('utilities')
+    local bumpers = require('bumpers')
+    local pinBallTable = require('pinBallTable')
+    local scoreBoard = require("scoreBoard")
+    local events = require("events")
+    local utf8 = require("utf8")
 
     -- Init the in game timer
     timeStart = love.timer.getTime()
@@ -89,6 +92,7 @@ function love.load()
 
     initPlunger()
     initTable(BOARDSTARTPOS[1], BOARDSTARTPOS[2])
+    initOutOfBounds()
     
 
     queueEvent(newGame)
@@ -173,6 +177,7 @@ function love.run()
 end
 
 
+
 -----------------------------------------------------
 --
 -- World and Collisions Function callbacks
@@ -198,6 +203,32 @@ function beginContact(fixture_a, fixture_b, contact)
         audio.bumper:play()
     end
 
+    if object_a == "outOfBounds" or object_b == "outOfBounds" then
+        if object_a == "ball" then
+            ballBody = fixture_a:getBody()
+            ballBody:release()
+            fixture_a:destroy()
+            for i = 1, getNumBalls() do
+                local success, result = pcall(getBallPos, i)
+                if success == false then
+                    table.remove(balls,i)
+                end
+            end 
+            -- need to now delete the ball from the ball array
+        end
+        if object_b == "ball" then
+            ballBody = fixture_b:getBody()
+            ballBody:release()
+            fixture_b:destroy()
+            for i = 1, getNumBalls() do
+                local success, result = pcall(getBallPos, i)
+                if success == false then
+                    table.remove(balls,i)
+                end
+            end
+        end
+        
+    end
 
 end
 
@@ -235,6 +266,18 @@ function endContact(fixture_a, fixture_b, coll)
             ballSetBodyVelocityWAngle(ballBody, 1000 , 270)
         end
     end
+
+    if object_a == "outOfBounds" or object_b == "outOfBounds" then
+        -- After colliding with out of bounds, check to see if respawn allowed
+        gameEngineVars.ballsActive = getNumBalls()
+        if gameEngineVars.ballsActive == 0 then
+            gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
+            if gameEngineVars.ballsRemaining > 0 then
+                table.insert(eventStack, spawnBallAtPlunger)
+            end
+        end
+    end
+
 end
 
 function preSolve(a, b, coll)
@@ -331,6 +374,7 @@ function love.draw()
     drawBumpers()
     drawScoreBoard()
     drawPlunger()
+    drawOutOfBounds()
 
     love.graphics.draw(backgroundObjects, 0, 0)
 
