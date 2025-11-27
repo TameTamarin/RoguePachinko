@@ -96,7 +96,7 @@ end
 function ballActiveCheck()
     -- We only want to check the balls position if there is a ball active
     gameEngineVars.ballsActive = getNumBalls()
-    if gameEngineVars.ballsActive ~= 0 and not gameEngineVars.updateSleep then
+    if gameEngineVars.ballsActive ~= 0 and gameEngineVars.updateSleep == false then
 
         updateBallsLocations()
     end

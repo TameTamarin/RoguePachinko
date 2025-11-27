@@ -78,7 +78,7 @@ function love.load()
     setRightFlipperDim(34, 85, 325, 950)
 
     -- dt is the amount of time to advance the physics simulation
-    local dt = 1/90
+    local dt = 1/60
     initWorld(XGRAVITY, YGRAVITY, dt)
     gameEngineVars.world = getWorld()
     
@@ -206,7 +206,7 @@ function beginContact(fixture_a, fixture_b, contact)
 
     if object_a == "outOfBounds" or object_b == "outOfBounds" then
         -- Pause the update while we remove the ball
-        gameEngineVars.updateSleep = true
+        -- gameEngineVars.updateSleep = true
 
         -- get the fixture associated with the ball
         tempFixture = nil
@@ -223,14 +223,14 @@ function beginContact(fixture_a, fixture_b, contact)
         ballBody:release()
         tempFixture:destroy()
         for i = 1, getNumBalls() do
-            local success, result = pcall(getBallPos, i)
-            if success == true then
+            local success, result = pcall(getBallVelocity, i)
+            if success == false then
                 table.remove(balls,i)
             end
         end
 
         -- Reenable the update after ball removal
-        gameEngineVars.updateSleep = false
+        -- gameEngineVars.updateSleep = false
         
     end
 
