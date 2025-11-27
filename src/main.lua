@@ -57,7 +57,8 @@ function love.load()
     limitsX, limitsY = love.window.getDesktopDimensions()
     sx = limitsX/WINDOWX
     sy = limitsY/WINDOWY
-    success = love.window.setMode(WINDOWX*sy, WINDOWY*sy, {vsync = 1})
+    -- set the window size to 95% of the screen size multiplied by the game window size
+    success = love.window.setMode(WINDOWX*sy*0.95, WINDOWY*sy*0.95, {vsync = 1})
     gameEngineVars.windowX = WINDOWX
     gameEngineVars.windowY = WINDOWY
 
@@ -77,7 +78,7 @@ function love.load()
     setRightFlipperDim(34, 85, 325, 950)
 
     -- dt is the amount of time to advance the physics simulation
-    local dt = 1/120
+    local dt = 1/90
     initWorld(XGRAVITY, YGRAVITY, dt)
     gameEngineVars.world = getWorld()
     
@@ -204,29 +205,32 @@ function beginContact(fixture_a, fixture_b, contact)
     end
 
     if object_a == "outOfBounds" or object_b == "outOfBounds" then
+        -- Pause the update while we remove the ball
+        gameEngineVars.updateSleep = true
+
+        -- get the fixture associated with the ball
+        tempFixture = nil
         if object_a == "ball" then
-            ballBody = fixture_a:getBody()
-            ballBody:release()
-            fixture_a:destroy()
-            for i = 1, getNumBalls() do
-                local success, result = pcall(getBallPos, i)
-                if success == false then
-                    table.remove(balls,i)
-                end
-            end 
-            -- need to now delete the ball from the ball array
+            tempFixture = fixture_a
         end
+
         if object_b == "ball" then
-            ballBody = fixture_b:getBody()
-            ballBody:release()
-            fixture_b:destroy()
-            for i = 1, getNumBalls() do
-                local success, result = pcall(getBallPos, i)
-                if success == false then
-                    table.remove(balls,i)
-                end
+            tempFixture = fixture_b
+        end
+
+        -- remove the ball from the world
+        ballBody = tempFixture:getBody()
+        ballBody:release()
+        tempFixture:destroy()
+        for i = 1, getNumBalls() do
+            local success, result = pcall(getBallPos, i)
+            if success == true then
+                table.remove(balls,i)
             end
         end
+
+        -- Reenable the update after ball removal
+        gameEngineVars.updateSleep = false
         
     end
 

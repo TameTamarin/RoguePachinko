@@ -26,6 +26,7 @@ ball = require("ball")
 -- and the engine.
 gameEngineVars = {
     worldSleep = false,
+    updateSleep = false,
     ignoreNewEvents = false,
     score = 0,
     ballsRemaining = 3,
@@ -95,9 +96,9 @@ end
 function ballActiveCheck()
     -- We only want to check the balls position if there is a ball active
     gameEngineVars.ballsActive = getNumBalls()
-    if gameEngineVars.ballsActive ~= 0 then
+    if gameEngineVars.ballsActive ~= 0 and not gameEngineVars.updateSleep then
 
-        -- updateBallsLocations()
+        updateBallsLocations()
     end
 end
 
