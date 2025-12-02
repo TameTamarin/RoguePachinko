@@ -36,7 +36,8 @@ gameEngineVars = {
     world = nil,
     windowX = 0,
     windowY = 0,
-    gameOver = false
+    gameOver = false,
+    gameReset = false
 }
 
 eventStack = {}
@@ -45,7 +46,10 @@ eventStack = {}
 --------------------------------------------------------
 function eventCheck()
     ballActiveCheck()
-    gameOverCheck()
+    if not gameEngineVars.gameOver then
+        gameOverCheck()
+    end
+    
 
 end
 
@@ -62,7 +66,9 @@ function getNumEvents()
     love.graphics.print("Num Events: " .. #eventStack, 300, 70)
 end
 
-
+function queueEvent(event)
+    table.insert(eventStack, event)
+end
 --------------------------------------------------------
 --
 -- Event checks
@@ -78,6 +84,7 @@ end
 function gameOverCheck()
     if gameEngineVars.ballsRemaining == 0 and gameEngineVars.ballsActive == 0 then
             table.insert(eventStack, gameOver)
+            writeToLogFile("gameOver", nil)
     end
 end
 
@@ -88,10 +95,6 @@ function resetBallCheck()
     end
 end
 
-function queueEvent(event)
-    table.insert(eventStack, event)
-end
-
 
 function ballActiveCheck()
     -- We only want to check the balls position if there is a ball active
@@ -99,6 +102,13 @@ function ballActiveCheck()
     if gameEngineVars.ballsActive ~= 0 and gameEngineVars.updateSleep == false then
 
         updateBallsLocations()
+    end
+end
+
+function endGameCheck()
+    if gameEngineVars.ballsRemaining == 0 and gameEngineVars.ballsActive == 0 then
+            table.insert(eventStack, newGame)
+
     end
 end
 
@@ -113,6 +123,8 @@ end
 function newGame()
     -- Start a new game by resetting score, balls remaining,
     -- and spawning a new ball
+    -- table.remove(eventStack, 1)
+    -- table.remove(eventStack, 1)
     gameEngineVars.score = 0
     gameEngineVars.worldSleep = false
     gameEngineVars.ballsRemaining = 3
@@ -120,21 +132,30 @@ function newGame()
     -- a second ball spawn on next ball check
     gameEngineVars.ballsActive = 1
     gameEngineVars.gameOver = false
-    table.insert(eventStack, spawnBallAtPlunger) 
+    table.insert(eventStack, spawnBallAtPlunger)
+    -- Set the reset flag back to false after resetting the game
+    gameEngineVars.gameReset = false
+
 end
 
 
 
 function gameOver()
     -- function love.draw()
-    love.graphics.print("Game Over", 300, 80)
-    love.graphics.print("New Game", 300, 150)
-    gameEngineVars.worldSleep = true
-    gameEngineVars.gameOver = true
-    love.event.clear()
-    if spaceKeyCheck() == 1 then
-        table.insert(eventStack, newGame)
-        
+    -- Only allow for one game over event to be processed
+    if gameEngineVars.gameReset == false then
+        love.graphics.print("Game Over", 300, 80)
+        love.graphics.print("New Game", 300, 150)
+        -- gameEngineVars.worldSleep = true
+        gameEngineVars.gameOver = true
+        -- respawn ball when appropriate key is pressed
+        table.insert(eventStack, gameOver)
+        if spaceKeyCheck() == 1 then
+            table.insert(eventStack, newGame)
+            gameEngineVars.gameReset = true
+            writeToLogFile("Game Over space key pressed", nil)
+            
+        end
     end
 end
 

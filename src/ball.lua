@@ -17,7 +17,8 @@ function initBall(xInit, yInit)
         body = love.physics.newBody(world, xInit, yInit, "dynamic"),
         shape = nil,
         fixture = nil,
-        mass = 1000
+        mass = 1000,
+        friction = 0.1
     })
     for i, ball in ipairs(balls) do
         balls[#balls].body = love.physics.newBody(world, xInit, yInit, "dynamic")
@@ -26,6 +27,7 @@ function initBall(xInit, yInit)
         balls[#balls].body:setMass(balls[#balls].mass)
         balls[#balls].body:setFixedRotation(true)
         balls[#balls].fixture:setRestitution(balls[#balls].bounce)
+        balls[#balls].fixture:setFriction(balls[#balls].friction)
         balls[#balls].fixture:setUserData("ball")
         balls[#balls].fixture:setCategory(1)  -- set to category 1 for balls
         
@@ -46,7 +48,8 @@ function spawnBallAtPlunger()
         body = love.physics.newBody(world, xInit, yInit, "dynamic"),
         shape = nil,
         fixture = nil,
-        mass = 1000
+        mass = 1000,
+        friction = 0.1
     })
     
     -- for i, ball in ipairs(balls) do
@@ -56,10 +59,14 @@ function spawnBallAtPlunger()
         balls[#balls].body:setMass(balls[#balls].mass)
         balls[#balls].body:setFixedRotation(true)
         balls[#balls].fixture:setRestitution(balls[#balls].bounce)
+        balls[#balls].fixture:setFriction(balls[#balls].friction)
         balls[#balls].fixture:setUserData("ball")
         balls[#balls].fixture:setCategory(1)  -- set to category 1 for balls
         
     -- end
+
+
+    writeToLogFile("spawnBallAtPlunger", nil)
 end
 
 function drawBalls()

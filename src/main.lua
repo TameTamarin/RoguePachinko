@@ -99,6 +99,38 @@ function love.load()
     queueEvent(newGame)
 
 
+----------------------------------------------------------------
+-- Setup Log file and accompanying functions
+----------------------------------------------------------------
+
+logFileEnabled = true
+
+function initLogFile()
+    if logFileEnabled then
+        logFile = love.filesystem.newFile("gameLog.txt")
+        logFile:open("w")
+        logFile:write("Rogue Pachinko Game Log\n")
+        logFile:write("Game Started at: " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n\n")
+        --  Close log filed moved to the run function on quit
+        -- logFile:close()
+    end
+end
+
+function writeToLogFile(eventString, data)
+    if logFileEnabled then
+        logFile:write("Event: " .. eventString .. ", Data: " .. tostring(data) .. " at: " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n\n")
+    end
+end
+
+function closeLogFile()
+    if logFileEnabled then
+        logFile:write("Game Stopped at: " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n\n")
+        logFile:close()
+    end
+end
+
+-- call initLogFile()
+initLogFile()
 
 ----------------------------------------------------------------
 -- Setup Canvases for drawing background and the board
@@ -150,6 +182,8 @@ function love.run()
 			love.event.pump()
 			for name, a,b,c,d,e,f in love.event.poll() do
 				if name == "quit" then
+                    -- close log file on quit
+                    closeLogFile()
 					if not love.quit or not love.quit() then
 						return a or 0
 					end
@@ -275,9 +309,9 @@ function endContact(fixture_a, fixture_b, coll)
         -- After colliding with out of bounds, check to see if respawn allowed
         gameEngineVars.ballsActive = getNumBalls()
         if gameEngineVars.ballsActive == 0 then
-            gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
             if gameEngineVars.ballsRemaining > 0 then
                 table.insert(eventStack, spawnBallAtPlunger)
+                gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
             end
         end
     end
@@ -346,8 +380,6 @@ function love.update(dt)
         end
     end
 
-    eventCheck()
-
     
     if not gameEngineVars.worldSleep then
         -- getWorld():update(dt, 10, 10)
@@ -394,7 +426,10 @@ function love.draw()
     love.graphics.print("Balls Remaining: " .. tostring(gameEngineVars.ballsRemaining), 0, 80)
 
     getNumEvents()
-
+    
+    writeToLogFile("num active balls", gameEngineVars.ballsActive)
+    writeToLogFile("num remaining balls", gameEngineVars.ballsRemaining)
+    eventCheck()
     eventResolve()
 
     -- return to normal scale to prevent crashing

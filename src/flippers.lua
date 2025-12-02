@@ -25,7 +25,8 @@ leftFlipper = {
     upperStopAngle = -385,
     lowerStopAngle = -335,
     keyCommand = leftKeyCheck,
-    mass = 1
+    mass = 1,
+    friction = 0.5
 }
 
 rightFlipper = {
@@ -46,7 +47,8 @@ rightFlipper = {
     upperStopAngle = 25,
     lowerStopAngle = -25,
     keyCommand = rightKeyCheck,
-    mass = 1
+    mass = 1,
+    friction = 0.5
 
 }
 
@@ -87,8 +89,9 @@ function initFlippers()
     rightFlipper.anchorFixture = love.physics.newFixture(rightFlipper.anchor, rightFlipper.anchorShape, 50)
     -- create the joint that the flipper will rotate around based on the location of the anchor
     rightFlipper.joint = love.physics.newRevoluteJoint(rightFlipper.anchor, rightFlipper.body, rightFlipper.anchorx, rightFlipper.anchory, false)
-    -- set bouncyness of the flipper
+    -- set bouncyness and friction of the flipper
     rightFlipper.fixture:setRestitution(rightFlipper.bounce)
+    rightFlipper.fixture:setFriction(rightFlipper.friction)
     rightFlipper.body:setAngle(rightFlipper.lowerStopAngle * 3.14 / 180)
     rightFlipper.body:setMass(rightFlipper.mass)
     rightFlipper.anchor:setMass(rightFlipper.mass)
@@ -108,8 +111,9 @@ function initFlippers()
     leftFlipper.anchorFixture = love.physics.newFixture(leftFlipper.anchor, leftFlipper.anchorShape, 50)
     -- create the joint that the flipper will rotate around based on the location of the anchor
     leftFlipper.joint = love.physics.newRevoluteJoint(leftFlipper.anchor, leftFlipper.body, leftFlipper.anchorx, leftFlipper.anchory, false)
-    -- set bouncyness of the flipper
+    -- set bouncyness and friction of the flipper
     leftFlipper.fixture:setRestitution(leftFlipper.bounce)
+    leftFlipper.fixture:setFriction(leftFlipper.friction)
     -- set user data, tag to be used for collision detections
     leftFlipper.fixture:setUserData("leftFlipper")
     leftFlipper.body:setAngle(leftFlipper.lowerStopAngle * 3.14 / 180)
