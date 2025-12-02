@@ -139,6 +139,17 @@ function newGame()
 end
 
 
+function upgradeScreen()
+    -- Placeholder for future upgrade screen event
+    gameEngineVars.worldSleep = true
+    
+    if spaceKeyCheck() == 1 then
+        gameEngineVars.worldSleep = false
+    end
+        
+
+end
+
 
 function gameOver()
     -- function love.draw()

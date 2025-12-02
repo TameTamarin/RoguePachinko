@@ -34,11 +34,12 @@ function initBall(xInit, yInit)
     end
 end
 
-
+image = love.graphics.newImage("images/8-bit-pokeball.png")
 function spawnBallAtPlunger()
     local xInit = 476
     local yInit = 872
     local world = getWorld()
+   
     table.insert(balls, {
         x = xInit,
         y = yInit,
@@ -73,6 +74,7 @@ function drawBalls()
     for i, ball in ipairs(balls) do
         love.graphics.setColor(ball.color)
         love.graphics.circle("fill", ball.x, ball.y, ball.radius)
+        love.graphics.draw(image, ball.x - 2*ball.radius, ball.y - 2*ball.radius)
     end
 end
 
