@@ -37,7 +37,8 @@ gameEngineVars = {
     windowX = 0,
     windowY = 0,
     gameOver = false,
-    gameReset = false
+    gameReset = false,
+    drawActions = {}
 }
 
 eventStack = {}
@@ -135,6 +136,16 @@ function newGame()
     table.insert(eventStack, spawnBallAtPlunger)
     -- Set the reset flag back to false after resetting the game
     gameEngineVars.gameReset = false
+    gameEngineVars.drawActions = {
+        drawBalls,
+        drawBumpers,
+        drawScoreBoard,
+        drawPlunger,
+        drawOutOfBounds,
+        drawBackgroundObjects,
+        drawLeftFlipper,
+        drawRightFlipper
+    }
 
 end
 
@@ -169,4 +180,5 @@ function gameOver()
         end
     end
 end
+
 

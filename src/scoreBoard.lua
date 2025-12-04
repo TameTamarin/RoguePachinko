@@ -7,7 +7,7 @@
 --
 -----------------------------------------------------
 
-events = require("events")
+-- events = require("events")
 
 local scoreBoard = {
 score = 0,

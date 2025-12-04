@@ -31,18 +31,29 @@ BALLWIDTH = 50
 --
 -----------------------------------------------------
 function love.load()
+    
     -- load in submodules
     require("math")
     local world = require("world")
     local timing = require('timing')
     local keyCommands = require('keyCommands')
     local cursor = require('cursor')
+    local utilities = require('utilities')
     local board = require('board')
+    local pinBallTable = require('pinBallTable')
+
+    -------------------------------------------------------------
+    -- setup background objects 
+    -------------------------------------------------------------
+   
+    
+    -------------------------------------------------------------
+    -- Load rest of modules
+    -------------------------------------------------------------
+
     local ball = require('ball')
     local boardElements = require('flippers')
-    local utilities = require('utilities')
     local bumpers = require('bumpers')
-    local pinBallTable = require('pinBallTable')
     local scoreBoard = require("scoreBoard")
     local events = require("events")
     local utf8 = require("utf8")
@@ -81,6 +92,9 @@ function love.load()
     local dt = 1/60
     initWorld(XGRAVITY, YGRAVITY, dt)
     gameEngineVars.world = getWorld()
+
+
+    
     
     -- initBall(476, 872, 10)
     initFlippers()
@@ -94,47 +108,48 @@ function love.load()
     initPlunger()
     initTable(BOARDSTARTPOS[1], BOARDSTARTPOS[2])
     initOutOfBounds()
+
+
     
 
-    queueEvent(newGame)
+    ----------------------------------------------------------------
+    -- Setup Log file and accompanying functions
+    ----------------------------------------------------------------
 
+    logFileEnabled = true
 
-----------------------------------------------------------------
--- Setup Log file and accompanying functions
-----------------------------------------------------------------
-
-logFileEnabled = true
-
-function initLogFile()
-    if logFileEnabled then
-        logFile = love.filesystem.newFile("gameLog.txt")
-        logFile:open("w")
-        logFile:write("Rogue Pachinko Game Log\n")
-        logFile:write("Game Started at: " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n\n")
-        --  Close log filed moved to the run function on quit
-        -- logFile:close()
+    function initLogFile()
+        if logFileEnabled then
+            logFile = love.filesystem.newFile("gameLog.txt")
+            logFile:open("w")
+            logFile:write("Rogue Pachinko Game Log\n")
+            logFile:write("Game Started at: " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n\n")
+            --  Close log filed moved to the run function on quit
+            -- logFile:close()
+        end
     end
-end
 
-function writeToLogFile(eventString, data)
-    if logFileEnabled then
-        logFile:write("Event: " .. eventString .. ", Data: " .. tostring(data) .. " at: " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n\n")
+    function writeToLogFile(eventString, data)
+        if logFileEnabled then
+            logFile:write("Event: " .. eventString .. ", Data: " .. tostring(data) .. " at: " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n\n")
+        end
     end
-end
 
-function closeLogFile()
-    if logFileEnabled then
-        logFile:write("Game Stopped at: " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n\n")
-        logFile:close()
+    function closeLogFile()
+        if logFileEnabled then
+            logFile:write("Game Stopped at: " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n\n")
+            logFile:close()
+        end
     end
-end
 
--- call initLogFile()
-initLogFile()
+    -- call initLogFile()
+    initLogFile()
 
-----------------------------------------------------------------
--- Setup Canvases for drawing background and the board
-----------------------------------------------------------------
+    ----------------------------------------------------------------
+    -- Setup Canvases for drawing background and the board
+    ----------------------------------------------------------------
+    
+
     backgroundObjects = love.graphics.newCanvas(WINDOWX, WINDOWY)
     pegLocCanvas = love.graphics.newCanvas(WINDOWX, WINDOWY)
 
@@ -145,7 +160,7 @@ initLogFile()
         drawTable()
         love.graphics.setCanvas()
 
-    
+
     -- Canvas for drawing the pegboard locations
     love.graphics.setCanvas(pegLocCanvas)
         love.graphics.clear(0, 0, 0, 0)
@@ -153,7 +168,17 @@ initLogFile()
         -- drawPegLocations(BOARDSTARTPOS, BOARDSIZEPIXELS, PEGSIZEPIXELS)
         love.graphics.setCanvas()
 
+    function drawBackgroundObjects()
+        love.graphics.draw(backgroundObjects, 0, 0)
+    end
+
+
    
+    ----------------------------------------------------------------
+    -- queue first event
+    ----------------------------------------------------------------
+    queueEvent(newGame)
+
 end
 
 
@@ -398,21 +423,21 @@ end
 --
 -----------------------------------------------------
 
+function drawActions()
+    for i = 1, #gameEngineVars.drawActions do
+        gameEngineVars.drawActions[i]()
+    end
+end
+
+
 function love.draw()
     -- set scale to draw at based on on the screen resoltion and window size
     love.graphics.push()
     love.graphics.scale( sy, sy )
 
     -- draw objects
-    drawBalls()
-    drawLeftFlipper(leftFlipperAngle)
-    drawRightFlipper(rightFlipperAngle)
-    drawBumpers()
-    drawScoreBoard()
-    drawPlunger()
-    drawOutOfBounds()
-
-    love.graphics.draw(backgroundObjects, 0, 0)
+    drawActions()
+    
 
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 0, 20)
 

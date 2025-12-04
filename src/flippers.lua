@@ -161,14 +161,14 @@ end
 -- Drawing flippers
 --
 ----------------------------------------------------------------
-function drawLeftFlipper(angle)
+function drawLeftFlipper()
     bx, by = leftFlipper.body:getPosition()
     drawRotatedRectangle("fill", bx, by, leftFlipper.w, leftFlipper.h, leftFlipper.body:getAngle())
     bx, by = leftFlipper.anchor:getPosition()
     love.graphics.circle("fill", bx, by, leftFlipper.anchorRadius)
 end
 
-function drawRightFlipper(angle)
+function drawRightFlipper()
     bx, by = rightFlipper.body:getPosition()
     drawRotatedRectangle("fill", bx, by, rightFlipper.w, rightFlipper.h, rightFlipper.body:getAngle())
     bx, by = rightFlipper.anchor:getPosition()
