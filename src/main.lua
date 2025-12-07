@@ -282,6 +282,8 @@ function beginContact(fixture_a, fixture_b, contact)
         ballBody:release()
         tempFixture:destroy()
         for i = 1, getNumBalls() do
+            -- iterate through balls to find the one to remove based on if there is an error
+            -- accessing the newly destroyed ball, then remove from the balls table
             local success, result = pcall(getBallVelocity, i)
             if success == false then
                 table.remove(balls,i)
@@ -340,7 +342,6 @@ function endContact(fixture_a, fixture_b, coll)
             end
         end
     end
-
 end
 
 function preSolve(a, b, coll)
@@ -373,7 +374,7 @@ function love.update(dt)
     updateRightFlipper()
     
     -- perform actions if there is a ball on screen
-    gameEngineVars.ballsActive = getNumBalls()
+    -- gameEngineVars.ballsActive = getNumBalls()
     -- if gameEngineVars.ballsActive ~= 0 then
 
     --     updateBallsLocations()
@@ -423,14 +424,17 @@ end
 --
 -----------------------------------------------------
 
-function drawActions()
-    for i = 1, #gameEngineVars.drawActions do
-        gameEngineVars.drawActions[i]()
-    end
-end
-
 
 function love.draw()
+
+    -- Helper Function to draw all objects
+    function drawActions()
+        for i = 1, #gameEngineVars.drawActions do
+            gameEngineVars.drawActions[i]()
+        end
+    end
+
+
     -- set scale to draw at based on on the screen resoltion and window size
     love.graphics.push()
     love.graphics.scale( sy, sy )
@@ -446,7 +450,7 @@ function love.draw()
 
     love.graphics.print("Collision:" .. tostring(printdata), 0, 60)
 
-    love.graphics.print("Balls on Field: " .. tostring(gameEngineVars.ballsActive), 0, 70)
+    love.graphics.print("Balls active " .. tostring(gameEngineVars.ballsActive), 0, 70)
     
     love.graphics.print("Balls Remaining: " .. tostring(gameEngineVars.ballsRemaining), 0, 80)
 
@@ -456,8 +460,12 @@ function love.draw()
     writeToLogFile("num remaining balls", gameEngineVars.ballsRemaining)
     eventCheck()
     eventResolve()
+    
 
     -- return to normal scale to prevent crashing
     love.graphics.pop()
 
 end
+
+
+

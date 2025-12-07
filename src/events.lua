@@ -56,10 +56,10 @@ end
 
 -- Pull the first event from the stack and resolve it
 function eventResolve()
-    if #eventStack > 0 then
-        eventStack[1]()
-        table.remove(eventStack, 1)
-    end
+        for i = 1 , #eventStack do
+            eventStack[1]()
+            table.remove(eventStack, 1)
+        end
 end
 
 
@@ -103,13 +103,6 @@ function ballActiveCheck()
     if gameEngineVars.ballsActive ~= 0 and gameEngineVars.updateSleep == false then
 
         updateBallsLocations()
-    end
-end
-
-function endGameCheck()
-    if gameEngineVars.ballsRemaining == 0 and gameEngineVars.ballsActive == 0 then
-            table.insert(eventStack, newGame)
-
     end
 end
 
@@ -171,6 +164,7 @@ function gameOver()
         -- gameEngineVars.worldSleep = true
         gameEngineVars.gameOver = true
         -- respawn ball when appropriate key is pressed
+        gameEngineVars.drawActions = {}
         table.insert(eventStack, gameOver)
         if spaceKeyCheck() == 1 then
             table.insert(eventStack, newGame)
