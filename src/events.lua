@@ -165,6 +165,8 @@ function gameOver()
         gameEngineVars.gameOver = true
         -- respawn ball when appropriate key is pressed
         gameEngineVars.drawActions = {}
+        -- destroy all balls that could possibly linger or spawn
+        destroyAllBalls()
         table.insert(eventStack, gameOver)
         if spaceKeyCheck() == 1 then
             table.insert(eventStack, newGame)

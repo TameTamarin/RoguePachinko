@@ -169,7 +169,14 @@ end
 
 function destroyBall(i)
     balls[i].body:release()
+    balls[i].fixture:destroy()
     table.remove(balls,i)
+end
+
+function destroyAllBalls()
+    for i = 1, #balls do
+        destroyBall(i)
+    end
 end
 
 function setAllBallSleep(sleep)
