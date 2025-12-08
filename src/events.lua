@@ -20,6 +20,7 @@
 
 keyCommands = require("keyCommands")
 ball = require("ball")
+bumper = require("bumpers")
 
 -- This is a table that will house all of the variables
 -- that will be passed back and forth between the main
@@ -50,6 +51,8 @@ function eventCheck()
     if not gameEngineVars.gameOver then
         gameOverCheck()
     end
+
+    checkNumBumpsHitForUpgrade()
     
 
 end
@@ -106,6 +109,13 @@ function ballActiveCheck()
     end
 end
 
+function checkNumBumpsHitForUpgrade()
+    if gameEngineVars.bumpersHit == 10 then
+        bumps[1].scoreVal = bumps[1].scoreVal + 100
+        gameEngineVars.bumpersHit = 0
+    end
+end
+
 --------------------------------------------------------
 --
 -- Events to be called
@@ -122,6 +132,7 @@ function newGame()
     gameEngineVars.score = 0
     gameEngineVars.worldSleep = false
     gameEngineVars.ballsRemaining = 3
+    bumps[1].scoreVal = 100
     -- Set to one ball active so that we do not trigger
     -- a second ball spawn on next ball check
     gameEngineVars.ballsActive = 1
@@ -164,7 +175,7 @@ function gameOver()
         -- gameEngineVars.worldSleep = true
         gameEngineVars.gameOver = true
         -- respawn ball when appropriate key is pressed
-        gameEngineVars.drawActions = {}
+        gameEngineVars.drawActions = {drawScoreBoard,}
         -- destroy all balls that could possibly linger or spawn
         destroyAllBalls()
         table.insert(eventStack, gameOver)

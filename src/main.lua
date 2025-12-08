@@ -258,7 +258,7 @@ function beginContact(fixture_a, fixture_b, contact)
         -- do something
         
     elseif object_a == 'bumper' or object_b == 'bumper' then
-        addToScoreBoard(100)
+        addToScoreBoard(bumps[1].scoreVal)
         audio.bumper:stop()
         audio.bumper:play()
     end
@@ -306,12 +306,14 @@ function endContact(fixture_a, fixture_b, coll)
     if object_a == 'bumper' or object_b == 'bumper' then
         local ballBody = nil
         if object_a == 'ball' then
+            gameEngineVars.bumpersHit = gameEngineVars.bumpersHit + 1
             ballBody = fixture_a:getBody()
             ballVelX, ballVelY = getBallVelocityFromBody(ballBody)
             bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)
             ballSetBodyVelocityWComponents(ballBody, bumperVelX, bumperVelY)
         end
         if object_b == 'ball' then
+            gameEngineVars.bumpersHit = gameEngineVars.bumpersHit + 1
             ballBody = fixture_b:getBody()
             ballVelX, ballVelY = getBallVelocityFromBody(ballBody)
             bumperVelX, bumperVelY = getBumperAppliedVel(ballVelX, ballVelY)

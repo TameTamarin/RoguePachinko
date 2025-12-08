@@ -15,7 +15,8 @@ function initBumper(x, y)
     body = love.physics.newBody(world, x, y, "static"),
     shape = nil,
     fixture = nil,
-    force = 750
+    force = 750,
+    scoreVal = 100
 })
 
     bumps[#bumps].body = love.physics.newBody(world, x, y, "static")
