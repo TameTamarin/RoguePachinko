@@ -56,6 +56,7 @@ function love.load()
     local bumpers = require('bumpers')
     local scoreBoard = require("scoreBoard")
     local events = require("events")
+    local screens = require("screens")
     local utf8 = require("utf8")
 
     -- Init the in game timer
@@ -173,11 +174,7 @@ function love.load()
     end
 
 
-   
-    ----------------------------------------------------------------
-    -- queue first event
-    ----------------------------------------------------------------
-    queueEvent(newGame)
+
 
 end
 
@@ -399,11 +396,12 @@ function love.update(dt)
 
 
     cursorX, cursorY = getCursorPosition()
-    clickX, clickY = getMousePosOnClick()
+    -- gameEngineVars.clickX, gameEngineVars.clickY = getMousePosOnClick()
 
 
     if checkMouseClick() then
-        if clickX <= 75 and clickX >= 25 and clickY <= 125 and clickY >= 75 then
+        gameEngineVars.clickX, gameEngineVars.clickY = getCursorPosition()
+        if gameEngineVars.clickX <= 75 and gameEngineVars.clickX >= 25 and gameEngineVars.clickY <= 125 and gameEngineVars.clickY >= 75 then
             -- event to occur on mouse click
         end
     end
@@ -413,6 +411,9 @@ function love.update(dt)
         -- getWorld():update(dt, 10, 10)
         updateWorld()
     end
+
+    eventCheck()
+    eventResolve()
     
 end
 
@@ -469,64 +470,4 @@ function love.draw()
     -- love.graphics.pop()
 
 end
-
-function homeScreen()
-    function love.draw()
-        options ={
-            newGame = {100,30},
-            settings = {100,50}
-        }
-        love.graphics.print("New Game", options.newGame[1], options.newGame[2])
-        love.graphics.print("Settings", options.settings[1], options.settings[2])
-        if clickX then
-            if clickX <= options.newGame[1] and clickY <= options.newGame[2] then
-                gameScreen()
-            end
-        end
-    end
-end
-
-function gameScreen()
-    function love.draw()
-        
-    -- Helper Function to draw all objects
-    function drawActions()
-        for i = 1, #gameEngineVars.drawActions do
-            gameEngineVars.drawActions[i]()
-        end
-    end
-
-
-    -- set scale to draw at based on on the screen resoltion and window size
-    love.graphics.push()
-    love.graphics.scale( sy, sy )
-
-    -- draw objects
-    drawActions()
-    
-
-    love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 0, 20)
-
-    -- love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
-    love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 0, 40)
-
-    love.graphics.print("Collision:" .. tostring(printdata), 0, 60)
-
-    love.graphics.print("Balls active " .. tostring(gameEngineVars.ballsActive), 0, 70)
-    
-    love.graphics.print("Balls Remaining: " .. tostring(gameEngineVars.ballsRemaining), 0, 80)
-
-    getNumEvents()
-    
-    writeToLogFile("num active balls", gameEngineVars.ballsActive)
-    writeToLogFile("num remaining balls", gameEngineVars.ballsRemaining)
-    eventCheck()
-    eventResolve()
-    
-
-    -- return to normal scale to prevent crashing
-    love.graphics.pop()
-    end
-end
-
 

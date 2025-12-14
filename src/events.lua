@@ -21,6 +21,7 @@
 keyCommands = require("keyCommands")
 ball = require("ball")
 bumper = require("bumpers")
+screens = require("screens")
 
 -- This is a table that will house all of the variables
 -- that will be passed back and forth between the main
@@ -39,7 +40,9 @@ gameEngineVars = {
     windowY = 0,
     gameOver = false,
     gameReset = false,
-    drawActions = {}
+    drawActions = {},
+    clickX = nil,
+    clickY = nil
 }
 
 eventStack = {}
@@ -137,7 +140,7 @@ function newGame()
     -- a second ball spawn on next ball check
     gameEngineVars.ballsActive = 1
     gameEngineVars.gameOver = false
-    table.insert(eventStack, spawnBallAtPlunger)
+    queueEvent(spawnBallAtPlunger)
     -- Set the reset flag back to false after resetting the game
     gameEngineVars.gameReset = false
     gameEngineVars.drawActions = {
@@ -169,6 +172,7 @@ end
 function gameOver()
     -- function love.draw()
     -- Only allow for one game over event to be processed
+    gameOverScreen()
     if gameEngineVars.gameReset == false then
         love.graphics.print("Game Over", 300, 80)
         love.graphics.print("New Game", 300, 150)
@@ -178,13 +182,14 @@ function gameOver()
         gameEngineVars.drawActions = {drawScoreBoard,}
         -- destroy all balls that could possibly linger or spawn
         destroyAllBalls()
-        table.insert(eventStack, gameOver)
+        -- table.insert(eventStack, gameOver)
         if spaceKeyCheck() == 1 then
             table.insert(eventStack, newGame)
             gameEngineVars.gameReset = true
             writeToLogFile("Game Over space key pressed", nil)
             
         end
+        
     end
 end
 
