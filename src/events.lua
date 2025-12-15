@@ -42,7 +42,8 @@ gameEngineVars = {
     gameReset = false,
     drawActions = {},
     clickX = nil,
-    clickY = nil
+    clickY = nil,
+    upgradeTargetActive = false
 }
 
 eventStack = {}
@@ -113,9 +114,13 @@ function ballActiveCheck()
 end
 
 function checkNumBumpsHitForUpgrade()
-    if gameEngineVars.bumpersHit == 10 then
-        bumps[1].scoreVal = bumps[1].scoreVal + 100
-        gameEngineVars.bumpersHit = 0
+    if gameEngineVars.bumpersHit == 10 and gameEngineVars.upgradeTargetActive == false then
+        -- bumps[1].scoreVal = bumps[1].scoreVal + 100
+        -- gameEngineVars.bumpersHit = 0
+        gameEngineVars.upgradeTargetActive = true
+        writeToLogFile("Bumpers hit 10 - upgrade target initialized", nil)
+        queueEvent(initUpgradeTarget)
+        table.insert(gameEngineVars.drawActions, drawUpgradeTarget)
     end
 end
 

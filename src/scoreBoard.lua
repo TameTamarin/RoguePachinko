@@ -7,7 +7,6 @@
 --
 -----------------------------------------------------
 
--- events = require("events")
 
 local scoreBoard = {
 score = 0,

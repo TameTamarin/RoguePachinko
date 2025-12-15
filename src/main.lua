@@ -110,7 +110,6 @@ function love.load()
     initTable(BOARDSTARTPOS[1], BOARDSTARTPOS[2])
     initOutOfBounds()
 
-
     
 
     ----------------------------------------------------------------
@@ -340,6 +339,15 @@ function endContact(fixture_a, fixture_b, coll)
                 gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
             end
         end
+    end
+
+    if object_a == "upgradeTarget" or object_b == "upgradeTarget" then
+        destroyUpgradeTarget()
+        table.remove(gameEngineVars.drawActions, #gameEngineVars.drawActions)
+        bumps[1].scoreVal = bumps[1].scoreVal + 200
+        gameEngineVars.bumpersHit = 0
+        gameEngineVars.upgradeTargetActive = false
+        writeToLogFile("Upgrade target hit - destroyed", nil)
     end
 end
 

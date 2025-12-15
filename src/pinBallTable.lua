@@ -1,3 +1,4 @@
+math = require('math')
 utilities = require('utilities')
 world = require("world")
 
@@ -86,3 +87,35 @@ function drawOutOfBounds()
     love.graphics.rectangle('fill', outOfBounds.x - outOfBounds.w/2, outOfBounds.y - outOfBounds.h/2, outOfBounds.w, outOfBounds.h)
 end
 
+
+function initUpgradeTarget()
+    local xInit = love.math.random(50, 300 )
+    local yInit = love.math.random(350, 500)
+    local world = getWorld()
+    upgradeTarget = {
+        x = xInit,
+        y = yInit,
+        h = 20,
+        w = 20,
+        color = {0,1,0},
+        body = nil,
+        shape = nil,
+        fixture = nil,
+        mass = 10
+    }
+  
+    upgradeTarget.body = love.physics.newBody(world, xInit, yInit, "static")
+    upgradeTarget.shape = love.physics.newRectangleShape(upgradeTarget.w , upgradeTarget.h)
+    upgradeTarget.fixture = love.physics.newFixture(upgradeTarget.body, upgradeTarget.shape, 100)
+    upgradeTarget.fixture:setUserData("upgradeTarget")
+end
+
+function drawUpgradeTarget()
+    upgradeTarget.x, upgradeTarget.y = upgradeTarget.body:getPosition()
+    love.graphics.rectangle('fill', upgradeTarget.x - upgradeTarget.w/2, upgradeTarget.y - upgradeTarget.h/2, upgradeTarget.w, upgradeTarget.h)
+end
+
+function destroyUpgradeTarget()
+    upgradeTarget.body:release()
+    upgradeTarget.fixture:destroy()
+end

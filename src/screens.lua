@@ -21,12 +21,14 @@ function gameOverScreen()
     gameEngineVars.clickX = nil
     gameEngineVars.clickY = nil
     function love.draw()
-        options = {
+        local options = {
             gameOver = {100,10},
-            newGame = {100,30},
-            quit = {100,50}
+            score = {100, 30},
+            newGame = {100,50},
+            quit = {100,70}
         }
         love.graphics.print("Game Over", options.gameOver[1], options.gameOver[2])
+        love.graphics.print("Score: " .. tostring(gameEngineVars.score), options.score[1], options.score[2])
         love.graphics.print("New Game", options.newGame[1], options.newGame[2])
         love.graphics.print("Quit", options.quit[1], options.quit[2])
         if gameEngineVars.clickX then
@@ -39,6 +41,9 @@ function gameOverScreen()
 end
 
 function gameScreen()
+    font = love.graphics.getFont()
+    text = love.graphics.newText(font, "hello world")
+
     function love.draw()
         
     -- Helper Function to draw all objects
@@ -67,6 +72,8 @@ function gameScreen()
     love.graphics.print("Balls active " .. tostring(gameEngineVars.ballsActive), 0, 70)
     
     love.graphics.print("Balls Remaining: " .. tostring(gameEngineVars.ballsRemaining), 0, 80)
+
+    love.graphics.print("string width " .. tostring(text:getWidth()), 0, 90)
 
     getNumEvents()
     
