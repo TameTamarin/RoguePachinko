@@ -120,7 +120,7 @@ function checkNumBumpsHitForUpgrade()
         gameEngineVars.upgradeTargetActive = true
         writeToLogFile("Bumpers hit 10 - upgrade target initialized", nil)
         queueEvent(initUpgradeTarget)
-        table.insert(gameEngineVars.drawActions, drawUpgradeTarget)
+        gameEngineVars.drawActions.drawUpgradeTarget = drawUpgradeTarget
     end
 end
 
@@ -149,14 +149,15 @@ function newGame()
     -- Set the reset flag back to false after resetting the game
     gameEngineVars.gameReset = false
     gameEngineVars.drawActions = {
-        drawBalls,
-        drawBumpers,
-        drawScoreBoard,
-        drawPlunger,
-        drawOutOfBounds,
-        drawBackgroundObjects,
-        drawLeftFlipper,
-        drawRightFlipper
+        drawBalls = drawBalls,
+        drawBumpers = drawBumpers,
+        drawScoreBoard = drawScoreBoard,
+        drawPlunger = drawPlunger,
+        drawOutOfBounds = drawOutOfBounds,
+        drawBackgroundObjects = drawBackgroundObjects,
+        drawLeftFlipper = drawLeftFlipper,
+        drawRightFlipper = drawRightFlipper,
+        drawUpgradeTarget = nil
     }
 
 end

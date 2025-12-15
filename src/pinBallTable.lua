@@ -89,7 +89,7 @@ end
 
 
 function initUpgradeTarget()
-    local xInit = love.math.random(50, 300 )
+    local xInit = love.math.random(50, 300)
     local yInit = love.math.random(350, 500)
     local world = getWorld()
     upgradeTarget = {

@@ -18,7 +18,7 @@ function initBall(xInit, yInit)
         shape = nil,
         fixture = nil,
         mass = 1000,
-        friction = 0.3
+        friction = 0.1
     })
     for i, ball in ipairs(balls) do
         balls[#balls].body = love.physics.newBody(world, xInit, yInit, "dynamic")

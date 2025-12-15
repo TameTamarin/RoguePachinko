@@ -48,8 +48,10 @@ function gameScreen()
         
     -- Helper Function to draw all objects
     function drawActions()
-        for i = 1, #gameEngineVars.drawActions do
-            gameEngineVars.drawActions[i]()
+        for i, action in pairs(gameEngineVars.drawActions) do
+            if action ~= nil then
+                action()
+            end
         end
     end
 
