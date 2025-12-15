@@ -11,13 +11,13 @@ function initBall(xInit, yInit)
     table.insert(balls, {
         x = xInit,
         y = yInit,
-        radius = 10,
+        radius = 12,
         color = {1,0,0},
         bounce = 0.5,
         body = love.physics.newBody(world, xInit, yInit, "dynamic"),
         shape = nil,
         fixture = nil,
-        mass = 1000,
+        mass = 100,
         friction = 0.1
     })
     for i, ball in ipairs(balls) do
@@ -25,7 +25,7 @@ function initBall(xInit, yInit)
         balls[#balls].shape = love.physics.newCircleShape(balls[#balls].radius)
         balls[#balls].fixture = love.physics.newFixture(balls[#balls].body, balls[#balls].shape,100)
         balls[#balls].body:setMass(balls[#balls].mass)
-        balls[#balls].body:setFixedRotation(true)
+        balls[#balls].body:setFixedRotation(false)
         balls[#balls].fixture:setRestitution(balls[#balls].bounce)
         balls[#balls].fixture:setFriction(balls[#balls].friction)
         balls[#balls].fixture:setUserData("ball")
@@ -43,13 +43,13 @@ function spawnBallAtPlunger()
     table.insert(balls, {
         x = xInit,
         y = yInit,
-        radius = 10,
+        radius = 12,
         color = {1,0,0},
         bounce = 0.5,
         body = love.physics.newBody(world, xInit, yInit, "dynamic"),
         shape = nil,
         fixture = nil,
-        mass = 1000,
+        mass = 100,
         friction = 0.1
     })
     
@@ -58,7 +58,7 @@ function spawnBallAtPlunger()
         balls[#balls].shape = love.physics.newCircleShape(balls[#balls].radius)
         balls[#balls].fixture = love.physics.newFixture(balls[#balls].body, balls[#balls].shape,100)
         balls[#balls].body:setMass(balls[#balls].mass)
-        balls[#balls].body:setFixedRotation(true)
+        balls[#balls].body:setFixedRotation(false)
         balls[#balls].fixture:setRestitution(balls[#balls].bounce)
         balls[#balls].fixture:setFriction(balls[#balls].friction)
         balls[#balls].fixture:setUserData("ball")
@@ -74,7 +74,8 @@ function drawBalls()
     for i, ball in ipairs(balls) do
         love.graphics.setColor(ball.color)
         love.graphics.circle("fill", ball.x, ball.y, ball.radius)
-        love.graphics.draw(image, ball.x - 2*ball.radius, ball.y - 2*ball.radius)
+        local rot = ball.body:getAngle()
+        love.graphics.draw(image, ball.x, ball.y, rot, 1, 1, ball.radius, ball.radius)
     end
 end
 

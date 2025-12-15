@@ -90,7 +90,7 @@ function love.load()
     setRightFlipperDim(34, 85, 325, 950)
 
     -- dt is the amount of time to advance the physics simulation
-    local dt = 1/60
+    local dt = 1/90
     initWorld(XGRAVITY, YGRAVITY, dt)
     gameEngineVars.world = getWorld()
 
@@ -320,13 +320,14 @@ function endContact(fixture_a, fixture_b, coll)
     -- Check for plunger collisions
     if object_a == 'plunger' or object_b == 'plunger' then
         local ballBody = nil
+        local plungerAppliedVel = love.math.random(900, 1000)
         if object_a == 'ball' then
             ballBody = fixture_a:getBody()
-            ballSetBodyVelocityWAngle(ballBody, 1000, 270)
+            ballSetBodyVelocityWAngle(ballBody, plungerAppliedVel, 270)
         end
         if object_b == 'ball' then
             ballBody = fixture_b:getBody()
-            ballSetBodyVelocityWAngle(ballBody, 1000 , 270)
+            ballSetBodyVelocityWAngle(ballBody, plungerAppliedVel , 270)
         end
     end
 
