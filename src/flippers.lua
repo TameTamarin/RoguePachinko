@@ -26,7 +26,7 @@ leftFlipper = {
     lowerStopAngle = -335,
     keyCommand = leftKeyCheck,
     mass = 1,
-    friction = 0.5
+    friction = 1
 }
 
 rightFlipper = {
@@ -48,7 +48,7 @@ rightFlipper = {
     lowerStopAngle = -25,
     keyCommand = rightKeyCheck,
     mass = 1,
-    friction = 0.5
+    friction = 1
 
 }
 
