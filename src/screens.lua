@@ -1,14 +1,43 @@
 
+function drawOptions(selectionOptions)
+    local font = love.graphics.getFont()
+    function strlngth(inputText)
+        local text = love.graphics.newText(font, inputText)
+        return tostring(text:getDimensions())
+    end
+
+    for _, option in ipairs(selectionOptions) do
+        love.graphics.print(option.text, option.x, option.y)
+    end
+    
+end
+
 function homeScreen()
-    function love.draw()
-        options ={
-            newGame = {100,30},
-            settings = {100,50}
+    local selectionIndex = 1
+    local rightKeyToggle = 0
+    local options = {
+            {text = "New Game", x = 100, y = 30},
+            {text = "settings", x = 100, y = 50}
         }
-        love.graphics.print("New Game", options.newGame[1], options.newGame[2])
-        love.graphics.print("Settings", options.settings[1], options.settings[2])
+
+    function love.draw()
+        drawOptions(options)
+        love.graphics.circle("fill", options[selectionIndex].x - strlngth(options[selectionIndex].x), options[selectionIndex].y, 5)
+
+        -- check that the right key ahs been toggled and increment the selection index appropriately
+        if rightKeyToggle == 0 and rightKeyCheck() == 1 then
+            rightKeyToggle = 1
+            selectionIndex = selectionIndex + 1
+            if selectionIndex > 2 then 
+                selectionIndex = 1
+            end
+        elseif rightKeyToggle == 1 and rightKeyCheck() == 0 then
+            rightKeyToggle = 0
+        end
+            
+        
         if gameEngineVars.clickX then
-            if gameEngineVars.clickX <= options.newGame[1] and gameEngineVars.clickY <= options.newGame[2] then
+            if numericLimitTest(gameEngineVars.clickX, options[1].x, options[1].x + strlngth("New Game")) and numericLimitTest(gameEngineVars.clickY, options[1].y, options[1].y + 10) then
                 queueEvent(newGame)
                 gameScreen()
             end
@@ -20,19 +49,18 @@ end
 function gameOverScreen()
     gameEngineVars.clickX = nil
     gameEngineVars.clickY = nil
-    function love.draw()
-        local options = {
-            gameOver = {100,10},
-            score = {100, 30},
-            newGame = {100,50},
-            quit = {100,70}
+    local options = {
+            {text = "gameOver", x = 100, y = 10},
+            {text = "score", x = 100, y = 30},
+            {text = "newGame", x = 100,y = 50},
+            {text = "quit", x = 100, y = 70}
         }
-        love.graphics.print("Game Over", options.gameOver[1], options.gameOver[2])
-        love.graphics.print("Score: " .. tostring(gameEngineVars.score), options.score[1], options.score[2])
-        love.graphics.print("New Game", options.newGame[1], options.newGame[2])
-        love.graphics.print("Quit", options.quit[1], options.quit[2])
+    function love.draw()
+        
+        drawOptions(options)
+
         if gameEngineVars.clickX then
-            if gameEngineVars.clickX <= options.newGame[1] and gameEngineVars.clickY <= options.newGame[2] then
+            if numericLimitTest(gameEngineVars.clickX, options[3].x, options[3].x + strlngth("New Game")) and numericLimitTest(gameEngineVars.clickY, options[3].y, options[3].y + 10) then
                 queueEvent(newGame)
                 gameScreen()
             end
@@ -41,8 +69,8 @@ function gameOverScreen()
 end
 
 function gameScreen()
-    font = love.graphics.getFont()
-    text = love.graphics.newText(font, "hello world")
+    local font = love.graphics.getFont()
+    local text = love.graphics.newText(font, "hello world")
 
     function love.draw()
         
@@ -75,7 +103,8 @@ function gameScreen()
     
     love.graphics.print("Balls Remaining: " .. tostring(gameEngineVars.ballsRemaining), 0, 80)
 
-    love.graphics.print("string width " .. tostring(text:getWidth()), 0, 90)
+    love.graphics.print("string width " .. tostring(text:getDimensions()), 0, 90)
+    love.graphics.print("upgrade " .. gameEngineVars.upgradeList[1].name, 0, 100)
 
     getNumEvents()
     

@@ -70,3 +70,12 @@ function load_xy_from_txt(filepath)
     end
     return points
 end
+
+function numericLimitTest(value, lowerBound, upperBound)
+	-- Tests that the value is between the specified bounds
+	if value >= lowerBound and value <= upperBound then
+		return true
+	else
+		return false
+	end
+end

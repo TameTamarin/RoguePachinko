@@ -27,6 +27,7 @@ function rightKeyCheck()
     end
 end
 
+
 function leftKeyCheck()
     --These are commands are used for getting the events for when the arrow keys are pressed
     leftPressed = love.keyboard.isScancodeDown( "left" )

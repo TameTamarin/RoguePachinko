@@ -43,7 +43,11 @@ gameEngineVars = {
     drawActions = {},
     clickX = nil,
     clickY = nil,
-    upgradeTargetActive = false
+    upgradeTargetActive = false,
+    upgradeList = {},
+    upgradeOption1 = "",
+    upgradeOption2 = ""
+    
 }
 
 eventStack = {}
@@ -160,6 +164,14 @@ function newGame()
         drawUpgradeTarget = nil
     }
 
+    -- When a new game is queued populate the list of possible upgrades
+    gameEngineVars.upgradeList = {
+        {name = "upgradeDoubleScore", func = upgradeDoubleScore},
+        {name = "upgradeGainBall", func = upgradeGainBall},
+        {name = "upgradeLoseBall", func = upgradeLoseBall},
+        {name = "upgradeHalveScorese", func = upgradeHalveScorese}
+    }
+
 end
 
 
@@ -197,6 +209,25 @@ function gameOver()
         end
         
     end
+end
+
+
+function upgradeDoubleScore()
+    gameEngineVars.score = gameEngineVars.score * 2
+end
+
+function upgradeGainBall()
+    gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining + 1
+end
+
+function upgradeLoseBall()
+    if gameEngineVars.ballsRemaining > 0 then
+        gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
+    end
+end
+
+function upgradeHalveScore()
+    gameEngineVars.score = gameEngineVars.score/2
 end
 
 
