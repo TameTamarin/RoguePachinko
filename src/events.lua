@@ -159,8 +159,8 @@ function newGame()
         drawPlunger = drawPlunger,
         drawOutOfBounds = drawOutOfBounds,
         drawBackgroundObjects = drawBackgroundObjects,
-        drawLeftFlipper = drawLeftFlipper,
-        drawRightFlipper = drawRightFlipper,
+        -- drawLeftFlipper = drawLeftFlipper,
+        -- drawRightFlipper = drawRightFlipper,
         drawUpgradeTarget = nil
     }
 

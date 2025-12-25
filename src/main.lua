@@ -99,12 +99,30 @@ function love.load()
     
     -- initBall(476, 872, 10)
     initFlippers()
-    initBumper(250, 400)
-    initBumper(300, 450)
-    initBumper(350, 400)
-    initBumper(150, 200)
-    initBumper(100, 250)
-    initBumper(200, 300)
+    local pegXOffset = 50
+    local pegYOffset = 50
+    local pegXStart1 = 50
+    local pegXStart2 = 25
+    local pegYStart = 300
+
+    for i = 1, 7 do
+        initBumper(pegXStart1 + pegXOffset*i, pegYStart)
+        initBumper(pegXStart2 + pegXOffset*i, pegYStart + pegYOffset)
+        initBumper(pegXStart1 + pegXOffset*i, pegYStart + pegYOffset*2)
+        initBumper(pegXStart2 + pegXOffset*i, pegYStart + pegYOffset*3)
+        initBumper(pegXStart1 + pegXOffset*i, pegYStart + pegYOffset*4)
+        initBumper(pegXStart2 + pegXOffset*i, pegYStart + pegYOffset*5)
+        initBumper(pegXStart1 + pegXOffset*i, pegYStart + pegYOffset*6)
+        initBumper(pegXStart2 + pegXOffset*i, pegYStart + pegYOffset*7)
+        initBumper(pegXStart1 + pegXOffset*i, pegYStart + pegYOffset*8)
+        initBumper(pegXStart2 + pegXOffset*i, pegYStart + pegYOffset*9)
+    end 
+    -- initBumper(250, 400)
+    -- initBumper(300, 450)
+    -- initBumper(350, 400)
+    -- initBumper(150, 200)
+    -- initBumper(100, 250)
+    -- initBumper(200, 300)
 
     initPlunger()
     initTable(BOARDSTARTPOS[1], BOARDSTARTPOS[2])

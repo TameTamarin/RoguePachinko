@@ -85,12 +85,13 @@ function gameScreen()
 
 
     -- set scale to draw at based on on the screen resoltion and window size
+    
+    
+    -- draw objects
+    drawActions()
     love.graphics.push()
     love.graphics.scale( sy, sy )
 
-    -- draw objects
-    drawActions()
-    
 
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 0, 20)
 

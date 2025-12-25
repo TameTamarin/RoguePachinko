@@ -9,13 +9,13 @@ function initBumper(x, y)
     table.insert(bumps, {
     x = x,
     y = y,
-    radius = 15,
+    radius = 5,
     color = {1,0,0},
     bounce = 1.5,
     body = love.physics.newBody(world, x, y, "static"),
     shape = nil,
     fixture = nil,
-    force = 750,
+    force = 150,
     scoreVal = 100
 })
 
