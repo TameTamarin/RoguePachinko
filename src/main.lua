@@ -440,43 +440,5 @@ end
 function love.draw()
     homeScreen()
 
-    -- -- Helper Function to draw all objects
-    -- function drawActions()
-    --     for i = 1, #gameEngineVars.drawActions do
-    --         gameEngineVars.drawActions[i]()
-    --     end
-    -- end
-
-
-    -- -- set scale to draw at based on on the screen resoltion and window size
-    -- love.graphics.push()
-    -- love.graphics.scale( sy, sy )
-
-    -- -- draw objects
-    -- drawActions()
-    
-
-    -- love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 0, 20)
-
-    -- -- love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
-    -- love.graphics.print("Mouse clicked ..." .. tostring(clickX) .. " " .. tostring(clickY), 0, 40)
-
-    -- love.graphics.print("Collision:" .. tostring(printdata), 0, 60)
-
-    -- love.graphics.print("Balls active " .. tostring(gameEngineVars.ballsActive), 0, 70)
-    
-    -- love.graphics.print("Balls Remaining: " .. tostring(gameEngineVars.ballsRemaining), 0, 80)
-
-    -- getNumEvents()
-    
-    -- writeToLogFile("num active balls", gameEngineVars.ballsActive)
-    -- writeToLogFile("num remaining balls", gameEngineVars.ballsRemaining)
-    -- eventCheck()
-    -- eventResolve()
-    
-
-    -- -- return to normal scale to prevent crashing
-    -- love.graphics.pop()
-
 end
 
