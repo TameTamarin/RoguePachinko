@@ -98,7 +98,7 @@ function love.load()
     
     
     -- initBall(476, 872, 10)
-    initFlippers()
+    -- initFlippers()
     local pegXOffset = 50
     local pegYOffset = 50
     local pegXStart1 = 50
@@ -396,8 +396,8 @@ function love.update(dt)
     
     -- sleep(DT, FPSCAP)
 
-    updateLeftFlipper()
-    updateRightFlipper()
+    -- updateLeftFlipper()
+    -- updateRightFlipper()
     
     -- perform actions if there is a ball on screen
     -- gameEngineVars.ballsActive = getNumBalls()
@@ -426,12 +426,12 @@ function love.update(dt)
     -- gameEngineVars.clickX, gameEngineVars.clickY = getMousePosOnClick()
 
 
-    if checkMouseClick() then
-        gameEngineVars.clickX, gameEngineVars.clickY = getCursorPosition()
-        if gameEngineVars.clickX <= 75 and gameEngineVars.clickX >= 25 and gameEngineVars.clickY <= 125 and gameEngineVars.clickY >= 75 then
-            -- event to occur on mouse click
-        end
-    end
+    -- if checkMouseClick() then
+    --     gameEngineVars.clickX, gameEngineVars.clickY = getCursorPosition()
+    --     if gameEngineVars.clickX <= 75 and gameEngineVars.clickX >= 25 and gameEngineVars.clickY <= 125 and gameEngineVars.clickY >= 75 then
+    --         -- event to occur on mouse click
+    --     end
+    -- end
 
     
     if not gameEngineVars.worldSleep then
@@ -441,6 +441,7 @@ function love.update(dt)
 
     eventCheck()
     eventResolve()
+
     
 end
 
@@ -453,6 +454,7 @@ end
 -- interation of the main loop.
 --
 -----------------------------------------------------
+
 
 
 function love.draw()

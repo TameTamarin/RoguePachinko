@@ -36,7 +36,7 @@ end
 
 image = love.graphics.newImage("images/8-bit-pokeball.png")
 function spawnBallAtPlunger()
-    local xInit = 476
+    local xInit = 478
     local yInit = 872
     local world = getWorld()
    
@@ -68,6 +68,10 @@ function spawnBallAtPlunger()
 
 
     writeToLogFile("spawnBallAtPlunger", nil)
+end
+
+function launchBall()
+    ballSetBodyVelocityWAngle(balls[#balls].body, love.math.random(900, 1000), 270)
 end
 
 function drawBalls()

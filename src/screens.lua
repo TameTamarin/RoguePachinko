@@ -42,6 +42,14 @@ function homeScreen()
                 gameScreen()
             end
         end
+
+        function love.mousereleased(x, y, button, istouch, presses)
+            if button == 1 then
+                gameEngineVars.clickX = x
+                gameEngineVars.clickY = y
+            end
+
+        end
     end
 end
 
@@ -63,6 +71,13 @@ function gameOverScreen()
             if numericLimitTest(gameEngineVars.clickX, options[3].x, options[3].x + strlngth("New Game")) and numericLimitTest(gameEngineVars.clickY, options[3].y, options[3].y + 10) then
                 queueEvent(newGame)
                 gameScreen()
+            end
+        end
+
+        function love.mousereleased(x, y, button, istouch, presses)
+            if button == 1 then
+                gameEngineVars.clickX = x
+                gameEngineVars.clickY = y
             end
         end
     end
@@ -108,6 +123,14 @@ function gameScreen()
     love.graphics.print("upgrade " .. gameEngineVars.upgradeList[1].name, 0, 100)
 
     getNumEvents()
+    function love.mousereleased(x, y, button, istouch, presses)
+        if button == 1 then
+            gameEngineVars.clickX = x
+            gameEngineVars.clickY = y
+            queueEvent(spawnBallAtPlunger)
+            queueEvent(launchBall)
+        end
+    end
     
     writeToLogFile("num active balls", gameEngineVars.ballsActive)
     writeToLogFile("num remaining balls", gameEngineVars.ballsRemaining)

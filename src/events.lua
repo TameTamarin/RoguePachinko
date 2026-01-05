@@ -150,6 +150,7 @@ function newGame()
     gameEngineVars.ballsActive = 1
     gameEngineVars.gameOver = false
     queueEvent(spawnBallAtPlunger)
+    queueEvent(launchBall)
     -- Set the reset flag back to false after resetting the game
     gameEngineVars.gameReset = false
     gameEngineVars.drawActions = {
