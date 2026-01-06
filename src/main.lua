@@ -126,9 +126,14 @@ function love.load()
 
     initPlunger()
     initTable(BOARDSTARTPOS[1], BOARDSTARTPOS[2])
-    initOutOfBounds()
+    -- initOutOfBounds()
 
-    
+
+    bucketStartingvals = {150, 100, 100, 50, 50, 50, 100, 100, 150}
+    for i = 0, 8 do
+        initScoreBuckets(i*gameEngineVars.windowX/9, gameEngineVars.windowY - 100, gameEngineVars.windowX/9)
+        editScoreBucketValue(i + 1, bucketStartingvals[i + 1])
+    end
 
     ----------------------------------------------------------------
     -- Setup Log file and accompanying functions
@@ -272,17 +277,16 @@ function beginContact(fixture_a, fixture_b, contact)
         -- do something
         
     elseif object_a == 'bumper' or object_b == 'bumper' then
-        addToScoreBoard(bumps[1].scoreVal)
+        -- addToScoreBoard(bumps[1].scoreVal)
         audio.bumper:stop()
         audio.bumper:play()
     end
 
-    if object_a == "outOfBounds" or object_b == "outOfBounds" then
-        -- Pause the update while we remove the ball
-        -- gameEngineVars.updateSleep = true
+    for i = 1, #scoreBuckets do
+        if object_a == "scoreBucket" .. i or object_b == "scoreBucket" .. i then
+            addToScoreBoard(scoreBuckets[i].scoreVal)
+            tempFixture = nil
 
-        -- get the fixture associated with the ball
-        tempFixture = nil
         if object_a == "ball" then
             tempFixture = fixture_a
         end
@@ -303,6 +307,36 @@ function beginContact(fixture_a, fixture_b, contact)
                 table.remove(balls,i)
             end
         end
+
+    end
+end
+
+    if object_a == "outOfBounds" or object_b == "outOfBounds" then
+        -- Pause the update while we remove the ball
+        -- gameEngineVars.updateSleep = true
+
+        -- get the fixture associated with the ball
+        -- tempFixture = nil
+        -- if object_a == "ball" then
+        --     tempFixture = fixture_a
+        -- end
+
+        -- if object_b == "ball" then
+        --     tempFixture = fixture_b
+        -- end
+
+        -- -- remove the ball from the world
+        -- ballBody = tempFixture:getBody()
+        -- ballBody:release()
+        -- tempFixture:destroy()
+        -- for i = 1, getNumBalls() do
+        --     -- iterate through balls to find the one to remove based on if there is an error
+        --     -- accessing the newly destroyed ball, then remove from the balls table
+        --     local success, result = pcall(getBallVelocity, i)
+        --     if success == false then
+        --         table.remove(balls,i)
+        --     end
+        -- end
 
         -- Reenable the update after ball removal
         -- gameEngineVars.updateSleep = false
@@ -355,7 +389,7 @@ function endContact(fixture_a, fixture_b, coll)
         if gameEngineVars.ballsActive == 0 then
             if gameEngineVars.ballsRemaining > 0 then
                 table.insert(eventStack, spawnBallAtPlunger)
-                gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
+                -- gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
             end
         end
     end
@@ -366,6 +400,7 @@ function endContact(fixture_a, fixture_b, coll)
         gameEngineVars.bumpersHit = 0
         gameEngineVars.upgradeTargetActive = false
         queueEvent(destroyUpgradeTarget)
+        gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining + 1
         -- writeToLogFile("Upgrade target hit - destroyed", nil)
     end
 end

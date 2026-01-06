@@ -43,6 +43,7 @@ function homeScreen()
             end
         end
 
+        -- mouse click handling
         function love.mousereleased(x, y, button, istouch, presses)
             if button == 1 then
                 gameEngineVars.clickX = x
@@ -74,6 +75,7 @@ function gameOverScreen()
             end
         end
 
+        -- mouse click handling
         function love.mousereleased(x, y, button, istouch, presses)
             if button == 1 then
                 gameEngineVars.clickX = x
@@ -123,12 +125,15 @@ function gameScreen()
     love.graphics.print("upgrade " .. gameEngineVars.upgradeList[1].name, 0, 100)
 
     getNumEvents()
+
+    -- mouse click handling
     function love.mousereleased(x, y, button, istouch, presses)
-        if button == 1 then
+        if button == 1 and gameEngineVars.ballsRemaining > 0 then
             gameEngineVars.clickX = x
             gameEngineVars.clickY = y
             queueEvent(spawnBallAtPlunger)
             queueEvent(launchBall)
+            gameEngineVars.ballsRemaining = gameEngineVars.ballsRemaining - 1
         end
     end
     

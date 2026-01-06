@@ -90,7 +90,8 @@ end
 
 function initUpgradeTarget()
     local xInit = love.math.random(50, 300)
-    local yInit = love.math.random(350, 500)
+    -- local yInit = love.math.random(350, 500)
+    local yInit = 800
     local world = getWorld()
     upgradeTarget = {
         x = xInit,
@@ -118,4 +119,51 @@ end
 function destroyUpgradeTarget()
     upgradeTarget.body:release()
     upgradeTarget.fixture:destroy()
+end
+
+scoreBuckets = {}
+
+function initScoreBuckets(x, y, w)
+    local world = getWorld()
+    table.insert(scoreBuckets, {
+    x = x,
+    y = y,
+    h = 5,
+    w = w,
+    color = {1,0,0},
+    bounce = 1.5,
+    body = nil,
+    sideWallBody = nil,
+    sideWallH = 50,
+    sideWallW = 5,
+    shape = nil,
+    fixture = nil,
+    force = 150,
+    scoreVal = 100
+})
+
+    scoreBuckets[#scoreBuckets].body = love.physics.newBody(world, x + scoreBuckets[#scoreBuckets].w/2, y, "static")
+    scoreBuckets[#scoreBuckets].shape = love.physics.newRectangleShape(scoreBuckets[#scoreBuckets].w- scoreBuckets[#scoreBuckets].sideWallW, scoreBuckets[#scoreBuckets].h)
+    scoreBuckets[#scoreBuckets].fixture = love.physics.newFixture(scoreBuckets[#scoreBuckets].body, scoreBuckets[#scoreBuckets].shape,100)
+    scoreBuckets[#scoreBuckets].body:setMass(100)
+    scoreBuckets[#scoreBuckets].body:setFixedRotation(true)
+    -- scoreBuckets[#scoreBuckets].fixture:setRestitution(scoreBuckets[#scoreBuckets].bounce)
+    scoreBuckets[#scoreBuckets].fixture:setUserData("scoreBucket" .. #scoreBuckets)
+
+    scoreBuckets[#scoreBuckets].sideWallBody = love.physics.newBody(world, x + scoreBuckets[#scoreBuckets].w/2 + scoreBuckets[#scoreBuckets].sideWallW/2, y - scoreBuckets[#scoreBuckets].sideWallH/2, "static")
+    scoreBuckets[#scoreBuckets].shape = love.physics.newRectangleShape(scoreBuckets[#scoreBuckets].sideWallW, scoreBuckets[#scoreBuckets].sideWallH)
+    scoreBuckets[#scoreBuckets].fixture = love.physics.newFixture(scoreBuckets[#scoreBuckets].sideWallBody, scoreBuckets[#scoreBuckets].shape,100)
+end
+
+function editScoreBucketValue(index, newScoreVal)
+    scoreBuckets[index].scoreVal = newScoreVal
+end
+
+function drawScoreBuckets()
+    for i, bucket in ipairs(scoreBuckets) do
+        love.graphics.setColor(bucket.color)
+        love.graphics.rectangle("fill", bucket.x - bucket.w/2, bucket.y - bucket.h/2, bucket.w, bucket.h)
+        love.graphics.rectangle("fill", bucket.sideWallBody:getX() - bucket.sideWallW/2, bucket.sideWallBody:getY() - bucket.sideWallH/2, bucket.sideWallW, bucket.sideWallH)
+        love.graphics.print("" .. tostring(bucket.scoreVal), bucket.x - bucket.w/2, bucket.y - 20)
+    end
 end

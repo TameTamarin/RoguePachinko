@@ -118,7 +118,7 @@ function ballActiveCheck()
 end
 
 function checkNumBumpsHitForUpgrade()
-    if gameEngineVars.bumpersHit == 10 and gameEngineVars.upgradeTargetActive == false then
+    if gameEngineVars.bumpersHit == 2 and gameEngineVars.upgradeTargetActive == false then
         -- bumps[1].scoreVal = bumps[1].scoreVal + 100
         -- gameEngineVars.bumpersHit = 0
         gameEngineVars.upgradeTargetActive = true
@@ -143,7 +143,7 @@ function newGame()
     -- table.remove(eventStack, 1)
     gameEngineVars.score = 0
     gameEngineVars.worldSleep = false
-    gameEngineVars.ballsRemaining = 3
+    gameEngineVars.ballsRemaining = 30
     bumps[1].scoreVal = 100
     -- Set to one ball active so that we do not trigger
     -- a second ball spawn on next ball check
@@ -158,8 +158,9 @@ function newGame()
         drawBumpers = drawBumpers,
         drawScoreBoard = drawScoreBoard,
         drawPlunger = drawPlunger,
-        drawOutOfBounds = drawOutOfBounds,
+        -- drawOutOfBounds = drawOutOfBounds,
         drawBackgroundObjects = drawBackgroundObjects,
+        drawScoreBuckets = drawScoreBuckets,
         -- drawLeftFlipper = drawLeftFlipper,
         -- drawRightFlipper = drawRightFlipper,
         drawUpgradeTarget = nil
