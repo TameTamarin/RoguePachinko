@@ -131,7 +131,7 @@ function love.load()
 
     bucketStartingvals = {150, 100, 100, 50, 50, 50, 100, 100, 150}
     for i = 0, 8 do
-        initScoreBuckets(i*gameEngineVars.windowX/9, gameEngineVars.windowY - 100, gameEngineVars.windowX/9)
+        initScoreBuckets(i*gameEngineVars.windowX/9 + gameEngineVars.windowX/9/2, gameEngineVars.windowY - 100, gameEngineVars.windowX/9)
         editScoreBucketValue(i + 1, bucketStartingvals[i + 1])
     end
 

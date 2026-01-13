@@ -61,6 +61,7 @@ end
 
 
 function initOutOfBounds()
+    -- Out of bounds detector that is used to detect when the ball falls out of the play area on collision
     local xInit = 400
     local yInit = 1100
     local world = getWorld()
@@ -143,7 +144,7 @@ function initScoreBuckets(x, y, w)
 })
 
     scoreBuckets[#scoreBuckets].body = love.physics.newBody(world, x + scoreBuckets[#scoreBuckets].w/2, y, "static")
-    scoreBuckets[#scoreBuckets].shape = love.physics.newRectangleShape(scoreBuckets[#scoreBuckets].w- scoreBuckets[#scoreBuckets].sideWallW, scoreBuckets[#scoreBuckets].h)
+    scoreBuckets[#scoreBuckets].shape = love.physics.newRectangleShape(scoreBuckets[#scoreBuckets].w - scoreBuckets[#scoreBuckets].sideWallW, scoreBuckets[#scoreBuckets].h)
     scoreBuckets[#scoreBuckets].fixture = love.physics.newFixture(scoreBuckets[#scoreBuckets].body, scoreBuckets[#scoreBuckets].shape,100)
     scoreBuckets[#scoreBuckets].body:setMass(100)
     scoreBuckets[#scoreBuckets].body:setFixedRotation(true)
