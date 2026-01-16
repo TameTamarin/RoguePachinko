@@ -157,7 +157,7 @@ function newGame()
         drawBalls = drawBalls,
         drawBumpers = drawBumpers,
         drawScoreBoard = drawScoreBoard,
-        drawPlunger = drawPlunger,
+        -- drawPlunger = drawPlunger,
         -- drawOutOfBounds = drawOutOfBounds,
         drawBackgroundObjects = drawBackgroundObjects,
         drawScoreBuckets = drawScoreBuckets,

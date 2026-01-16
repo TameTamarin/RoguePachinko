@@ -69,10 +69,11 @@ function love.load()
     limitsX, limitsY = love.window.getDesktopDimensions()
     sx = limitsX/WINDOWX
     sy = limitsY/WINDOWY
-    -- set the window size to 95% of the screen size multiplied by the game window size
-    success = love.window.setMode(WINDOWX*sy*0.95, WINDOWY*sy*0.95, {vsync = 1})
-    gameEngineVars.windowX = WINDOWX
-    gameEngineVars.windowY = WINDOWY
+    -- set the window size to 95% of the screen size multiplied by the game window size and VERTICAL scaling
+    scaledWinX, scaledWinY = WINDOWX*sy*0.95, WINDOWY*sy*0.95
+    success = love.window.setMode(scaledWinX, scaledWinY, {vsync = 1})
+    gameEngineVars.windowX = scaledWinX
+    gameEngineVars.windowY = scaledWinY
 
     -- Load auido files
     audio = {
@@ -103,9 +104,9 @@ function love.load()
     local pegYOffset = 50
     local pegXStart1 = 50
     local pegXStart2 = 25
-    local pegYStart = 300
+    local pegYStart = 350
 
-    for i = 1, 7 do
+    for i = 1, 9 do
         initBumper(pegXStart1 + pegXOffset*i, pegYStart)
         initBumper(pegXStart2 + pegXOffset*i, pegYStart + pegYOffset)
         initBumper(pegXStart1 + pegXOffset*i, pegYStart + pegYOffset*2)
@@ -124,14 +125,14 @@ function love.load()
     -- initBumper(100, 250)
     -- initBumper(200, 300)
 
-    initPlunger()
+    -- initPlunger()
     initTable(BOARDSTARTPOS[1], BOARDSTARTPOS[2])
     -- initOutOfBounds()
 
 
     bucketStartingvals = {150, 100, 100, 50, 50, 50, 100, 100, 150}
     for i = 0, 8 do
-        initScoreBuckets(i*gameEngineVars.windowX/9 + gameEngineVars.windowX/9/2, gameEngineVars.windowY - 100, gameEngineVars.windowX/9)
+        initScoreBuckets(i*gameEngineVars.windowX/9 + gameEngineVars.windowX/9/2, gameEngineVars.windowY - 50, gameEngineVars.windowX/9)
         editScoreBucketValue(i + 1, bucketStartingvals[i + 1])
     end
 
@@ -173,8 +174,8 @@ function love.load()
     ----------------------------------------------------------------
     
 
-    backgroundObjects = love.graphics.newCanvas(WINDOWX, WINDOWY)
-    pegLocCanvas = love.graphics.newCanvas(WINDOWX, WINDOWY)
+    backgroundObjects = love.graphics.newCanvas(gameEngineVars.windowX, gameEngineVars.windowY)
+    pegLocCanvas = love.graphics.newCanvas(gameEngineVars.windowX, gameEngineVars.windowY)
 
     love.graphics.setCanvas(backgroundObjects)
         love.graphics.clear(0, 0, 0, 0)

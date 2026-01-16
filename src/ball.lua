@@ -36,8 +36,8 @@ end
 
 image = love.graphics.newImage("images/8-bit-pokeball.png")
 function spawnBallAtPlunger()
-    local xInit = 478
-    local yInit = 872
+    local xInit = 260
+    local yInit = 150
     local world = getWorld()
    
     table.insert(balls, {
@@ -46,15 +46,17 @@ function spawnBallAtPlunger()
         radius = 12,
         color = {1,0,0},
         bounce = 0.5,
-        body = love.physics.newBody(world, xInit, yInit, "dynamic"),
+        body = nil,
         shape = nil,
         fixture = nil,
         mass = 100,
-        friction = 0.1
+        friction = 0.1,
+        spawnX = 260,
+        spawnY = 150
     })
     
     -- for i, ball in ipairs(balls) do
-        balls[#balls].body = love.physics.newBody(world, xInit, yInit, "dynamic")
+        balls[#balls].body = love.physics.newBody(world, balls[#balls].spawnX, balls[#balls].spawnY, "dynamic")
         balls[#balls].shape = love.physics.newCircleShape(balls[#balls].radius)
         balls[#balls].fixture = love.physics.newFixture(balls[#balls].body, balls[#balls].shape,100)
         balls[#balls].body:setMass(balls[#balls].mass)
@@ -71,7 +73,7 @@ function spawnBallAtPlunger()
 end
 
 function launchBall()
-    ballSetBodyVelocityWAngle(balls[#balls].body, love.math.random(900, 1000), 270)
+    -- ballSetBodyVelocityWAngle(balls[#balls].body, love.math.random(balls[#balls].spawnX, balls[#balls].spawnY), 270)
 end
 
 function drawBalls()

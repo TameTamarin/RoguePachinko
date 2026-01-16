@@ -165,6 +165,6 @@ function drawScoreBuckets()
         love.graphics.setColor(bucket.color)
         love.graphics.rectangle("fill", bucket.x - bucket.w/2, bucket.y - bucket.h/2, bucket.w, bucket.h)
         love.graphics.rectangle("fill", bucket.sideWallBody:getX() - bucket.sideWallW/2, bucket.sideWallBody:getY() - bucket.sideWallH/2, bucket.sideWallW, bucket.sideWallH)
-        love.graphics.print("" .. tostring(bucket.scoreVal), bucket.x - bucket.w/2, bucket.y - 20)
+        love.graphics.print("" .. tostring(bucket.scoreVal), bucket.x, bucket.y - 20)
     end
 end
